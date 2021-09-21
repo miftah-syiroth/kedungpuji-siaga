@@ -25,12 +25,18 @@ class StoreUserRequest extends FormRequest
      */
     public function rules()
     {
+        if (Auth::user()->hasRole('admin')) {
+            $roleRule = 'required';
+        } elseif (Auth::user()->hasRole('bidan desa')) {
+            $roleRule = 'sometimes';
+        }
+
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['string', 'nullable', 'email', 'max:255', 'unique:users'],
             'phone' => ['required', 'string', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'string'],
+            'role' => [$roleRule, 'string'],
         ];
     }
 }

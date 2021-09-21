@@ -1,25 +1,20 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Kelola Akun') }}
-        </h2>
+        {{ __('Edit Akun') }}
     </x-slot>
 
     {{-- form tambah pengguna --}}
     <div class="py-4">
-        <h4 class="mb-4 text-md font-semibold text-gray-600 text-center">
-            Ubah Profil
-        </h4>
         <div class="flex justify-center">
             <div class="px-6 py-6 bg-white rounded-lg shadow-lg">
                 <x-auth-validation-errors class="mb-4" :errors="$errors" />
-                <form method="POST" action="{{ route('register') }}">
+                <form method="POST" action="/users/{{ $user->id }}">
                     @csrf
-        
+                    @method('PUT')
                     <!-- Name -->
                     <div>
                         <x-label for="name" :value="__('Nama Lengkap')" />
-                        <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
+                        <input id="name" class="block mt-1 w-full" type="text" name="name" value="{{ $user->name ?? old('name') }}" required autofocus type="text">
                     </div>
 
                     <div class="flex flex-row mt-4">
@@ -28,14 +23,14 @@
                         <div>
                             <x-label for="phone" :value="__('Phone Number')" />
             
-                            <x-input id="phone" class="block mt-1 w-full" type="tel"  name="phone" :value="old('phone')" required />
+                            <input value="{{ $user->phone ?? old('phone') }}" type="tel" name="phone" id="phone" class="block mt-1 w-full" required>
                         </div>
 
                          <!-- Email Address -->
                         <div class="ml-4">
                             <x-label for="email" :value="__('Email')" />
-            
-                            <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" />
+    
+                            <input id="email" class="block mt-1 w-full" type="email" name="email" value="{{ $user->email ?? old('email')}}">
                         </div>
                     </div>
                     
@@ -44,33 +39,34 @@
                         <div>
                             <x-label for="password" :value="__('Password')" />
 
-                            <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+                            <x-input id="password" class="block mt-1 w-full" type="password" name="password" autocomplete="new-password" />
                         </div>
 
                         <!-- Confirm Password -->
                         <div class="ml-4">
                             <x-label for="password_confirmation" :value="__('Confirm Password')" />
             
-                            <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required />
+                            <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" />
                         </div>
                     </div>
                     
+                    
                     <div class="flex items-center justify-between mt-4">
-
+                        
                         <div>
-                            <label class="inline-flex items-center">
-                                <input class="form-radio" type="radio" name="role" value="admin" />
-                                <span class="ml-2">Admin</span>
+                            @role('admin')
+
+                            @foreach ($roles as $role)
+                            <label class="inline-flex items-center mx-2">
+                                <input class="form-radio" type="radio" {{ $role == $user->getRoleNames()->first() ? 'checked' : '' }} name="role" value="{{ $role }}" />
+                                <span class="ml-2">{{ $role }}</span>
                             </label>
-                            <label class="inline-flex items-center ml-4">
-                                <input class="form-radio" type="radio" name="role" value="bidan desa" />
-                                <span class="ml-2">Bidan</span>
-                            </label>
-                            <label class="inline-flex items-center ml-4">
-                                <input class="form-radio" type="radio" name="role" value="kader kesehatan" />
-                                <span class="ml-2">Kader</span>
-                            </label>
+                            @endforeach
+                            
+                            @endrole
                         </div>
+                        
+                        
                         <x-button class="ml-4">
                             {{ __('Ubah Akun') }}
                         </x-button>

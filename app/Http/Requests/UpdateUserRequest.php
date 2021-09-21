@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +25,32 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
+        // if (Auth::user()->hasRole('admin')) {
+        //     $roleRule = 'required';
+        // } elseif (Auth::user()->hasRole('bidan desa')) {
+        //     $roleRule = 'sometimes';
+        // }
+
+        $roleRule = Auth::user()->hasRole('admin') ? 'required' : 'sometimes';
+
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['string', 'nullable', 'email', 'max:255'],
+            'phone' => ['required', 'string'],
+            'password' => ['sometimes', Rules\Password::defaults()],
+            'role' => [$roleRule, 'string'],
         ];
+    }
+    
+    /**
+     * if password left blank in form, password can't be sent as null karena terdapat rule\password yang melakukan validasi 8 karakter dsb
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        if ($this->password == null) {
+            $this->request->remove('password');
+        }
     }
 }

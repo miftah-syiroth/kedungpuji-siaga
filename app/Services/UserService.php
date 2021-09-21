@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -47,8 +48,12 @@ class UserService
         }
     }
 
-    public function store(StoreUserRequest $request)
+    public function store($request)
     {
+        if ($request->role == null) {
+            $request->role = 'kader kesehatan';
+        }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -61,7 +66,26 @@ class UserService
         $user->assignRole($request->role);
     }
 
-    public function deleteUser(User $user)
+    public function update($request, User $user)
+    {
+        $attributes = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+        ];
+
+        if ($request->password) {
+            $attributes['password'] = Hash::make($request->password);
+        }
+
+        $user->update($attributes);
+        
+        if ($request->role) {
+            $user->syncRoles($request->role);
+        }
+    }
+
+    public function delete(User $user)
     {
         // hapus dulu role dan permission yg dimiliki
         $this->removeRole($user);

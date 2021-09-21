@@ -3,12 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use App\Services\RolePermissionService;
 use App\Services\UserService;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['role:admin|bidan desa'])->except('edit', 'update');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,10 +36,10 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(RolePermissionService $service)
     {
-        return view('users.create');
-        // return view('users.manage-user');
+        $roles = $service->getRoles();
+        return view('users.create', compact('roles'));
     }
 
     /**
@@ -62,9 +72,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user, RolePermissionService $service)
     {
-        //
+        $roles = $service->getRoles();
+
+        return view('users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -74,9 +86,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, User $user, UserService $service)
     {
-        //
+        $service->update($request, $user);
+        
+        return redirect()->back()->with('status', 'Pengguna berhasil diubah!');
     }
 
     /**
@@ -87,7 +101,7 @@ class UserController extends Controller
      */
     public function destroy(User $user, UserService $service)
     {
-        $service->deleteUser($user);
+        $service->delete($user);
         return redirect()->route('users.index');
     }
 }

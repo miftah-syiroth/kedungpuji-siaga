@@ -52,18 +52,16 @@
                     <div class="flex items-center justify-between mt-4">
 
                         <div>
-                            <label class="inline-flex items-center">
-                                <input class="form-radio" type="radio" name="role" value="admin" />
-                                <span class="ml-2">Admin</span>
+                            @role('admin')
+
+                            @foreach ($roles as $role)
+                            <label class="inline-flex items-center mx-2">
+                                <input class="form-radio" type="radio" name="role" value="{{ $role }}" />
+                                <span class="ml-2">{{ $role }}</span>
                             </label>
-                            <label class="inline-flex items-center ml-4">
-                                <input class="form-radio" type="radio" name="role" value="bidan desa" />
-                                <span class="ml-2">Bidan</span>
-                            </label>
-                            <label class="inline-flex items-center ml-4">
-                                <input class="form-radio" type="radio" name="role" value="kader kesehatan" />
-                                <span class="ml-2">Kader</span>
-                            </label>
+                            @endforeach
+
+                            @endrole
                         </div>
                         <x-button class="ml-4">
                             {{ __('Tambah Akun') }}
