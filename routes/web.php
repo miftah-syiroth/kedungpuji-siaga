@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,8 +20,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Route::get('/role-permission', function () {
+//     $role = Role::findById(2);
+//     $role->givePermissionTo(['manage kader']);
+// });
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::resource('users', UserController::class);
 
 require __DIR__.'/auth.php';
