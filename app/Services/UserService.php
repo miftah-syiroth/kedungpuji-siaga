@@ -2,23 +2,30 @@
 
 namespace App\Services;
 
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 class UserService
 {
-    public $user;
+    private $user;
 
     public function __construct()
     {
         $this->user = Auth::user();
+    }
+    
+    /**
+     * getAllRoles mendapatkan semua role untuk dipassing ke view create dan edit user
+     *
+     * @return void
+     */
+    public function getAllRoles()
+    {
+        return Role::all()->pluck('name');
     }
     
     /**
@@ -31,15 +38,27 @@ class UserService
     {
         return $user->getRoleNames()->first();
     }
-
+    
+    /**
+     * removeRole menghapus role dari seorang user pada aksi delete user
+     *
+     * @param  mixed $user
+     * @return void
+     */
     public function removeRole(User $user)
     {
         $role = $this->getRole($user);
 
         $user->removeRole($role);
     }
-
-    public function getUsers()
+    
+    /**
+     * getAllUsers mengembalikan semua user berdasarkan siapa yang sedang login.
+     * hanya dua role yg dpt melihat data pengguna yaitu admin dan bidan desa.
+     *
+     * @return void
+     */
+    public function getAllUsers()
     {
         if ($this->user->hasRole('admin')) {
             return User::with(['roles'])->get();
@@ -63,7 +82,7 @@ class UserService
 
         event(new Registered($user));
 
-        $user->assignRole($request->role);
+        $user->syncRoles($request->role);
     }
 
     public function update($request, User $user)

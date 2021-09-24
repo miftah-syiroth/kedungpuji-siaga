@@ -32,7 +32,7 @@ class StoreUserRequest extends FormRequest
         }
 
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['string', 'nullable', 'email', 'max:255', 'unique:users'],
             'phone' => ['required', 'string', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],

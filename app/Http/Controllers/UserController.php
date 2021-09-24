@@ -24,9 +24,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(UserService $service)
+    public function index(UserService $userService)
     {
-        $users = $service->getUsers();
+        $users = $userService->getAllUsers();
 
         return view('users.index', compact('users'));
     }
@@ -36,9 +36,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(RolePermissionService $service)
+    public function create(UserService $userService)
     {
-        $roles = $service->getRoles();
+        $roles = $userService->getAllRoles();
         return view('users.create', compact('roles'));
     }
 
@@ -48,9 +48,9 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreUserRequest $request, UserService $service)
+    public function store(StoreUserRequest $request, UserService $userService)
     {
-        $service->store($request);
+        $userService->store($request);
 
         return redirect()->route('users.index')->with('status', 'Pengguna berhasil ditambahkan!');
     }
@@ -72,9 +72,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user, RolePermissionService $service)
+    public function edit(User $user, UserService $userService)
     {
-        $roles = $service->getRoles();
+        $roles = $userService->getAllRoles();
 
         return view('users.edit', compact('user', 'roles'));
     }
@@ -86,9 +86,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request, User $user, UserService $service)
+    public function update(UpdateUserRequest $request, User $user, UserService $userService)
     {
-        $service->update($request, $user);
+        $userService->update($request, $user);
         
         return redirect()->back()->with('status', 'Pengguna berhasil diubah!');
     }
@@ -99,9 +99,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user, UserService $service)
+    public function destroy(User $user, UserService $userService)
     {
-        $service->delete($user);
+        $userService->delete($user);
         return redirect()->route('users.index');
     }
 }

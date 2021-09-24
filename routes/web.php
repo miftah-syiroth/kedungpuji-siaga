@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CoupleController;
+use App\Http\Controllers\FamilyController;
+use App\Http\Controllers\PersonController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +32,13 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::resource('users', UserController::class)->middleware('auth');
+
+Route::middleware('auth')->group(function () {
+    Route::resource('users', UserController::class);
+    Route::resource('people', PersonController::class);
+    Route::resource('families', FamilyController::class);
+    Route::resource('couples', CoupleController::class);
+});
+
 
 require __DIR__.'/auth.php';

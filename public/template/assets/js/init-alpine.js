@@ -47,7 +47,8 @@ function data() {
         togglePagesMenu() {
             this.isPagesMenuOpen = !this.isPagesMenuOpen;
         },
-        isPenggunaMenuOpen: false,
+        // isPenggunaMenuOpen: false,
+        isPenggunaMenuOpen: true,
         togglePenggunaMenu() {
             this.isPenggunaMenuOpen = !this.isPenggunaMenuOpen;
         },

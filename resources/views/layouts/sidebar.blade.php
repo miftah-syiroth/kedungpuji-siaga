@@ -17,41 +17,11 @@
             </li>
         </ul>
         <ul>
-            <li class="relative px-6 py-3">
-                <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="#">
-                  <svg
-                    class="w-5 h-5"
-                    aria-hidden="true"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
-                  </svg>
-                  <span class="ml-4">Tables</span>
-                </a>
-            </li>
-
-            @hasanyrole('admin|bidan desa')
-            <li class="relative px-6 py-3">
-                <button class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150hover:text-gray-800"
-                    @click="togglePenggunaMenu"
-                    aria-haspopup="true"
-                >
-                    <span class="ml-4 inline-flex items-center">Pengguna</span>
-                   
-                    <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                        <path
-                            fill-rule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
-                        ></path>
-                    </svg>
-                </button>
-                <template x-if="isPenggunaMenuOpen">
+            <li class="relative px-6 py-3 shadow">
+                <div class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors" aria-haspopup="true">
+                    <span class="ml-4 inline-flex items-center text-gray-600">Kependudukan</span>
+                </div>
+                <template x-if="{isPenggunaMenuOpen : true}">
                     <ul
                     x-transition:enter="transition-all ease-in-out duration-300"
                     x-transition:enter-start="opacity-25 max-h-0"
@@ -65,18 +35,40 @@
                         text-gray-500
                         rounded-md
                         shadow-inner
-                        bg-gray-50
+                        bg-gray-100
                     "
-                    aria-label="submenu"
+                    aria-label=""
                     >
-                        <li class="px-2 py-1  transition-colors duration-150 hover:text-gray-800">
-                            <a class="w-full" href="{{ route('users.index') }}">Semua Pengguna</a>
+                        <li class="px-2 py-1  transition-colors duration-150 hover:text-gray-900 hover:bg-blue-100 rounded-lg">
+                            <a class="w-full block" href="{{ route('people.index') }}">Penduduk</a>
                         </li>
-                        <li class="px-2 py-1  transition-colors duration-150 hover:text-gray-800">
-                            <a class="w-full" href="{{ route('users.create') }}">Tambah Pengguna</a>
+                        <li class="px-2 py-1  transition-colors duration-150 hover:text-gray-900 hover:bg-blue-100 rounded-lg">
+                            <a class="w-full block" href="{{ route('families.index') }}">Keluarga</a>
+                        </li>
+                        <li class="px-2 py-1  transition-colors duration-150 hover:text-gray-900 hover:bg-blue-100 rounded-lg">
+                            <a class="w-full block" href="{{ route('couples.index') }}">PUS</a>
                         </li>
                     </ul>
                 </template>
+            </li>
+
+            @hasanyrole('admin|bidan desa')
+            <li class="relative px-6 py-3 shadow">
+                <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150" href="{{ route('users.index') }}">
+                    <svg
+                        class="w-5 h-5"
+                        aria-hidden="true"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                    </svg>
+                    <span class="ml-4 text-gray-600 hover:text-gray-900">Semua Pengguna</span>
+                </a>
             </li>
             @endhasanyrole
             
@@ -165,7 +157,7 @@
         </ul>
         <ul>
             <li class="relative px-6 py-3">
-                <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="tables.html" >
+                <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 href="{{ route('people.index') }}" >
                     <svg
                         class="w-5 h-5"
                         aria-hidden="true"
@@ -178,11 +170,14 @@
                     >
                         <path d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
                     </svg>
-                    <span class="ml-4">Tables</span>
+                    <span class="ml-4">Penduduk</span>
                 </a>
+                <ul>
+                    <li>ini</li>
+                </ul>
             </li>
             <li class="relative px-6 py-3">
-                <button
+                <div
                     class="
                     inline-flex
                     items-center
@@ -192,8 +187,7 @@
                     font-semibold
                     transition-colors
                     duration-150
-                    hover:text-gray-800
-                    dark:hover:text-gray-200
+                    hover:text-gray-900
                     "
                     @click="togglePenggunaMenu"
                     aria-haspopup="true"
@@ -227,7 +221,7 @@
                         clip-rule="evenodd"
                     ></path>
                     </svg>
-                </button>
+                </div>
                 <template x-if="isPenggunaMenuOpen">
                     <ul
                     x-transition:enter="transition-all ease-in-out duration-300"

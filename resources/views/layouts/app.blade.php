@@ -21,6 +21,9 @@
         <script src="{{ asset('template/assets/js/charts-lines.js') }}" defer></script>
         
         <script src="{{ asset('template/assets/js/charts-pie.js') }}" defer></script>
+
+        {{-- livewire --}}
+        @livewireStyles
     </head>
     <body>
         <div class="flex h-screen bg-gray-100" :class="{ 'overflow-hidden': isSideMenuOpen}">
@@ -31,7 +34,7 @@
 
                 <main class="h-full overflow-y-auto">
                     <div class="container px-6 mx-auto grid">
-                        <h2 class="my-4 text-xl font-semibold text-gray-700 dark:text-gray-200">
+                        <h2 class="my-4 text-xl px-6 font-semibold text-gray-700 dark:text-gray-200">
                            {{ $header }}
                         </h2>
                         {{ $slot }}
@@ -39,5 +42,7 @@
                 </main>
             </div>
         </div>
+        @livewireScripts
+        @stack('scripts')
     </body>
 </html>
