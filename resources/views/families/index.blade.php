@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Tambah Pengguna') }}
+        {{ __('Keluarga') }}
     </x-slot>
 
     <div class="py-4">
@@ -24,12 +24,12 @@
                                        {{ $key + 1 . '.' }}
                                     </div>
                                     <div>
-                                        <p class="font-semibold">{{ $family->leadBy->name }}</p>
+                                        <p class="font-semibold">{{ $family->leader->name }}</p>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $family->leadBy->rt . '/' . $family->leadBy->rw }}
+                                {{ $family->leader->rt . '/' . $family->leader->rw }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $family->keluargaSejahtera->tahapan }}

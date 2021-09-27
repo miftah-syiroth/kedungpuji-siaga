@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePersonRequest;
 use App\Models\Person;
 use App\Services\PersonService;
 use Illuminate\Http\Request;
@@ -25,9 +26,19 @@ class PersonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(PersonService $personService)
     {
-        //
+        return view('people.create', [
+            'sexes' => $personService->getSexes(),
+            'religions' => $personService->getReligions(),
+            'blood_groups' => $personService->getBloodGroups(),
+            'educationals' => $personService->getEducationals(),
+            'disabilities' => $personService->getDisabilities(),
+            'marital_statuses' => $personService->getMaritalStatuses(),
+            'family_statuses' => $personService->getFamilyStatuses(),
+            'keluarga_sejahtera' => $personService->getKeluargaSejahtera(),
+            'kb_services' => $personService->getKbServices(),
+        ]);
     }
 
     /**
@@ -36,9 +47,10 @@ class PersonController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePersonRequest $request, PersonService $personService)
     {
-        //
+        $personService->store($request);
+        return redirect()->route('people.index');
     }
 
     /**

@@ -17,14 +17,14 @@ class Family extends Model
      *  dan sebaliknya
      * @return void
      */
-    public function leadBy()
+    public function leader()
     {
         // return $this->hasOne(Person::class, 'person_id');
         return $this->belongsTo(Person::class, 'person_id');
     }
     
     /**
-     * people relasi one to many, sebuah keluarga memiliki banyak person as member
+     * people relasi one to many, sebuah keluarga memiliki banyak person as member tp person hanya bisa menjadi anggota satu keluarga
      *
      * @return void
      */

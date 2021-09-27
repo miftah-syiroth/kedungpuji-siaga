@@ -34,7 +34,7 @@ Route::get('/dashboard', function () {
 
 
 Route::middleware('auth')->group(function () {
-    Route::resource('users', UserController::class);
+    Route::resource('users', UserController::class);    
     Route::resource('people', PersonController::class);
     Route::resource('families', FamilyController::class);
     Route::resource('couples', CoupleController::class);

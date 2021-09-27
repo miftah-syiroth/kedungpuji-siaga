@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCoupleRequest;
 use App\Models\Couple;
+use App\Services\CoupleService;
 use Illuminate\Http\Request;
 
 class CoupleController extends Controller
@@ -22,10 +24,10 @@ class CoupleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(CoupleService $coupleService)
     {
         return view('couples.create', [
-            
+            'kb_services' => $coupleService->getAllKbServices(),
         ]);
     }
 
@@ -35,9 +37,10 @@ class CoupleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCoupleRequest $request, CoupleService $coupleService)
     {
-        //
+        $coupleService->store($request);
+        return redirect()->route('couples.index');
     }
 
     /**

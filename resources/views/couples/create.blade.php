@@ -1,10 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Tambah Pengguna') }}
+        {{ __('Tambah Pasangan') }}
     </x-slot>
 
-    {{-- @livewire('families.family-create', [
-        'keluarga_sejahtera' => $keluarga_sejahtera,
-    ]) --}}
-    ini halaman create couple
+    @livewire('couples.couple-create', [
+        'kb_services' => $kb_services,
+    ])
 </x-app-layout>

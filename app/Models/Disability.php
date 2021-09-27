@@ -9,7 +9,7 @@ class Disability extends Model
 {
     use HasFactory;
 
-    protected $table = 'type';
+    protected $table = 'disabilities';
     protected $guarded = [];
 
     public function people()

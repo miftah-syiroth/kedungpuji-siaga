@@ -53,7 +53,7 @@
                                 {{ $person->is_cacat == true ? 'cacat' : 'normal' }}
                             </td>
                             <td class="px-4 py-3 text-sm {{ $person->family ? 'text-blue-500' : '' }}">
-                                {{ $person->family ? $person->family->kepalaKeluarga->name : '-' }}
+                                {{ $person->family->leader->name ?? 'belum dicatat' }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $person->familyStatus->status }}

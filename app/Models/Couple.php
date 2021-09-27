@@ -11,4 +11,14 @@ class Couple extends Model
 
     protected $table = 'couples';
     protected $guarded = [];
+
+    public function husband()
+    {
+        return $this->belongsTo(Person::class, 'suami_id');
+    }
+
+    public function wife()
+    {
+        return $this->belongsTo(Person::class, 'istri_id');
+    }
 }

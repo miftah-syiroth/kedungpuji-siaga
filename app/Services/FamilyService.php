@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\Family;
 use App\Models\KeluargaSejahtera;
 use App\Models\Person;
+use Illuminate\Database\Eloquent\Builder;
 
 class FamilyService
 {
@@ -12,22 +13,20 @@ class FamilyService
         return KeluargaSejahtera::all();
     }
 
-    public function getAllKepalaKeluarga()
-    {
-        // ambil semua orang dengan status kepala keluarga yg belum mempunyai keluarga
-        return Person::where('family_status_id', 1)->select('id', 'name')->get();
-    }
-
     public function getAllFamilies()
     {
-        return Family::with(['leadBy'])->get();
+        return Family::with(['leader'])->get();
     }
 
     public function store($request)
     {
-        return Person::find($request->person_id)->kepalaKeluarga()->create([
+        // buat keluarganya dahulu dgn relasi kepala keluarga
+        $family = Person::find($request->person_id)->kepalaKeluarga()->create([
             'nomor_kk' => $request->nomor_kk,
             'keluarga_sejahtera_id' => $request->keluarga_sejahtera_id
         ]);
+
+        // update user sebagai anggota keluarga
+        Person::find($request->person_id)->family()->associate($family)->save();
     }
 }

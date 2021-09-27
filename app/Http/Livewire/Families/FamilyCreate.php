@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Families;
 
 use App\Models\Person;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 
 class FamilyCreate extends Component
@@ -12,13 +13,20 @@ class FamilyCreate extends Component
 
     public $searchTerm;
 
+    public function getKepalaKeluarga()
+    {
+        return Person::doesntHave('kepalaKeluarga')
+            ->where('family_status_id', 1)
+            ->where(function ($query) {
+                $query->where('name', 'like', $this->searchTerm . '%');
+            })->get();
+    }
+
     public function render()
     {
-        $this->kepala_keluarga = Person::where('family_status_id', 1)
-            ->whereNull('family_id')
-            ->where(function ($query) {
-                $query->where('name', 'like', '%' . $this->searchTerm . '%');
-            })->select('id', 'name')->get();
+        // tampilkan semua org dengan status anggota sebagai kepala keluarga, yang blm tercatat pada model keluarga, dan sesuai keyword
+
+        $this->kepala_keluarga = $this->getKepalaKeluarga();
 
         return view('livewire.families.family-create');
     }

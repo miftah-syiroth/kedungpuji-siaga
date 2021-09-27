@@ -61,17 +61,7 @@ class Person extends Model
     {
         return $this->belongsTo(Disability::class, 'disability_id');
     }
-    
-    /**
-     * family, sebuah keluarga memiliki banyak anggota selain kepala keluarga
-     *
-     * @return void
-     */
-    public function family()
-    {
-        return $this->belongsTo(Family::class, 'family_id');
-    }
-    
+
     /**
      * familyStatus relasi status keanggotaan seseorang dalam sebuah keluarga
      *
@@ -81,9 +71,90 @@ class Person extends Model
     {
         return $this->belongsTo(FamilyStatus::class, 'family_status_id');
     }
-
+    
+    /**
+     * family, sebuah keluarga memiliki banyak anggota, seseorang hanya bisa tercantum pada satu keluarga
+     *
+     * @return void
+     */
+    public function family()
+    {
+        return $this->belongsTo(Family::class, 'family_id');
+    }
+    
+    /**
+     * seseorang hanya bisa menjadi kepala keluarga sebuah keluarga, tidak double. demikian sebaliknya
+     * one to one
+     * @return void
+     */
     public function kepalaKeluarga()
     {
         return $this->hasOne(Family::class, 'person_id');
+    }
+
+        
+    /**
+     * couples method untuk relasi one to many laki2 terhadap pasasngan. setiap laki2 dapat memiliki banyak istri
+     *
+     * @param  mixed $var
+     * @return void
+     */
+    public function wifes()
+    {
+        return $this->hasMany(Couple::class, 'suami_id');
+    }
+    
+    /**
+     * couple method untuk relasi one to one, satu istri hanya punya satu suami
+     *
+     * @param  mixed $var
+     * @return void
+     */
+    public function husband()
+    {
+        return $this->hasOne(Couple::class, 'istri_id');
+    }
+    
+    /**
+     * seseorang bisa menjadi ibu bagi banyak orang/anak
+     * anak-anak dari ibu. 
+     * @param  mixed $var
+     * @return void
+     */
+    public function motherChildren()
+    {
+        return $this->hasMany(Person::class, 'ibu_id');
+    }
+
+    /**
+     * seseorang hanya memiliki satu ibu kandung
+     *
+     * @param  mixed $var
+     * @return void
+     */
+    public function mother()
+    {
+        return $this->belongsTo(Person::class, 'ibu_id');
+    }
+    
+    /**
+     * seseorang bisa menjadi ayah bagi banyak orang/anak
+     *
+     * @param  mixed $var
+     * @return void
+     */
+    public function fatherChildren()
+    {
+        return $this->hasMany(Person::class, 'ayah_id');
+    }
+    
+    /**
+     * seseorang hanya bisa memiliki satu ayah kandung
+     *
+     * @return void
+     */
+    public function father()
+    {
+        return $this->belongsTo(Person::class, 'ayah_id');
     }
 }
