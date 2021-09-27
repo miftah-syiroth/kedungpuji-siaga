@@ -72,7 +72,7 @@ class PersonService
 
     public function store($request)
     {
-        // dd($request->marital_status_id);
+        // dd($request->suami_id);
         // buat secara normal utk semua atribut meskipun null
         $person = Person::create([
             'name' => $request->name,
@@ -110,22 +110,23 @@ class PersonService
         
         // buat pasangan jika marital status adalah 2 atau 3
         if ($request->marital_status_id == 2 || $request->marital_status_id == 3) {
-            if ($request->sex_id == 1) { // jika kelamin pria, maka buat row baru
-                $person->wifes()->create([
-                    'istri_id' => $request->couple_id,
+            if ($request->sex_id == 2) { // jika kelamin pria, maka buat row baru
+                $result = $person->husband()->create([
+                    'suami_id' => $request->suami_id,
                     'is_kb' => $request->is_kb,
                     'kb_service_id' => $request->kb_service_id,
                 ]);
-            }elseif ($request->sex_id == 2) { // jika kelamin wanita, maka update atau buat
-                $result = Couple::updateOrCreate(
-                    ['suami_id' => $request->couple_id,],
-                    [
-                        'istri_id' => $person->id,
-                        'is_kb' => $request->is_kb,
-                        'kb_service_id' => $request->kb_service_id,
-                    ],
-                );
             }
+            // elseif ($request->sex_id == 2) { // jika kelamin wanita, maka update atau buat
+            //     $result = Couple::updateOrCreate(
+            //         ['suami_id' => $request->couple_id,],
+            //         [
+            //             'istri_id' => $person->id,
+            //             'is_kb' => $request->is_kb,
+            //             'kb_service_id' => $request->kb_service_id,
+            //         ],
+            //     );
+            // }
         }
     }
 }

@@ -8,14 +8,14 @@
             <div class="px-2 py-4 bg-white rounded-lg shadow-lg">
                 <table class="w-full whitespace-no-wrap overflow-x-auto">
                     <thead>
-                        <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b  bg-gray-50">
+                        <tr class="text-xs font-semibold tracking-wide text-center text-gray-500 uppercase border-b  bg-gray-50">
                             <th class="px-4 py-3">Nama</th>
                             <th class="px-4 py-3">RT/RT</th>
-                            <th class="px-4 py-3">Jenis Kelamin</th>
-                            <th class="px-4 py-3">Golongan Darah</th>
+                            <th class="px-4 py-3">L/P</th>
+                            <th class="px-4 py-3">GolDar</th>
                             <th class="px-4 py-3">Umur</th>
                             <th class="px-4 py-3">Status Kawin</th>
-                            <th class="px-4 py-3">Status Disabilitas</th>
+                            <th class="px-4 py-3">Disabilitas</th>
                             <th class="px-4 py-3">Keluarga</th>
                             <th class="px-4 py-3">Status Anggota</th>
                          </tr>
@@ -34,23 +34,23 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-4 py-3 text-sm">
+                            <td class="px-4 py-3 text-sm text-center">
                                 {{ $person->rt . '/' . $person->rw }}
                             </td>
-                            <td class="px-4 py-3 text-sm">
+                            <td class="px-4 py-3 text-sm text-center">
                                 {{ $person->sex->id == 1 ? 'L' : 'P' }}
                             </td>
-                            <td class="px-4 py-3 text-sm">
+                            <td class="px-4 py-3 text-sm text-center">
                                 {{ $person->bloodGroup->group }}
                             </td>
-                            <td class="px-4 py-3 text-sm">
+                            <td class="px-4 py-3 text-sm text-center">
                                 {{ $person->date_of_birth->age }}
                             </td>
-                            <td class="px-4 py-3 text-sm">
+                            <td class="px-4 py-3 text-sm text-center">
                                 {{ $person->maritalStatus->status }}
                             </td>
-                            <td class="px-4 py-3 text-sm">
-                                {{ $person->is_cacat == true ? 'cacat' : 'normal' }}
+                            <td class="px-4 py-3 text-sm text-center">
+                                {{ $person->is_cacat == true ? 'cacat' : '-' }}
                             </td>
                             <td class="px-4 py-3 text-sm {{ $person->family ? 'text-blue-500' : '' }}">
                                 {{ $person->family->leader->name ?? 'belum dicatat' }}
