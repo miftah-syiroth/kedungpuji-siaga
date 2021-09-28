@@ -11,4 +11,14 @@ class KbService extends Model
 
     protected $table = 'kb_services';
     protected $guarded = [];
+    
+    /**
+     * couples relationship model one to many
+     *
+     * @return void
+     */
+    public function couples()
+    {
+        return $this->hasMany(Couple::class, 'kb_service_id');
+    }
 }

@@ -14,9 +14,11 @@ class CoupleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(CoupleService $coupleService)
     {
-        return view('couples.index');
+        return view('couples.index', [
+            'couples' => $coupleService->getAllCouples(),
+        ]);
     }
 
     /**
