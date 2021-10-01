@@ -52,6 +52,35 @@
                 </template>
             </li>
 
+            <li class="relative px-6 py-3 shadow">
+                <div class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors" aria-haspopup="true">
+                    <span class="ml-4 inline-flex items-center text-gray-600">Keluarga Berencana</span>
+                </div>
+                <template x-if="{isPenggunaMenuOpen : true}">
+                    <ul
+                    x-transition:enter="transition-all ease-in-out duration-300"
+                    x-transition:enter-start="opacity-25 max-h-0"
+                    x-transition:enter-end="opacity-100 max-h-xl"
+                    x-transition:leave="transition-all ease-in-out duration-300"
+                    x-transition:leave-start="opacity-100 max-h-xl"
+                    x-transition:leave-end="opacity-0 max-h-0"
+                    class=" p-2 mt-2 space-y-2 overflow-hidden
+                        text-sm
+                        font-medium
+                        text-gray-500
+                        rounded-md
+                        shadow-inner
+                        bg-gray-100
+                    "
+                    aria-label=""
+                    >
+                        <li class="px-2 py-1  transition-colors duration-150 hover:text-gray-900 hover:bg-blue-100 rounded-lg">
+                            <a class="w-full block" href="{{ route('keluarga-berencana.index') }}">Laporan</a>
+                        </li>
+                    </ul>
+                </template>
+            </li>
+
             @hasanyrole('admin|bidan desa')
             <li class="relative px-6 py-3 shadow">
                 <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150" href="{{ route('users.index') }}">
@@ -119,40 +148,40 @@
     @keydown.escape="closeSideMenu">
     <div class="py-4 text-gray-500 dark:text-gray-400">
         <a class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" href="#">
-            Windmill
+            Kedungpuji Siaga
         </a>
         <ul class="mt-6">
             <li class="relative px-6 py-3">
-            <a
-                class="
-                inline-flex
-                items-center
-                w-full
-                text-sm
-                font-semibold
-                transition-colors
-                duration-150
-                hover:text-gray-800
-                dark:hover:text-gray-200
-                "
-                href="index.html"
-            >
-                <svg
-                class="w-5 h-5"
-                aria-hidden="true"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+                <a
+                    class="
+                    inline-flex
+                    items-center
+                    w-full
+                    text-sm
+                    font-semibold
+                    transition-colors
+                    duration-150
+                    hover:text-gray-800
+                    dark:hover:text-gray-200
+                    "
+                    href="/dashboard"
                 >
-                <path
-                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                ></path>
-                </svg>
-                <span class="ml-4">Dashboard</span>
-            </a>
+                    <svg
+                    class="w-5 h-5"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    >
+                    <path
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                    ></path>
+                    </svg>
+                    <span class="ml-4">Dashboard</span>
+                </a>
             </li>
         </ul>
         <ul>
@@ -233,12 +262,11 @@
                     class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50dark:text-gray-400 dark:bg-gray-900"
                     aria-label="submenu"
                     >
+                        @hasanyrole('admin|bidan desa')
                         <li class=" px-2  py-1  transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
                             <a class="w-full" href="{{ route('users.index') }}">Semua Pengguna</a>
                         </li>
-                        <li class=" px-2  py-1  transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                            <a class="w-full" href="{{ route('users.create') }}">Tambah Pengguna</a>
-                        </li>
+                        @endhasanyrole
                     </ul>
                 </template>
             </li>

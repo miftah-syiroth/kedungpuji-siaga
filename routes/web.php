@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\CoupleController;
 use App\Http\Controllers\FamilyController;
+use App\Http\Controllers\KeluargaBerencanaController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\UserController;
+use App\Models\Couple;
 use Illuminate\Support\Facades\Route;
 
 use Spatie\Permission\Models\Role;
@@ -38,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('people', PersonController::class);
     Route::resource('families', FamilyController::class);
     Route::resource('couples', CoupleController::class);
+    Route::resource('keluarga-berencana', KeluargaBerencanaController::class);
 });
 
 

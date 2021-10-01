@@ -13,6 +13,8 @@
                             <th class="px-4 py-3 text-center">Alamat Istri</th>
                             <th class="px-4 py-3 text-center">KB?</th>
                             <th class="px-4 py-3 text-center">Suami</th>
+                            <th class="px-4 py-3 text-center">Bulan Lalu</th>
+                            <th class="px-4 py-3 text-center">Bulan Sekarang</th>
                          </tr>
                     </thead>
                     <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">

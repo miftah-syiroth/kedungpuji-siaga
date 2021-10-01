@@ -16,7 +16,12 @@ class Person extends Model
     protected $casts = [
         'date_of_birth' => 'datetime:Y-m-d',
     ];
-
+    
+    /**
+     * age method menghitung umur berdasarkan tanggal lahir
+     *
+     * @return void
+     */
     public function age()
     {
         return Carbon::parse($this->attributes['date_of_birth'])->age;

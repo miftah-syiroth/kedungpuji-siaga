@@ -12,6 +12,9 @@ class Couple extends Model
     protected $table = 'couples';
     protected $guarded = [];
     
+    
+    // START RELASI
+
     /**
      * namanya pasangan ya hanya ada 2 org, satu husband satu wife
      *
@@ -41,4 +44,35 @@ class Couple extends Model
     {
         return $this->belongsTo(KbService::class, 'kb_service_id');
     }
+
+    // public function keluargaBerencana()
+    // {
+    //     return $this->hasMany(KeluargaBerencana::class, 'couple_id');
+    // }
+
+
+    // relasi many to many polymorphic
+    public function contraceptions()
+    {
+        return $this->morphedByMany(Contraception::class, 'coupleable')->withPivot('year_periode', 'month_periode');
+    }
+
+    // relasi many to many polymorphic
+    public function pregnancies()
+    {
+        return $this->morphedByMany(Pregnancy::class, 'coupleable')->withPivot('year_periode', 'month_periode');
+    }
+
+    // relasi many to many polymorphic dengan spesifikasi
+    public function contraceptionRow($year, $month)
+    {
+        return $this->morphedByMany(Contraception::class, 'coupleable')
+            ->wherePivot('year_periode', $year)->wherePivot('month_periode', $month)->first();
+    }
+
+    public function pregnancyRow()
+    {
+        return $this->morphedByMany(Pregnancy::class, 'coupleable')->withPivot('year_periode', 'month_periode');
+    }    
+
 }

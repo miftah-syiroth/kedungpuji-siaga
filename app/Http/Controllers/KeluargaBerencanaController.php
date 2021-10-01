@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCoupleRequest;
-use App\Models\Couple;
+use App\Http\Requests\StoreKeluargaBerencanaRequest;
+use App\Models\KeluargaBerencana;
 use App\Models\Month;
 use App\Services\CoupleService;
+use App\Services\KeluargaBerencanaService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class CoupleController extends Controller
+class KeluargaBerencanaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +19,10 @@ class CoupleController extends Controller
      */
     public function index(CoupleService $coupleService)
     {
-        return view('couples.index', [
+        return view('keluarga-berencana.index', [
             'couples' => $coupleService->getAllCouples(),
+            'months' => Month::all(),
+            'year' => Carbon::now()->year,
         ]);
     }
 
@@ -28,11 +31,9 @@ class CoupleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(CoupleService $coupleService)
+    public function create()
     {
-        return view('couples.create', [
-            'kb_services' => $coupleService->getAllKbServices(),
-        ]);
+        //
     }
 
     /**
@@ -41,38 +42,32 @@ class CoupleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCoupleRequest $request, CoupleService $coupleService)
+    public function store(StoreKeluargaBerencanaRequest $request, KeluargaBerencanaService $keluargaBerencanaService)
     {
-        $coupleService->store($request);
-        return redirect()->route('couples.index');
+        $keluargaBerencanaService->store($request);
+        return redirect()->back();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Couple  $couple
+     * @param  \App\Models\KeluargaBerencana  $keluargaBerencana
      * @return \Illuminate\Http\Response
      */
-    public function show(Couple $couple, CoupleService $coupleService)
+    public function show(KeluargaBerencana $keluargaBerencana)
     {
-        $year = Carbon::now()->year;
-
-        return view('couples.show', [
-            'couple' => $couple,
-            'kb_statuses' => $coupleService->getKbStatuses($couple),
-            // 'data_kb_setahun' => $keluargaBerencanaService->getKbData($couple, $year),
-            'months' => Month::all(),
-            'year' => $year,
+        return view('keluarga-berencana.show', [
+            'keluarga_berencana' => $keluargaBerencana,
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Couple  $couple
+     * @param  \App\Models\KeluargaBerencana  $keluargaBerencana
      * @return \Illuminate\Http\Response
      */
-    public function edit(Couple $couple)
+    public function edit(KeluargaBerencana $keluargaBerencana)
     {
         //
     }
@@ -81,10 +76,10 @@ class CoupleController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Couple  $couple
+     * @param  \App\Models\KeluargaBerencana  $keluargaBerencana
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Couple $couple)
+    public function update(Request $request, KeluargaBerencana $keluargaBerencana)
     {
         //
     }
@@ -92,10 +87,10 @@ class CoupleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Couple  $couple
+     * @param  \App\Models\KeluargaBerencana  $keluargaBerencana
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Couple $couple)
+    public function destroy(KeluargaBerencana $keluargaBerencana)
     {
         //
     }
