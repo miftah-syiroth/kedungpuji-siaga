@@ -12,18 +12,29 @@ class Pregnancy extends Model
     protected $table = 'pregnancies';
     protected $guarded = [];
 
-    // public function keluargaBerencana()
-    // {
-    //     return $this->morphMany(KeluargaBerencana::class, 'kbable');
-    // }
+    protected $casts = [
+        'hpht' => 'datetime:Y-m-d',
+        
+    ];
 
+    public function babyCondition()
+    {
+        return $this->belongsTo(BabyCondition::class, 'baby_condition_id');
+    }
+    
     /**
-     * couples method relasi many to many polymorphic dengan pregnancy
+     * mother, sebuah kehamilan tentu saja dimiliki oleh satu individu wanita. tidak mungkin separuh organ dikandung oleh wanita lain macam bongkar pasang
      *
+     * @param  mixed $var
      * @return void
      */
-    public function couples()
+    public function mother()
     {
-        return $this->morphToMany(Couple::class, 'coupleable')->withPivot('year_periode', 'month_periode');
+        return $this->belongsTo(Person::class, 'mother_id');
+    }
+
+    public function prenatalClasses()
+    {
+        return $this->hasMany(PrenatalClass::class, 'pregnancy_id');
     }
 }

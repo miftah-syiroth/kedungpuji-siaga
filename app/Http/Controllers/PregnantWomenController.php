@@ -2,23 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreFamilyRequest;
-use App\Models\Family;
-use App\Services\FamilyService;
+use App\Models\PregnantWomen;
 use Illuminate\Http\Request;
 
-class FamilyController extends Controller
+class PregnantWomenController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(FamilyService $familyService)
+    public function index()
     {
-        return view('families.index', [
-            'families' => $familyService->getAllFamilies(),
-        ]);
+        //
     }
 
     /**
@@ -26,11 +22,9 @@ class FamilyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(FamilyService $familyService)
+    public function create()
     {
-        return view('families.create', [
-            'keluarga_sejahtera' => $familyService->getAllKeluargaSejahtera(),
-        ]);
+        //
     }
 
     /**
@@ -39,30 +33,29 @@ class FamilyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreFamilyRequest $request, FamilyService $familyService)
+    public function store(Request $request)
     {
-        $familyService->store($request);
-        return redirect()->route('families.index');
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Family  $family
+     * @param  \App\Models\PregnantWomen  $pregnantWomen
      * @return \Illuminate\Http\Response
      */
-    public function show(Family $family)
+    public function show(PregnantWomen $pregnantWomen)
     {
-        return view('families.show');
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Family  $family
+     * @param  \App\Models\PregnantWomen  $pregnantWomen
      * @return \Illuminate\Http\Response
      */
-    public function edit(Family $family)
+    public function edit(PregnantWomen $pregnantWomen)
     {
         //
     }
@@ -71,10 +64,10 @@ class FamilyController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Family  $family
+     * @param  \App\Models\PregnantWomen  $pregnantWomen
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Family $family)
+    public function update(Request $request, PregnantWomen $pregnantWomen)
     {
         //
     }
@@ -82,10 +75,10 @@ class FamilyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Family  $family
+     * @param  \App\Models\PregnantWomen  $pregnantWomen
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Family $family)
+    public function destroy(PregnantWomen $pregnantWomen)
     {
         //
     }

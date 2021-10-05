@@ -22,9 +22,15 @@ class Person extends Model
      *
      * @return void
      */
-    public function age()
+    // public function age()
+    // {
+    //     return Carbon::parse($this->attributes['date_of_birth'])->age;
+    // }
+
+    public function getDateOfBirthAttribute($value)
     {
-        return Carbon::parse($this->attributes['date_of_birth'])->age;
+        // return Carbon::parse($this->attributes['date_of_birth'])->isoFormat('DD MMMM Y');
+        return Carbon::parse($this->attributes['date_of_birth']);
     }
     
     /**
@@ -35,6 +41,16 @@ class Person extends Model
     public function sex()
     {
         return $this->belongsTo(Sex::class, 'sex_id');
+    }
+
+    public function religion()
+    {
+        return $this->belongsTo(Religion::class, 'religion_id');
+    }
+
+    public function education()
+    {
+        return $this->belongsTo(Educational::class, 'educational_id');
     }
     
     /**
@@ -161,5 +177,33 @@ class Person extends Model
     public function father()
     {
         return $this->belongsTo(Person::class, 'ayah_id');
+    }
+    
+    /**
+     * pregnancies, bahwa seorang wanita bisa mengalami banyak kehamilan. semua data tsb akan dicatat
+     *
+     * @param  mixed $var
+     * @return void
+     */
+    public function pregnancies()
+    {
+        return $this->hasMany(Pregnancy::class, 'mother_id');
+    }
+    
+    /**
+     * prenatalClasses, has many through. Untuk mengakses laporan trimester kehamilan individu melalui data kehamilan yang ada
+     *
+     * @return void
+     */
+    public function prenatalClasses()
+    {
+        return $this->hasManyThrough(
+            Pregnancy::class, 
+            PrenatalClass::class,
+            'mother_id', 
+            'pregnancy_id',
+            'id',
+            'id',
+        );
     }
 }

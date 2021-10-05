@@ -11,4 +11,9 @@ class Religion extends Model
 
     protected $table = 'religions';
     protected $guarded = [];
+
+    public function people()
+    {
+        return $this->hasMany(Person::class, 'religion_id');
+    }
 }

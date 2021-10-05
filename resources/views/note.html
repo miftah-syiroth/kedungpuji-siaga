@@ -1,9 +1,7 @@
-Contraception::find($request->coupleable_id)->couples()->updateOrCreate([
-    [
-        'couple_id' => $request->couple_id,
-        'year_periode' => $request->year_periode, 
-        'month_periode' => $request->month_periode,
-    ],
-]);
-
-cara ini hanya bisa membuat saja, karena jika update, dngn query tersebut, row yang muncul adalah yg memiliki id yg sama. sedangkan saya ingin mengupdate dengan conception yang berbeda. updpateorcreate g bisa diterapin pada many to many
+$table->id();
+$table->foreignId('couple_id')->nullable()->constrained('couples');
+$table->foreignId('contraception_id')->nullable()->constrained('contraceptions');
+$table->foreignId('pregnancy_id')->nullable()->constrained('pregnancies');
+$table->bigInteger('year_periode');
+$table->bigInteger('month_periode');
+$table->timestamps();

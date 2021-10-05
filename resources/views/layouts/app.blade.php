@@ -33,7 +33,7 @@
                 @include('layouts.navbar')
 
                 <main class="h-full overflow-y-auto">
-                    <div class="container px-6 mx-auto grid">
+                    <div class="container px-2 mx-auto grid">
                         <h2 class="my-4 text-xl px-6 font-semibold text-gray-700 dark:text-gray-200">
                            {{ $header }}
                         </h2>

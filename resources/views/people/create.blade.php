@@ -4,7 +4,7 @@
     </x-slot>
     
     <div class="py-4">
-        <div class="flex justify-center">
+        <div class="flex justify-start">
             <div class="px-6 py-6 bg-white rounded-lg shadow-lg">
                 <x-auth-validation-errors class="mb-4" :errors="$errors" />
                 <form method="POST" action="{{ route('people.store') }}">

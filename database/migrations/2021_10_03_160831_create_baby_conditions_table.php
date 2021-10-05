@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddCodeToContraceptionsTable extends Migration
+class CreateBabyConditionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddCodeToContraceptionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('contraceptions', function (Blueprint $table) {
-            $table->string('code')->after('contraception');
+        Schema::create('baby_conditions', function (Blueprint $table) {
+            $table->id();
+            $table->string('condition');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ class AddCodeToContraceptionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('contraceptions', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('baby_conditions');
     }
 }

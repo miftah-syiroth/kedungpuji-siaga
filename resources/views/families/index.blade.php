@@ -4,7 +4,10 @@
     </x-slot>
 
     <div class="py-4">
-        <div class="flex justify-center">
+        <div class="flex flex-col justify-start">
+            <div class="my-4">
+                <a href="/families/create" class="text-white bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-700">tambah</a>
+            </div>
             <div class="px-6 py-6 bg-white rounded-lg shadow-lg">
                 <table class="w-full whitespace-no-wrap">
                     <thead>
@@ -24,7 +27,7 @@
                                        {{ $key + 1 . '.' }}
                                     </div>
                                     <div>
-                                        <p class="font-semibold">{{ $family->leader->name }}</p>
+                                        <a href="/families/{{ $family->id }}" class="font-mediumm text-blue-400 hover:underline hover:text-blue-700">{{ $family->leader->name }}</a>
                                     </div>
                                 </div>
                             </td>

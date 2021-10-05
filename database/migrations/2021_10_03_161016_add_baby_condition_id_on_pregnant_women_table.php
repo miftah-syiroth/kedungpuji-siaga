@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateContraceptionsTable extends Migration
+class AddBabyConditionIdOnPregnantWomenTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateContraceptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('contraceptions', function (Blueprint $table) {
-            $table->id();
-            $table->string('contraception');
-            $table->timestamps();
+        Schema::table('pregnant_women', function (Blueprint $table) {
+            $table->foreignId('baby_condition_id')->nullable()->constrained('baby_conditions')->after('baby_head_circumference');
         });
     }
 
@@ -27,6 +25,8 @@ class CreateContraceptionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contraceptions');
+        Schema::table('pregnant_women', function (Blueprint $table) {
+            //
+        });
     }
 }

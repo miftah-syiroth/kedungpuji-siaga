@@ -27,28 +27,24 @@
                     {{ $month->month }}
                 </p>
                 <p class="text-md font-semibold text-gray-700 text-center">
-                    {{-- @php
-                        $kb = $data_kb_setahun->where('month_id', $month->id)->first();
-                    @endphp --}}
-                    {{-- {{ $kb->contraception->contraception ?? $kb->desirePregnancy->desire ?? '-' }} --}}
-                    {{-- {{ $couple->contraceptionCode($year, $month->id)->first() ?? '-' }} --}}
-                    {{-- @dump($couple->contraceptionCode($year, $month->id)) --}}
+                    @php
+                        $report = $kb_anual_report->where('month_periode', $month->id)->first();
+                    @endphp
+                    {{ $report->kbStatus->status ?? '-'}}
                 </p>
                 <button x-show="isEdit" x-on:click=" isForm=true, isEdit=false " class="text-sm text-right text-blue-800 hover:underline">
                     edit
                 </button>
 
                 <div x-show="isForm" class="flex flex-col">
-                    <form action="{{ route('keluarga-berencana.store') }}" method="post" class="flex flex-col items-center">
+                    <form action="/kb-report/{{ $couple->id }}" method="post" class="flex flex-col items-center">
                         @csrf
-                        <input type="hidden" name="couple_id" value="{{ $couple->id }}">
                         <input type="hidden" name="month_periode" value="{{ $month->id }}">
                         <input type="hidden" name="year_periode" value="{{ $year }}">
-                        {{-- <input type="hidden" name="keluarga_berencana_id" value="{{ $kb_single_data->id ?? '' }}"> --}}
-                        <select name="coupleable_id" id="coupleable_id" class="text-sm">
+                        <select name="kb_status_id" id="kb_status_id" class="text-sm">s
                             <option hidden>pilih!</option>
                             @foreach ($kb_statuses as $status)
-                            <option value="{{ $status->id }}">{{ $status->desire ?? $status->contraception }}</option>
+                            <option value="{{ $status->id }}">{{ $status->status }}</option>
                             @endforeach
                         </select>
                         <button type="submit" class="text-sm bg-blue-500 hover:bg-blue-700 rounded-md px-1 text-white mt-2">simpan</button>

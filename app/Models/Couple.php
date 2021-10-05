@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +14,16 @@ class Couple extends Model
     protected $guarded = [];
     
     
+    public function monthlyReport($year, $month)
+    {
+        return $this->keluargaBerencana()->where('year_periode', $year)->where('month_periode', $month)->first();
+    }
+
+    public function anualReport($year)
+    {
+        return $this->keluargaBerencana()->where('year_periode', $year)->get();
+    }
+
     // START RELASI
 
     /**
@@ -45,34 +56,18 @@ class Couple extends Model
         return $this->belongsTo(KbService::class, 'kb_service_id');
     }
 
-    // public function keluargaBerencana()
+    public function keluargaBerencana()
+    {
+        return $this->hasMany(KeluargaBerencana::class, 'couple_id');
+    }
+    
+    /**
+     * pregnancies, sebuah pasangan tentu saja bisa punya banyak kehamilan dan kelahiran
+     *
+     * @return void
+     */
+    // public function pregnancies()
     // {
-    //     return $this->hasMany(KeluargaBerencana::class, 'couple_id');
+    //     return $this->hasMany(PregnantWoman::class, 'couple_id');
     // }
-
-
-    // relasi many to many polymorphic
-    public function contraceptions()
-    {
-        return $this->morphedByMany(Contraception::class, 'coupleable')->withPivot('year_periode', 'month_periode');
-    }
-
-    // relasi many to many polymorphic
-    public function pregnancies()
-    {
-        return $this->morphedByMany(Pregnancy::class, 'coupleable')->withPivot('year_periode', 'month_periode');
-    }
-
-    // relasi many to many polymorphic dengan spesifikasi
-    public function contraceptionRow($year, $month)
-    {
-        return $this->morphedByMany(Contraception::class, 'coupleable')
-            ->wherePivot('year_periode', $year)->wherePivot('month_periode', $month)->first();
-    }
-
-    public function pregnancyRow()
-    {
-        return $this->morphedByMany(Pregnancy::class, 'coupleable')->withPivot('year_periode', 'month_periode');
-    }    
-
 }

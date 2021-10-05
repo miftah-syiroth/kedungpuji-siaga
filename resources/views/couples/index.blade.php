@@ -17,9 +17,9 @@
                             <th class="px-4 py-3 text-center">Bulan Sekarang</th>
                          </tr>
                     </thead>
-                    <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+                    <tbody class="bg-white divide-y">
                         @foreach ($couples as $key => $couple)
-                        <tr class="text-gray-700 dark:text-gray-400">
+                        <tr class="text-gray-700">
                             <td class="px-4 py-3">
                                 <div class="flex items-center text-sm">
                                     <!-- Avatar with inset shadow -->
@@ -27,7 +27,7 @@
                                        {{ $key + 1 . '.' }}
                                     </div>
                                     <div>
-                                        <p class="font-semibold">{{ $couple->wife->name }}</p>
+                                        <a href="/couples/{{ $couple->id }}" class="text-blue-400 hover:underline hover:text-blue-700">{{ $couple->wife->name }}</a>
                                     </div>
                                 </div>
                             </td>
@@ -38,7 +38,19 @@
                                 {{ $couple->is_kb ? $couple->kbService->service : '-' }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $couple->husband->name }}
+                                <a href="/couples/{{ $couple->id }}" class="text-blue-400 hover:underline hover:text-blue-700">{{ $couple->husband->name }}</a>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-center">
+                                @php
+                                    $kb = $couple->keluargaBerencana->where('month_periode', $current_month - 1)->first()
+                                @endphp
+                                {{ $kb->kbStatus->code ?? '-' }}
+                            </td>
+                            <td class="px-4 py-3 text-sm text-center">
+                                @php
+                                    $kb = $couple->keluargaBerencana->where('month_periode', $current_month)->first()
+                                @endphp
+                                {{ $kb->kbStatus->code ?? '-' }}
                             </td>
                         </tr>
                         @endforeach

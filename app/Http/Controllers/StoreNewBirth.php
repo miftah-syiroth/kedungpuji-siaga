@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\KeluargaBerencana;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class KeluargaBerencana extends Controller
+class StoreNewBirth extends Controller
 {
     /**
      * Handle the incoming request.

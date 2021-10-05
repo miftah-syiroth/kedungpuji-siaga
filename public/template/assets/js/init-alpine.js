@@ -52,6 +52,10 @@ function data() {
         togglePenggunaMenu() {
             this.isPenggunaMenuOpen = !this.isPenggunaMenuOpen;
         },
+        isPrenatalClassMenuOpen: true,
+        togglePrenatalClassMenu() {
+            this.isPrenatalClassMenuOpen = !this.isPrenatalClassMenuOpen;
+        },
         isUserMenuOpen: false,
         toggleUserMenu() {
             this.isUserMenuOpen = !this.isUserMenuOpen;

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDesirePregnanciesTable extends Migration
+class CreateKeluargaBerencanaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateDesirePregnanciesTable extends Migration
      */
     public function up()
     {
-        Schema::create('desire_pregnancies', function (Blueprint $table) {
+        Schema::create('keluarga_berencana', function (Blueprint $table) {
             $table->id();
-            $table->string('desire');
-            $table->string('code');
+            $table->foreignId('couple_id')->nullable()->constrained('couples');
+            $table->foreignId('kb_status_id')->constrained('kb_statuses');
+            $table->bigInteger('year_periode');
+            $table->bigInteger('month_periode');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ class CreateDesirePregnanciesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('desire_pregnancies');
+        Schema::dropIfExists('keluarga_berencana');
     }
 }

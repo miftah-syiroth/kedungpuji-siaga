@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreKeluargaBerencanaRequest extends FormRequest
+class StoreKbRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,10 @@ class StoreKeluargaBerencanaRequest extends FormRequest
     public function rules()
     {
         return [
-            'couple_id' => ['required', 'integer'],
+            // 'couple_id' => ['required', 'integer'],
             'month_periode' => ['required', 'integer'],
             'year_periode' => ['required', 'integer'],
-            'coupleable_id' => ['required', 'integer'], // berisi status keinginan kelahiran atau alat kontrasepsi
-            // 'keluarga_berencana_id' => ['sometimes'],
+            'kb_status_id' => ['required', 'integer'], // berisi status keinginan kelahiran atau alat kontrasepsi
         ];
     }
 }

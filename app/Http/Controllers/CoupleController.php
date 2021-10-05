@@ -20,6 +20,7 @@ class CoupleController extends Controller
     {
         return view('couples.index', [
             'couples' => $coupleService->getAllCouples(),
+            'current_month' => Carbon::now()->month,
         ]);
     }
 
@@ -60,7 +61,7 @@ class CoupleController extends Controller
         return view('couples.show', [
             'couple' => $couple,
             'kb_statuses' => $coupleService->getKbStatuses($couple),
-            // 'data_kb_setahun' => $keluargaBerencanaService->getKbData($couple, $year),
+            'kb_anual_report' => $coupleService->getKbAnualReport($couple, $year),
             'months' => Month::all(),
             'year' => $year,
         ]);

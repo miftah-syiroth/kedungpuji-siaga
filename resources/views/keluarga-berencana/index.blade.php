@@ -33,42 +33,19 @@
                             <td class="px-4 py-3 text-sm text-center">
                                 {{ $couple->is_kb ? $couple->kbService->service : '-' }}
                             </td>
+                            @foreach ($months as $month)
                             <td class="px-4 py-3 text-sm text-center">
-                                {{-- {{ $couple->kbByMonth($year, 1) }} --}}
+                                @php
+                                    $report = $couple->keluargaBerencana()->where('month_periode', $month->id)->first();
+                                @endphp
+                                {{ $report->kbStatus->code ?? '-'}}
                             </td>
+                            @endforeach
+                            {{-- @foreach ($couple->keluargaBerencana as $kb)
                             <td class="px-4 py-3 text-sm text-center">
-                                jan
+                                {{ $kb->kbStatus->code ?? '-'}}
                             </td>
-                            <td class="px-4 py-3 text-sm text-center">
-                                jan
-                            </td>
-                            <td class="px-4 py-3 text-sm text-center">
-                                jan
-                            </td>
-                            <td class="px-4 py-3 text-sm text-center">
-                                jan
-                            </td>
-                            <td class="px-4 py-3 text-sm text-center">
-                                jan
-                            </td>
-                            <td class="px-4 py-3 text-sm text-center">
-                                jan
-                            </td>
-                            <td class="px-4 py-3 text-sm text-center">
-                                jan
-                            </td>
-                            <td class="px-4 py-3 text-sm text-center">
-                                jan
-                            </td>
-                            <td class="px-4 py-3 text-sm text-center">
-                                jan
-                            </td>
-                            <td class="px-4 py-3 text-sm text-center">
-                                jan
-                            </td>
-                            <td class="px-4 py-3 text-sm text-center">
-                                jan
-                            </td>
+                            @endforeach --}}
                             
                         </tr>
                         @endforeach

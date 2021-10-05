@@ -3,15 +3,12 @@
 namespace App\Http\Livewire\Families;
 
 use App\Models\Person;
-use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 
-class FamilyCreate extends Component
+class SearchFamilyLeaderForm extends Component
 {
-    public $keluarga_sejahtera;
     public $kepala_keluarga;
-
-    public $searchTerm;
+    public $searchTerm; // input pencarian yang dimasukkan user
 
     public function getKepalaKeluarga()
     {
@@ -24,10 +21,8 @@ class FamilyCreate extends Component
 
     public function render()
     {
-        // tampilkan semua org dengan status anggota sebagai kepala keluarga, yang blm tercatat pada model keluarga, dan sesuai keyword
-
         $this->kepala_keluarga = $this->getKepalaKeluarga();
-
-        return view('livewire.families.family-create');
+        
+        return view('livewire.families.search-family-leader-form');
     }
 }
