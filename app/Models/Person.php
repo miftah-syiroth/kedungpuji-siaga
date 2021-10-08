@@ -62,16 +62,6 @@ class Person extends Model
     {
         return $this->belongsTo(BloodGroup::class, 'blood_group_id');
     }
-
-    /**
-     * maritaStatus relasi many to one antara status perkawinan dengan org
-     *
-     * @return void
-     */
-    public function maritalStatus()
-    {
-        return $this->belongsTo(MaritalStatus::class, 'marital_status_id');
-    }
     
     /**
      * disability merelasikan many to one ke pada status disabilitas
@@ -202,6 +192,23 @@ class Person extends Model
             PrenatalClass::class,
             'mother_id', 
             'pregnancy_id',
+            'id',
+            'id',
+        );
+    }
+    
+    /**
+     * keluargaBerencana has many through antara ibu/person ke laporan KB
+     *
+     * @return void
+     */
+    public function keluargaBerencana()
+    {
+        return $this->hasManyThrough(
+            KeluargaBerencana::class,
+            Couple::class,
+            'istri_id',
+            'couple_id',
             'id',
             'id',
         );

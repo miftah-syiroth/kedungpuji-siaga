@@ -60,6 +60,16 @@ class Couple extends Model
     {
         return $this->hasMany(KeluargaBerencana::class, 'couple_id');
     }
+
+    /**
+     * maritaStatus relasi many to one antara status perkawinan dengan org
+     *
+     * @return void
+     */
+    public function maritalStatus()
+    {
+        return $this->belongsTo(MaritalStatus::class, 'marital_status_id');
+    }
     
     /**
      * pregnancies, sebuah pasangan tentu saja bisa punya banyak kehamilan dan kelahiran

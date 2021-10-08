@@ -17,7 +17,6 @@
                             <th class="px-2 py-3">L/P</th>
                             <th class="px-2 py-3">GolDar</th>
                             <th class="px-2 py-3">Umur</th>
-                            <th class="px-2 py-3">Status Kawin</th>
                             <th class="px-2 py-3">Disabilitas</th>
                             <th class="px-2 py-3">Keluarga</th>
                             <th class="px-2 py-3">Status Anggota</th>
@@ -50,14 +49,11 @@
                                 {{ $person->date_of_birth->age }}
                             </td>
                             <td class="px-2 py-3 text-sm text-center">
-                                {{ $person->maritalStatus->status }}
-                            </td>
-                            <td class="px-2 py-3 text-sm text-center">
                                 {{ $person->is_cacat == true ? 'cacat' : '-' }}
                             </td>
                             <td class="px-2 py-3 text-sm">
                                 @if ($person->family)
-                                <a href="/families/{{ $person->family->id }}" class="font-normal text-blue-500 hover:text-blue-800 hover:shadow">
+                                <a href="/people/{{ $person->family->leader->id }}" class="font-normal text-blue-500 hover:text-blue-800 hover:shadow">
                                     {{ $person->family->leader->name }}
                                 </a>
                                 @else

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,8 +15,18 @@ class Pregnancy extends Model
 
     protected $casts = [
         'hpht' => 'datetime:Y-m-d',
-        
+        'childbirth_date' => 'datetime:Y-m-d',
     ];
+
+    public function getHphtAttribute($value)
+    {
+        return Carbon::parse($this->attributes['hpht']);
+    }
+
+    public function getChildbirthDateAttribute($value)
+    {
+        return Carbon::parse($this->attributes['childbirth_date']);
+    }
 
     public function babyCondition()
     {

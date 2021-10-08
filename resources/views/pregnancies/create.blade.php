@@ -6,7 +6,7 @@
     <div class="py-4">
         <div class="flex justify-start">
             <div class="px-6 py-6 bg-white rounded-lg shadow-lg">
-                <form action="/pregnancies/{{ $mother->id }}" method="post">
+                <form action="/people/{{ $mother->id }}/pregnancies" method="post">
                     {{-- @csrf('PUT') --}}
                     @csrf
                     <div>

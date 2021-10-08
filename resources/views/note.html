@@ -1,7 +1,23 @@
-$table->id();
-$table->foreignId('couple_id')->nullable()->constrained('couples');
-$table->foreignId('contraception_id')->nullable()->constrained('contraceptions');
-$table->foreignId('pregnancy_id')->nullable()->constrained('pregnancies');
-$table->bigInteger('year_periode');
-$table->bigInteger('month_periode');
-$table->timestamps();
+<div class="flex flex-row justify-between items-center p-4 bg-blue-100 rounded-lg shadow-xs border-2">
+    <div>
+        <p class="mb-2 text-sm font-medium text-gray-600">
+            {{ $month->month }}
+        </p>
+        <p class="text-base font-semibold text-gray-700">
+            @foreach ($couple->keluargaBerencana as $kb)
+                @if ($kb->month_periode == $month->id)
+                    {{ $kb->kbStatus->status }}
+                    @break
+                @endif
+            @endforeach
+        </p>
+    </div>
+    @if ($month->id == $current_month)
+    <div class="flex self-end">
+        <div>
+            edit
+        </div>
+    </div>
+    @endif
+    
+</div>

@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreKeluargaBerencanaRequest;
+use App\Http\Requests\StoreKbRequest;
+use App\Models\Couple;
 use App\Models\KbService;
 use App\Models\KeluargaBerencana;
 use App\Models\Month;
-use App\Services\CoupleService;
 use App\Services\KbService as ServicesKbService;
-use App\Services\KeluargaBerencanaService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -22,7 +21,7 @@ class KeluargaBerencanaController extends Controller
     public function index(ServicesKbService $kbService)
     {
         return view('keluarga-berencana.index', [
-            'couples' => $kbService->getAllCouplesWithKbReport(),
+            'couples' => $kbService->getAllCouples(),
             'months' => Month::all(),
             // 'year' => Carbon::now()->year,
         ]);
@@ -44,9 +43,10 @@ class KeluargaBerencanaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(StoreKbRequest $request, Couple $couple, ServicesKbService $kbService)
     {
-        # code ...
+        $kbService->store($request, $couple);
+        return redirect()->back();
     }
 
     /**

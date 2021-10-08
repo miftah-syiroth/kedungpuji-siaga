@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class KbService
 {
-    public function getAllCouplesWithKbReport()
+    public function getAllCouples()
     {
         return Couple::whereHas('wife', function (Builder $query) {
             $query->whereDate('date_of_birth', '<', Carbon::now()->addYears(-15) )

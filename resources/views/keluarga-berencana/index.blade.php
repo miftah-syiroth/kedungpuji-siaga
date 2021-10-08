@@ -8,7 +8,7 @@
             <div class="px-6 py-6 bg-white rounded-lg shadow-lg">
                 <table class="w-full">
                     <thead>
-                        <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                        <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
                             <th class="px-4 py-3 text-center">Istri</th>
                             <th class="px-4 py-3 text-center">KB?</th>
                             @foreach ($months as $month)
@@ -35,18 +35,14 @@
                             </td>
                             @foreach ($months as $month)
                             <td class="px-4 py-3 text-sm text-center">
-                                @php
-                                    $report = $couple->keluargaBerencana()->where('month_periode', $month->id)->first();
-                                @endphp
-                                {{ $report->kbStatus->code ?? '-'}}
+                                @foreach ($couple->keluargaBerencana as $kb)
+                                    @if ($kb->month_periode == $month->id)
+                                        {{ $kb->kbStatus->code }}
+                                        @break
+                                    @endif
+                                @endforeach
                             </td>
                             @endforeach
-                            {{-- @foreach ($couple->keluargaBerencana as $kb)
-                            <td class="px-4 py-3 text-sm text-center">
-                                {{ $kb->kbStatus->code ?? '-'}}
-                            </td>
-                            @endforeach --}}
-                            
                         </tr>
                         @endforeach
                         

@@ -12,12 +12,45 @@ use App\Models\MaritalStatus;
 use App\Models\Person;
 use App\Models\Religion;
 use App\Models\Sex;
+use Carbon\Carbon;
 
 class PersonService
 {
     public function getAllPeople()
     {
-        return Person::with(['sex', 'bloodGroup', 'maritalStatus', 'family', 'familyStatus'])->get();
+        return Person::with(['sex', 'bloodGroup', 'family', 'familyStatus'])->get();
+    }
+
+    public function getPerson($person)
+    {
+        return Person::with([
+            'sex',
+            'religion',
+            'bloodGroup',
+            'disability',
+            'education',
+            'mother', 'father',
+            'familyStatus',
+            'family.leader',
+            'wifes.wife',
+            'wifes.maritalStatus',
+            'husband.husband',
+            'husband.maritalStatus',
+            'husband.kbService',
+            'kepalaKeluarga.keluargaSejahtera',
+            'kepalaKeluarga.people' => function ($query) {
+                $query->orderBy('family_status_id', 'ASC');
+            },
+            'kepalaKeluarga.people.sex',
+            'kepalaKeluarga.people.bloodGroup',
+            'kepalaKeluarga.people.education',
+            'kepalaKeluarga.people.familyStatus',
+            'keluargaBerencana' => function ($query) {
+                $query->where('year_periode', Carbon::now()->year);
+            },
+            'keluargaBerencana.kbStatus',
+            'pregnancies',
+        ])->find($person->id);
     }
     
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePersonRequest;
+use App\Models\Month;
 use App\Models\Person;
 use App\Services\PersonService;
 use Illuminate\Http\Request;
@@ -59,10 +60,11 @@ class PersonController extends Controller
      * @param  \App\Models\Person  $person
      * @return \Illuminate\Http\Response
      */
-    public function show(Person $person)
+    public function show(Person $person, PersonService $personService)
     {
         return view('people.show', [
-            'person' => $person,
+            'person' => $personService->getPerson($person), // tidak langsung karena butuh banyak eager loading
+            'months' => Month::all(),
         ]);
     }
 

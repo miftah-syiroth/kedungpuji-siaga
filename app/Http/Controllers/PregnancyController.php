@@ -27,7 +27,9 @@ class PregnancyController extends Controller
      */
     public function create(Person $person)
     {
-        return view('pregnancies.create', compact('mother'));
+        return view('pregnancies.create', [
+            'mother' => $person,
+        ]);
     }
 
     /**
@@ -39,7 +41,7 @@ class PregnancyController extends Controller
     public function store(StoreNewPregnancyRequest $request, Person $person, PregnancyService $pregnancyService)
     {
         $pregnancyService->store($request, $person);
-        return redirect()->back();
+        return redirect('/people/' . $person->id);
     }
 
     /**
@@ -48,9 +50,12 @@ class PregnancyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Person $person, Pregnancy $pregnancy = null)
+    public function show(Pregnancy $pregnancy, PregnancyService $pregnancyService)
     {
-        return view('pregnancies.show', compact('person', 'pregnancy'));
+        return view('pregnancies.show', [
+            'pregnancy' => $pregnancy,
+            'kb_status' => $pregnancyService->getKbAfterChildbirth($pregnancy)
+        ]);
     }
 
     /**

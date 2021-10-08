@@ -31,9 +31,29 @@ class CoupleService
         }])->get();
     }
 
+    public function getCouple($couple)
+    {
+        return Couple::with([
+            'husband',
+            'wife',
+            'maritalStatus',
+            'kbService',
+            'keluargaBerencana' => function ($query) {
+                $query->where('year_periode', Carbon::now()->year);
+            },
+            'keluargaBerencana.kbStatus',
+        ])->find($couple->id);
+        // dd($result->keluargaBerencana()->count());
+    }
+
     public function store($request)
     {
         Couple::create($request->toArray());
+    }
+
+    public function update($request, $couple)
+    {
+        $couple->update($request->toArray());
     }
     
     /**

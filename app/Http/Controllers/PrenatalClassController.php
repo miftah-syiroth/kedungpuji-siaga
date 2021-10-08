@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePrenatalClassRequest;
+use App\Models\Pregnancy;
 use App\Models\PrenatalClass;
+use App\Services\PrenatalClassService;
 use Illuminate\Http\Request;
 
 class PrenatalClassController extends Controller
@@ -33,9 +36,10 @@ class PrenatalClassController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePrenatalClassRequest $request, Pregnancy $pregnancy, PrenatalClassService $service)
     {
-        //
+        $service->store($request, $pregnancy);
+        return redirect()->back();
     }
 
     /**

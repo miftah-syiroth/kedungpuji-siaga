@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCoupleRequest;
+use App\Http\Requests\UpdateCoupleRequest;
 use App\Models\Couple;
 use App\Models\Month;
 use App\Services\CoupleService;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class CoupleController extends Controller
 {
@@ -59,11 +59,13 @@ class CoupleController extends Controller
         $year = Carbon::now()->year;
 
         return view('couples.show', [
-            'couple' => $couple,
+            'couple' => $coupleService->getCouple($couple),
+            'kb_services' => $coupleService->getAllKbServices(),
             'kb_statuses' => $coupleService->getKbStatuses($couple),
             'kb_anual_report' => $coupleService->getKbAnualReport($couple, $year),
             'months' => Month::all(),
-            'year' => $year,
+            'current_month' => Carbon::now()->month,
+            'current_year' => $year,
         ]);
     }
 
@@ -85,9 +87,10 @@ class CoupleController extends Controller
      * @param  \App\Models\Couple  $couple
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Couple $couple)
+    public function update(UpdateCoupleRequest $request, Couple $couple, CoupleService $coupleService)
     {
-        //
+        $coupleService->update($request, $couple);
+        return redirect()->back();
     }
 
     /**

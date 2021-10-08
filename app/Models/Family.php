@@ -11,6 +11,11 @@ class Family extends Model
 
     protected $table = 'families';
     protected $guarded = [];
+
+    public function scopeOrder($query)
+    {
+        return $query->where('votes', '>', 100);
+    }
     
     /**
      * kepalaKeluarga relasi one to one bahwa sebuah keluarga hanya memiliki satu kepala keluarga

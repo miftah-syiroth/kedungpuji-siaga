@@ -1,58 +1,444 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Lihat Data Kehamilan') }}
+        {{ __('Ringkasan Pelayanan Persalinan: ') }} {{ $pregnancy->mother->name }}
     </x-slot>
+
+    <div class="flex flex-row">
+
+        <div class="py-4 mr-2 w-full">
+            <div x-data="{ isOpen : true }">
+                <div class="overflow-hidden px-4 bg-white rounded-lg shadow-2xl">
+                    <div class="px-4 py-2">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900 justify-center text-center">
+                            <button x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">Ibu Bersalin dan Ibu Nifas</button>
+                        </h3>
+                    </div>
+                    <div x-show="isOpen" class="border-t border-gray-200">
+                        <dl>
+                            <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    Tanggal Persalinan
+                                </dt>
+                                <dd class="mt-1 text-sm sm:mt-0 sm:col-span-2">
+                                   : {{ $pregnancy->childbirth_date ? $pregnancy->childbirth_date->isoFormat('DD MMMM Y') : '-'}}
+                                </dd>
+                            </div>
     
-    @if ($pregnancy)
-    <div x-data="{ formOpen: false }" class="py-4">
-        <div class="flex justify-start">
-            <div class="px-6 py-6 bg-white rounded-lg shadow-lg">
-                <div>
-                    <ul>
-                        <li>hpth :</li>
-                        <li>berat badan (kg) :</li>
-                        <li>tinggi badan (cm) :</li>
-                        <li>index masa tubuh : </li>
-                    </ul>
-                    <button x-on:click="formOpen = ! formOpen" class="text-blue-400 underline">edit</button>
+                            <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    Umur Kehamilan
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                   : {{ $pregnancy->gestational_age ?? '-' }}
+                                </dd>
+                            </div>
+    
+                            <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    Penolong Persalinan
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    : {{ $pregnancy->attendant }}
+                                </dd>
+                            </div>
+    
+                            <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    Cara Persalinan
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    : {{ $pregnancy->childbirth_method }}
+                                </dd>
+                            </div>
+    
+                            <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    Keadaan Ibu
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                   : {{ $pregnancy->post_partum_condition}}
+                                </dd>
+                            </div>
+    
+                            <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    KB Pasca Persalinan
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                   : {{ $kb_status->status}}
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div>
-        <div class="grid grid-cols-3 gap-4">
-            @for ($i = 0; $i < 6; $i++)
-                <div class="w-20 h-20 bg-blue-400">
-                    
+        <div class="py-4 ml-2 w-full">
+            <div x-data="{ isOpen : true }">
+                <div class="overflow-hidden px-4 bg-white rounded-lg shadow-2xl">
+                    <div class="px-4 py-2">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900 justify-center text-center">
+                            <button x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">Bayi Saat Lahir</button>
+                        </h3>
+                    </div>
+                    <div x-show="isOpen" class="border-t border-gray-200">
+                        <dl>    
+                            <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    Anak Ke
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                   : {{ $pregnancy->childbirth_order }}
+                                </dd>
+                            </div>
+    
+                            <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    Berat Lahir Anak
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                   : {{ $pregnancy->childbirth_weight }}
+                                </dd>
+                            </div>
+    
+                            <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    Panjang Badan Anak
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                   : {{ $pregnancy->childbirth_lenght }}
+                                </dd>
+                            </div>
+    
+                            <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    Lingkar Kepala Anak
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                   : {{ $pregnancy->baby_head_circumference }}
+                                </dd>
+                            </div>
+    
+                            <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    Jenis Kelamin Anak
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                   : 
+                                </dd>
+                            </div>
+    
+                            <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    Kondisi bayi saat lahi
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                   : 
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
                 </div>
-            @endfor
+            </div>
         </div>
+
     </div>
 
-    @else
+    {{-- komponen input data kb --}}
     <div class="py-4">
-        <div class="flex justify-start">
-            <div class="px-6 py-6 bg-white rounded-lg shadow-lg">
-                <form action="/people/{{ $person->id }}/pregnancies" method="post">
-                    @csrf
-                    <div>
-                        <x-label for="hpht" :value="__('HPHT')" />
-                        <input type="date" name="hpht" id="hpht">
-                    </div>
-                    <div>
-                        <x-label for="mother_weight" :value="__('Berat Badan Ibu Hamil')" />
-                        <input type="number" name="mother_weight" id="mother_weight" class="block mt-1 w-full border" required>
-                    </div>
-                    <div>
-                        <x-label for="mother_height" :value="__('Tinggi Badan Ibu Hamil')" />
-                        <input type="number" name="mother_height" id="mother_height" class="block mt-1 w-full border" required>
-                    </div>
-                    <button type="submit" class="rounded-lg px-2 py-1 border bg-blue-500 text-white">simpan</button>
-                </form>
+        <div x-data="{ isOpen : true }">
+            <div class="overflow-hidden px-4 bg-white rounded-lg shadow-2xl">
+                <div class="px-4 py-2">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 justify-center text-center">
+                        <button x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">Layanan Ibu Hamil</button>
+                    </h3>
+                </div>
+                <div x-show="isOpen" class="border-t border-gray-200">
+                    <dl>
+                        <div class="grid gap-4 mb-8 grid-cols-3 mt-4">
+                            @for ($i = 1; $i <= 6; $i++)
+                            <div class="p-2 bg-blue-100 rounded-lg shadow-md">
+                                <div x-data="{
+                                    formShow: false,
+                                    dataShow: true, 
+                                }" class="flex flex-col">
+
+                                    <p class="mb-2 text-sm font-medium text-dark text-left" >
+                                        Periksa {{ $i }}
+                                    </p>
+                                        
+                                    @foreach ($pregnancy->prenatalClasses as $data)
+
+                                    @if ($data->checkup_periode == $i)
+                                    <div class="grid">
+                                        <div x-show="dataShow" class="bg-white p-4 mx-auto rounded-lg">
+                                            <table class="w-full">
+                                                    <tr class="text-left border-b text-sm">
+                                                        <th>Timbang</th>
+                                                        <td>
+                                                            : {{ $data->mother_weight }}kg
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="text-left border-b text-sm">
+                                                        <th>Lingkar Lengan</th>
+                                                        <td>: {{ $data->arm_circumference }} cm</td>
+                                                    </tr>
+                                                    <tr class="text-left border-b text-sm">
+                                                        <th>Tekanan Darah</th>
+                                                        <td>: {{ $data->systolic }}/{{ $data->diastolic }}</td>
+                                                    </tr>
+                                                    <tr class="text-left border-b text-sm">
+                                                        <th>Tinggi Rahim</th>
+                                                        <td>: {{ $data->uterine_height }} cm</td>
+                                                    </tr>
+                                                    <tr class="text-left border-b text-sm">
+                                                        <th>Denyut Jantung Bayi</th>
+                                                        <td>: {{ $data->baby_heart_rate }} /menit</td>
+                                                    </tr>
+                                                    <tr class="text-left border-b text-sm">
+                                                        <th>HB</th>
+                                                        <td>: {{ $data->hemoglobin }}</td>
+                                                    </tr>
+                                                    <tr class="text-left border-b text-sm">
+                                                        <th>Protein Urine</th>
+                                                        <td>: {{ $data->urine_protein }}</td>
+                                                    </tr>
+                                                    <tr class="text-left border-b text-sm">
+                                                        <th>GulaDarah</th>
+                                                        <td>: {{ $data->blood_sugar }}</td>
+                                                    </tr>                                                
+                                            </table>
+                                            
+                                        </div>
+
+                                        <div x-show="formShow" class="flex bg-white mx-auto rounded-lg p-2 text-xs">
+                                            <form action="/pregnancies/{{ $pregnancy->id }}/prenatal-class" method="post">
+                                                @csrf
+                                                <input type="hidden" name="checkup_periode" value="{{ $i }}">
+                                                <div class="text-gray-700 flex mb-1 items-center border-b pb-1">
+                                                    <div class="mb-1 md:mb-0 w-3/5">
+                                                        <label for="timbang" class="font-semibold">Timbang</label>
+                                                    </div>
+                                                    <div class="w-2/5 flex justify-end">
+                                                        <input type="number" name="mother_weight" value="{{ $data->mother_weight }}" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-gray-700 flex mb-1 items-center pb-1 border-b">
+                                                    <div class="mb-1 md:mb-0 w-3/5">
+                                                        <label for="forms-labelLeftInputCode" class="font-semibold">LiLa</label>
+                                                    </div>
+                                                    <div class="w-2/5 flex justify-end">
+                                                        <input type="number" name="arm_circumference" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-gray-700 flex mb-1 items-center pb-1 border-b">
+                                                    <div class="mb-1 md:mb-0 w-3/5">
+                                                        <label for="forms-labelLeftInputCode" class="font-semibold">Tekanan Darah</label>
+                                                    </div>
+                                                    <div class="w-2/5 flex justify-end">
+                                                        <input type="number" name="systolic" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                        <input type="number" name="diastolic" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-gray-700 flex mb-1 items-center pb-1 border-b">
+                                                    <div class="mb-1 md:mb-0 md:w-3/5">
+                                                        <label for="forms-labelLeftInputCode" class="font-semibold">Tinggi Rahim</label>
+                                                    </div>
+                                                    <div class="md:w-2/5 flex justify-end">
+                                                        <input type="number" name="uterine_height" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-gray-700 flex mb-1 items-center pb-1 border-b">
+                                                    <div class="mb-1 md:mb-0 md:w-3/5">
+                                                        <label for="forms-labelLeftInputCode" class="font-semibold">Denyut Jantung Bayi</label>
+                                                    </div>
+                                                    <div class="md:w-2/5 flex justify-end">
+                                                        <input type="number" name="baby_heart_rate" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-gray-700 flex mb-1 items-center pb-1 border-b">
+                                                    <div class="mb-1 md:mb-0 md:w-3/5">
+                                                        <label for="forms-labelLeftInputCode" class="font-semibold">Hb</label>
+                                                    </div>
+                                                    <div class="md:w-2/5 flex justify-end">
+                                                        <input type="number" name="hemoglobin" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-gray-700 flex mb-1 items-center pb-1 border-b">
+                                                    <div class="mb-1 md:mb-0 md:w-3/5">
+                                                        <label for="forms-labelLeftInputCode" class="font-semibold">Protein Urine</label>
+                                                    </div>
+                                                    <div class="md:w-2/5 flex justify-end">
+                                                        <input type="number" name="urine_protein" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-gray-700 flex mb-1 items-center pb-1 border-b">
+                                                    <div class="mb-1 md:mb-0 md:w-3/5">
+                                                        <label for="" class="font-semibold">Gula Darah</label>
+                                                    </div>
+                                                    <div class="md:w-2/5 flex justify-end">
+                                                        <input type="number" name="blood_sugar" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                    </div>
+                                                </div>
+                                                <button type="submit" class="px-2 py-1 bg-blue-400 hover:bg-blue-700 rounded-lg text-white">simpan</button>
+                                            </form>
+                                        </div>
+                                        
+                                        <button x-on:click=" formShow = ! formShow, dataShow=!dataShow " class="text-sm text-right text-red-600 hover:underline">
+                                            edit
+                                        </button>
+                                        
+                                    </div>
+                                    @break
+                                    @endif
+
+                                    @if ($loop->last)
+                                    <div class="grid">
+                                        <div x-show="dataShow" class="bg-white p-4 mx-auto rounded-lg">
+                                            <table class="w-full">
+                                                    <tr class="text-left border-b text-sm">
+                                                        <th>Timbang</th>
+                                                        <td>
+                                                            :  kg
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="text-left border-b text-sm">
+                                                        <th>Lingkar Lengan</th>
+                                                        <td>:  cm</td>
+                                                    </tr>
+                                                    <tr class="text-left border-b text-sm">
+                                                        <th>Tekanan Darah</th>
+                                                        <td>: </td>
+                                                    </tr>
+                                                    <tr class="text-left border-b text-sm">
+                                                        <th>Tinggi Rahim</th>
+                                                        <td>:  cm</td>
+                                                    </tr>
+                                                    <tr class="text-left border-b text-sm">
+                                                        <th>Denyut Jantung Bayi</th>
+                                                        <td>:  /menit</td>
+                                                    </tr>
+                                                    <tr class="text-left border-b text-sm">
+                                                        <th>HB</th>
+                                                        <td>: </td>
+                                                    </tr>
+                                                    <tr class="text-left border-b text-sm">
+                                                        <th>Protein Urine</th>
+                                                        <td>: </td>
+                                                    </tr>
+                                                    <tr class="text-left border-b text-sm">
+                                                        <th>GulaDarah</th>
+                                                        <td>: </td>
+                                                    </tr>                                                
+                                            </table>
+                                            
+                                        </div>
+
+                                        <div x-show="formShow" class="flex bg-white mx-auto rounded-lg p-2 text-xs">
+                                            <form action="/pregnancies/{{ $pregnancy->id }}/prenatal-class" method="post">
+                                                @csrf
+                                                <input type="hidden" name="checkup_periode" value="{{ $i }}">
+                                                <div class="text-gray-700 flex mb-1 items-center border-b pb-1">
+                                                    <div class="mb-1 md:mb-0 w-3/5">
+                                                        <label for="timbang" class="font-semibold">Timbang</label>
+                                                    </div>
+                                                    <div class="w-2/5 flex justify-end">
+                                                        <input type="number" name="mother_weight" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-gray-700 flex mb-1 items-center pb-1 border-b">
+                                                    <div class="mb-1 md:mb-0 w-3/5">
+                                                        <label for="forms-labelLeftInputCode" class="font-semibold">LiLa</label>
+                                                    </div>
+                                                    <div class="w-2/5 flex justify-end">
+                                                        <input type="number" name="arm_circumference" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-gray-700 flex mb-1 items-center pb-1 border-b">
+                                                    <div class="mb-1 md:mb-0 w-3/5">
+                                                        <label for="forms-labelLeftInputCode" class="font-semibold">Tekanan Darah</label>
+                                                    </div>
+                                                    <div class="w-2/5 flex justify-end">
+                                                        <input type="number" name="systolic" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                        <input type="number" name="diastolic" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-gray-700 flex mb-1 items-center pb-1 border-b">
+                                                    <div class="mb-1 md:mb-0 md:w-3/5">
+                                                        <label for="forms-labelLeftInputCode" class="font-semibold">Tinggi Rahim</label>
+                                                    </div>
+                                                    <div class="md:w-2/5 flex justify-end">
+                                                        <input type="number" name="uterine_height" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-gray-700 flex mb-1 items-center pb-1 border-b">
+                                                    <div class="mb-1 md:mb-0 md:w-3/5">
+                                                        <label for="forms-labelLeftInputCode" class="font-semibold">Denyut Jantung Bayi</label>
+                                                    </div>
+                                                    <div class="md:w-2/5 flex justify-end">
+                                                        <input type="number" name="baby_heart_rate" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-gray-700 flex mb-1 items-center pb-1 border-b">
+                                                    <div class="mb-1 md:mb-0 md:w-3/5">
+                                                        <label for="forms-labelLeftInputCode" class="font-semibold">Hb</label>
+                                                    </div>
+                                                    <div class="md:w-2/5 flex justify-end">
+                                                        <input type="number" name="hemoglobin" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-gray-700 flex mb-1 items-center pb-1 border-b">
+                                                    <div class="mb-1 md:mb-0 md:w-3/5">
+                                                        <label for="forms-labelLeftInputCode" class="font-semibold">Protein Urine</label>
+                                                    </div>
+                                                    <div class="md:w-2/5 flex justify-end">
+                                                        <input type="number" name="urine_protein" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-gray-700 flex mb-1 items-center pb-1 border-b">
+                                                    <div class="mb-1 md:mb-0 md:w-3/5">
+                                                        <label for="" class="font-semibold">Gula Darah</label>
+                                                    </div>
+                                                    <div class="md:w-2/5 flex justify-end">
+                                                        <input type="number" name="blood_sugar" class="w-16 h-8 px-3 placeholder-gray-600 border rounded-lg focus:shadow-outline"/>
+                                                    </div>
+                                                </div>
+                                                <button type="submit" class="px-2 py-1 bg-blue-400 hover:bg-blue-700 rounded-lg text-white">simpan</button>
+                                            </form>
+                                        </div>
+                                        
+                                        <button x-on:click=" formShow = ! formShow, dataShow=!dataShow " class="text-sm text-right text-red-600 hover:underline">
+                                            edit
+                                        </button>
+                                        
+                                    </div>
+                                    @break
+                                    @endif
+                                    
+                                    @endforeach
+                                    
+                                </div>
+                            </div>
+                            @endfor
+                        </div>
+                    </dl>
+                </div>
             </div>
         </div>
     </div>
-    @endif
-
 </x-app-layout>
