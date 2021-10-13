@@ -60,6 +60,22 @@ function data() {
         toggleUserMenu() {
             this.isUserMenuOpen = !this.isUserMenuOpen;
         },
+        // dropdown sidebar page penduduk
+        isPendudukMenuOpen: false,
+        togglePendudukMenu() {
+            this.isPendudukMenuOpen = !this.isPendudukMenuOpen;
+        },
+        // dropdown sidebar page keluarga
+        isKeluargaMenuOpen: false,
+        toggleKeluargaMenu() {
+            this.isKeluargaMenuOpen = !this.isKeluargaMenuOpen;
+        },
+        // dropdown sidebar page pasangan
+        isPasanganMenuOpen: false,
+        togglePasanganMenu() {
+            this.isPasanganMenuOpen = !this.isPasanganMenuOpen;
+        },
+
         // Modal
         isModalOpen: false,
         trapCleanup: null,

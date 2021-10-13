@@ -5,7 +5,7 @@
     
     <div class="py-4">
         <div class="flex justify-start">
-            <div class="px-6 py-6 bg-white rounded-lg shadow-lg">
+            <div class="px-6 py-6 bg-black rounded-lg shadow-lg">
                 <ul>
                     <li>
                         tampilkan semua atribut personal dari tabel penduduk
@@ -36,18 +36,18 @@
     
 
     {{-- kalau kepala keluarga, tampilkan komponen data anggotanya --}}
-    @if ($person->family_status_id == 1 )
-    <x-people.family-data :person="$person" />
+    @if ($person->kepalaKeluarga )
+    {{-- <x-people.family-data :person="$person" /> --}}
     @endif
     {{-- komponen anggota keluarga --}}
 
     {{-- jika dia adalah seorang istri (punya suami), tampilkan komponen KB, kehamilan, kelas nifas, posyandu anak --}}
     @if ($person->husband)
     {{-- komponen laporan kb --}}
-    <x-people.keluarga-berencana-data :person="$person" />
+    {{-- <x-people.keluarga-berencana-data :person="$person" /> --}}
 
     {{-- komponen riwayat kehamilan --}}
-    <x-people.pregnancy-data :person="$person" />
+    {{-- <x-people.pregnancy-data :person="$person" /> --}}
     @endif
     
 

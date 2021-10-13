@@ -12,8 +12,8 @@ class MaritalStatus extends Model
     protected $table = 'marital_statuses';
     protected $guarded = [];
 
-    public function couples()
+    public function people()
     {
-        return $this->hasMany(Couple::class, 'marital_status_id');
+        return $this->hasMany(Person::class, 'marital_status_id');
     }
 }

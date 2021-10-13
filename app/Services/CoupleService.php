@@ -21,22 +21,26 @@ class CoupleService
      */
     public function getAllCouples()
     {
-        // $year = Carbon::now()->year;
         return Couple::whereHas('wife', function (Builder $query) {
             $query->whereDate('date_of_birth', '<', Carbon::now()->addYears(-15) )
                 ->whereDate('date_of_birth', '>', Carbon::now()->addYears(-49) );
-        })->with(['kbService', 'keluargaBerencana.kbStatus', 'keluargaBerencana' => function($query) {
-            $query->where('year_periode', Carbon::now()->year)
-                ->whereIn('month_periode', [Carbon::now()->month - 1, Carbon::now()->month]);
-        }])->get();
+        })->with(['husband', 'wife.maritalStatus'])->get();
+        // $year = Carbon::now()->year;
+        // return Couple::whereHas('wife', function (Builder $query) {
+        //     $query->whereDate('date_of_birth', '<', Carbon::now()->addYears(-15) )
+        //         ->whereDate('date_of_birth', '>', Carbon::now()->addYears(-49) );
+        // })->with(['kbService', 'keluargaBerencana.kbStatus', 'keluargaBerencana' => function($query) {
+        //     $query->where('year_periode', Carbon::now()->year)
+        //         ->whereIn('month_periode', [Carbon::now()->month - 1, Carbon::now()->month]);
+        // }])->get();
     }
 
     public function getCouple($couple)
     {
         return Couple::with([
             'husband',
-            'wife',
-            'maritalStatus',
+            'wife.maritalStatus',
+            // 'maritalStatus',
             'kbService',
             'keluargaBerencana' => function ($query) {
                 $query->where('year_periode', Carbon::now()->year);

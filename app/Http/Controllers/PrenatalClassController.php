@@ -38,6 +38,7 @@ class PrenatalClassController extends Controller
      */
     public function store(StorePrenatalClassRequest $request, Pregnancy $pregnancy, PrenatalClassService $service)
     {
+        // dd($pregnancy);
         $service->store($request, $pregnancy);
         return redirect()->back();
     }

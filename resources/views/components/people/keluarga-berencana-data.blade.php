@@ -10,7 +10,7 @@
                 <div x-show="isOpen" class="flex flex-row justify-between">
                     <div>
                         <p class="mt-1 text-sm text-gray-800">
-                            Penyedia KB : {{ $person->husband->kbService->service }}
+                            Penyedia KB : {{ $person->husband->kbService->service ?? '-' }}
                         </p>
                     </div>
                     <div>

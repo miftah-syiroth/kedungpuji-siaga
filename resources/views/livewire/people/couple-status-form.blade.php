@@ -12,7 +12,7 @@
         </div>
 
          {{-- pencarian pasangan --}}
-        <div x-show="coupleForm == 2 || coupleForm == 3" class="flex">
+        {{-- <div x-show="coupleForm == 2 || coupleForm == 3" class="flex">
             <div class="flex">
                 <!-- keluarga -->
                 <div class="mx-2 items-center">
@@ -38,11 +38,12 @@
                 </div>
                 @endunless
             </div>
-        </div> 
+        </div>  --}}
+        {{-- end pencarian suami --}}
 
     </div>
 
-    <div x-show="kbForm" class="mt-4">
+    {{-- <div x-show="kbForm" class="mt-4">
         <div x-data="{ layanan: false }" class="flex">
 
             <div class="mx-2">
@@ -69,5 +70,5 @@
                 </select>
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>

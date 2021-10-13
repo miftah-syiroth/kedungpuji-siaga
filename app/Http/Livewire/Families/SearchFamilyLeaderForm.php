@@ -12,8 +12,10 @@ class SearchFamilyLeaderForm extends Component
 
     public function getKepalaKeluarga()
     {
-        return Person::doesntHave('kepalaKeluarga')
-            ->where('family_status_id', 1)
+        // ambil person yang blm punya relasi mnjd kepala keluarga dan status anggotanya 1
+        return Person::doesntHave('family')
+            // ->where('family_status_id', 1) //kepala keluarga
+            ->where('marital_status_id', '!=', 1) //menikah
             ->where(function ($query) {
                 $query->where('name', 'like', $this->searchTerm . '%');
             })->get();

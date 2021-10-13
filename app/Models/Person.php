@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Person extends Model
 {
@@ -15,6 +16,7 @@ class Person extends Model
 
     protected $casts = [
         'date_of_birth' => 'datetime:Y-m-d',
+        'died_at' => 'datetime:Y-m-d',
     ];
     
     /**
@@ -74,23 +76,42 @@ class Person extends Model
     }
 
     /**
-     * familyStatus relasi status keanggotaan seseorang dalam sebuah keluarga
+     * maritaStatus relasi many to one antara status perkawinan dengan org
      *
      * @return void
      */
-    public function familyStatus()
+    public function maritalStatus()
     {
-        return $this->belongsTo(FamilyStatus::class, 'family_status_id');
+        return $this->belongsTo(MaritalStatus::class, 'marital_status_id');
     }
+
+    /**
+     * familyStatus relasi status keanggotaan seseorang dalam sebuah keluarga
+     * !! ini ga perlu krn harusnya ada ditable intermediate
+     *
+     * @return void
+     */
+    // public function familyStatus()
+    // {
+    //     return $this->belongsTo(FamilyStatus::class, 'family_status_id');
+    // }
     
     /**
-     * family, sebuah keluarga memiliki banyak anggota, seseorang hanya bisa tercantum pada satu keluarga
+     * satu org hanya tercatat pada satu keluarga. relasinya harusnya many to one, tp akan rusak jika terjadi 
+     * kematian atau perubahan pada kepala keluarga, perlu kebutuhan utk edit kepala keluarga. sehingga dibuat
+     * tabel intermediate many to many laravel biar bisa pakai fitur-fitur yg ada
      *
      * @return void
      */
+    // public function family()
+    // {
+    //     return $this->belongsTo(Family::class, 'family_id');
+    // }
     public function family()
     {
-        return $this->belongsTo(Family::class, 'family_id');
+        return $this->belongsToMany(Family::class, 'person_has_family', 'person_id', 'family_id')
+            ->withPivot('family_status_id')
+            ->using(PersonFamily::class);
     }
     
     /**
@@ -178,23 +199,6 @@ class Person extends Model
     public function pregnancies()
     {
         return $this->hasMany(Pregnancy::class, 'mother_id');
-    }
-    
-    /**
-     * prenatalClasses, has many through. Untuk mengakses laporan trimester kehamilan individu melalui data kehamilan yang ada
-     *
-     * @return void
-     */
-    public function prenatalClasses()
-    {
-        return $this->hasManyThrough(
-            Pregnancy::class, 
-            PrenatalClass::class,
-            'mother_id', 
-            'pregnancy_id',
-            'id',
-            'id',
-        );
     }
     
     /**

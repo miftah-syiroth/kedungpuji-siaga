@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreFamilyRequest;
+use App\Http\Requests\UpdateFamilyRequest;
 use App\Models\Family;
+use App\Models\KeluargaSejahtera;
 use App\Services\FamilyService;
 use Illuminate\Http\Request;
 
@@ -41,8 +43,8 @@ class FamilyController extends Controller
      */
     public function store(StoreFamilyRequest $request, FamilyService $familyService)
     {
-        $familyService->store($request);
-        return redirect()->route('families.index');
+        $family = $familyService->store($request);
+        return redirect('/families/' . $family->id);
     }
 
     /**
@@ -51,9 +53,12 @@ class FamilyController extends Controller
      * @param  \App\Models\Family  $family
      * @return \Illuminate\Http\Response
      */
-    public function show(Family $family)
+    public function show(Family $family, FamilyService $familyService)
     {
-        return view('families.show');
+        return view('families.show', [
+            'family' => $familyService->getFamily($family),
+            'family_statuses' => $familyService->getFamilyStatuses(),
+        ]);
     }
 
     /**
@@ -64,7 +69,10 @@ class FamilyController extends Controller
      */
     public function edit(Family $family)
     {
-        //
+        return view('families.edit', [
+            'family' => $family,
+            'keluarga_sejahtera' => KeluargaSejahtera::all(),
+        ]);
     }
 
     /**
@@ -74,9 +82,10 @@ class FamilyController extends Controller
      * @param  \App\Models\Family  $family
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Family $family)
+    public function update(UpdateFamilyRequest $request, Family $family, FamilyService $familyService)
     {
-        //
+        $familyService->update($request, $family);
+        return redirect('/families/' . $family->id);
     }
 
     /**
@@ -85,8 +94,9 @@ class FamilyController extends Controller
      * @param  \App\Models\Family  $family
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Family $family)
+    public function destroy(Family $family, FamilyService $familyService)
     {
-        //
+        $familyService->destroy($family);
+        return redirect('/families');
     }
 }

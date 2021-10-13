@@ -14,6 +14,6 @@ class FamilyStatus extends Model
 
     public function people()
     {
-        return $this->hasMany(Person::class, 'family_status_id');
+        return $this->hasMany(PersonFamily::class, 'family_status_id');
     }
 }

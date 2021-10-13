@@ -66,10 +66,10 @@ class Couple extends Model
      *
      * @return void
      */
-    public function maritalStatus()
-    {
-        return $this->belongsTo(MaritalStatus::class, 'marital_status_id');
-    }
+    // public function maritalStatus()
+    // {
+    //     return $this->belongsTo(MaritalStatus::class, 'marital_status_id');
+    // }
     
     /**
      * pregnancies, sebuah pasangan tentu saja bisa punya banyak kehamilan dan kelahiran

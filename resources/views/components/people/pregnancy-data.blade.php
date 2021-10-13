@@ -1,13 +1,38 @@
 <div class="py-4">
     <div x-data="{ isOpen : false }">
         <div class="overflow-hidden px-4 bg-white rounded-lg shadow-2xl">
-            <div class="px-4 py-2 grid">
+            <div class="px-4 py-2">
                 <h3 class="text-lg leading-6 font-medium justify-center text-center">
                     <button x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">
                         Data Kehamilan
                     </button>
                 </h3>
-                <a href="/people/{{ $person->id }}/pregnancies/create" x-show="isOpen" class="justify-self-start bg-blue-500 hover:bg-blue-700 px-2 py-1 rounded-lg text-white">tambah</a>
+                <div x-show="isOpen" class="flex justify-end mt-4">
+                    {{-- <div> --}}
+                        <form action="/people/{{ $person->id }}/pregnancies" method="post" class="block">
+                            @csrf
+                            <div class="flex flex-row text-sm">
+                                <div class="px-2">
+                                    <x-label for="hpht" :value="__('HPHT')" />
+                                    <input type="date" name="hpht" id="hpht" class="block mt-1 w-44 h-8 border" required>
+                                </div>
+                                <div class="px-2">
+                                    <x-label for="mother_weight" :value="__('BB')" />
+                                    <input type="number" name="mother_weight" id="mother_weight" class="block mt-1 w-16 h-8 border" required>
+                                </div>
+                                <div class="px-2">
+                                    <x-label for="mother_height" :value="__('TB')" />
+                                    <input type="number" name="mother_height" id="mother_height" class="block mt-1 w-16 h-8 border" required>
+                                </div>
+                                <div class="flex content-end">
+                                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 px-2 py-1 rounded-lg text-white self-end">tambah baru</button>
+                                </div>
+                               
+                            </div>
+                        </form>
+                    {{-- </div> --}}
+                </div>
+                
             </div>
             <div x-show="isOpen" class="border-t border-gray-200">
                 <dl>

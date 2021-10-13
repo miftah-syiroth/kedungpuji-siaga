@@ -1,19 +1,18 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Keluarga') }}
+        {{ __('Semua Keluarga') }}
     </x-slot>
 
     <div class="py-4">
-        <div class="flex flex-col justify-start">
-            <div class="my-4">
-                <a href="/families/create" class="text-white bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-700">tambah</a>
-            </div>
-            <div class="px-6 py-6 bg-white rounded-lg shadow-lg">
+        <div class="w-auto overflow-hidden rounded-lg shadow-lg">
+            <div class="px-2 py-4 w-auto bg-white rounded-lg shadow-xl overflow-x-auto">
                 <table class="w-full whitespace-no-wrap">
                     <thead>
                         <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                            <th class="px-4 py-3">Kepala Keluarga</th>
-                            <th class="px-4 py-3">Alamat</th>
+                            <th class="px-4 py-3">Keluarga</th>
+                            <th class="px-4 py-3">Nomor KK</th>
+                            <th class="px-4 py-3 text-center">Alamat</th>
+                            <th class="px-4 py-3 text-center">Anggota</th>
                             <th class="px-4 py-3">Keluarga Sejahtera</th>
                          </tr>
                     </thead>
@@ -32,7 +31,13 @@
                                 </div>
                             </td>
                             <td class="px-4 py-3 text-sm">
+                                {{ $family->nomor_kk }}
+                            </td>
+                            <td class="px-4 py-3 text-sm text-center">
                                 {{ $family->leader->rt . '/' . $family->leader->rw }}
+                            </td>
+                            <td class="px-4 py-3 text-sm text-center">
+                                {{ $family->people_count }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $family->keluargaSejahtera->tahapan }}

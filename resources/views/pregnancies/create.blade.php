@@ -7,7 +7,6 @@
         <div class="flex justify-start">
             <div class="px-6 py-6 bg-white rounded-lg shadow-lg">
                 <form action="/people/{{ $mother->id }}/pregnancies" method="post">
-                    {{-- @csrf('PUT') --}}
                     @csrf
                     <div>
                         <x-label for="hpht" :value="__('HPHT')" />

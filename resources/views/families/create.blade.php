@@ -20,9 +20,7 @@
                     </div>
                     
                     <div class="flex items-center justify-between mt-4">
-    
                         <div>
-    
                             <label class="inline-flex items-center mx-2 text-sm">
                                 <select name="keluarga_sejahtera_id" id="keluarga_sejahtera_id" class="text-sm">
                                     <option hidden value="">Pilih Status Keluarga!</option>
@@ -30,7 +28,6 @@
                                     <option value="{{ $tahapan->id }}">{{ $tahapan->tahapan }}</option>
                                     @endforeach
                                 </select>
-                                <span class="ml-2"></span>
                             </label>
                         </div>
                         <x-button class="ml-4">
@@ -41,8 +38,4 @@
             </div>
         </div>
     </div>
-
-    {{-- @livewire('families.family-create', [
-        'keluarga_sejahtera' => $keluarga_sejahtera,
-    ]) --}}
 </x-app-layout>

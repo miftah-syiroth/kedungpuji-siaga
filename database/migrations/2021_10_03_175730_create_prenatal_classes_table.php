@@ -15,7 +15,7 @@ class CreatePrenatalClassesTable extends Migration
     {
         Schema::create('prenatal_classes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mother_id')->constrained('people');
+            $table->foreignId('pregnancy_id')->constrained('pregnancies');
             $table->decimal('mother_weight');
             $table->decimal('arm_circumference');
             $table->bigInteger('systolic');

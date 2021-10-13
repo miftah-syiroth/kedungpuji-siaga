@@ -56,7 +56,7 @@
                                 Status Perkawinan
                             </dt>
                             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                               : {{ $couple->maritalStatus->status  }}
+                               : {{ $couple->wife->maritalStatus->status  }}
                             </dd>
                         </div>
 
@@ -68,7 +68,7 @@
                                 <div class="flex flex-row items-center justify-between">
                                     <div class="flex flex-row items-center">
                                         <p class="font-semibold">
-                                            : {{ $couple->is_kb == true ?  $couple->kbService->service  : 'non peserta'  }}
+                                            : {{ $couple->is_kb == true ?  $couple->kbService->service ?? '-'  : 'non peserta'  }}
                                         </p>
                                         @if ($couple->is_kb == true )
                                         <form action="/couples/{{ $couple->id }}" method="POST" class="ml-4">

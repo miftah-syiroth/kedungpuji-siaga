@@ -3,7 +3,7 @@
         <div class="overflow-hidden px-4 bg-white rounded-lg shadow-2xl">
             <div class="px-4 py-2">
                 <h3 class="text-lg leading-6 font-medium justify-center text-center">
-                    <a href="#dataFamily" x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">Data Anggota Keluarga</a>
+                    <button x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">Data Anggota Keluarga</button>
                 </h3>
                 <div x-show="isOpen" class="flex flex-row justify-between">
                     <div>
@@ -18,24 +18,24 @@
                         </p>
                     </div>
                     <div>
-                        <p class="mt-1 text-center text-sm text-gray-500">
-                            INI rencananya jadi button show/open
-                        </p>
+                        <a href="/families/{{ $person->kepalaKeluarga->id }}" class="mt-1 text-center text-sm text-blue-500 hover:text-blue-700 hover:underline">kelola...</a>
                     </div>
                 </div>
             </div>
             <div x-show="isOpen" class="border-t border-gray-200">
                 <dl>
-                    <table id="dataFamily" class="w-full whitespace-no-wrap overflow-x-auto">
+                    <table class="w-full whitespace-no-wrap overflow-x-auto">
                         <thead>
                             <tr class="text-xs font-semibold tracking-wide text-center text-gray-500 uppercase border-b bg-gray-100 rounded-xl">
                                 <th class="px-2 py-3">Nama</th>
+                                <th class="px-2 py-3 text-left">Hubungan</th>
                                 <th class="px-2 py-3">NIK</th>
                                 <th class="px-2 py-3">L/P</th>
                                 <th class="px-2 py-3">Tgl Lahir</th>
                                 <th class="px-2 py-3">GolDar</th>
-                                <th class="px-2 py-3">Pendidikan</th>
-                                <th class="px-2 py-3">Hubungan</th>
+                                <th class="px-2 py-3">Cacat</th>
+                                <th class="px-2 py-3">Status Kawin</th>
+                                <th class="px-2 py-3 text-left">Pendidikan</th>
                              </tr>
                         </thead>
                         <tbody class="bg-white divide-y">
@@ -52,23 +52,29 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-2 py-3 text-sm text-center">
+                                <td class="px-2 py-1 text-sm text-left">
+                                    {{ $member->familyStatus->status }}
+                                </td>
+                                <td class="px-2 py-1 text-sm text-center">
                                     {{ $member->nik }}
                                 </td>
-                                <td class="px-2 py-3 text-sm text-center">
+                                <td class="px-2 py-1 text-sm text-center">
                                     {{ $member->sex->abbreviation }}
                                 </td>
-                                <td class="px-2 py-3 text-sm text-center">
-                                    {{ $member->place_of_birth }}, {{ $member->date_of_birth->isoFormat('DD MMM Y') }}
+                                <td class="px-2 py-1 text-sm text-center">
+                                    {{ $member->place_of_birth }}, {{ $member->date_of_birth->isoFormat('DD MMM Y') }} ({{ $member->date_of_birth->age }})
                                 </td>
-                                <td class="px-2 py-3 text-sm text-center">
+                                <td class="px-2 py-1 text-sm text-center">
                                     {{ $member->bloodGroup->group }}
                                 </td>
-                                <td class="px-2 py-3 text-sm text-center">
-                                    {{ $member->education->education }}
+                                <td class="px-2 py-1 text-sm text-center">
+                                    {{ $member->is_cacat == true ? $member->disability->type : '-' }}
                                 </td>
-                                <td class="px-2 py-3 text-sm text-center">
-                                    {{ $member->familyStatus->status }}
+                                <td class="px-2 py-1 text-sm text-left">
+                                    {{ $member->maritalStatus->status }}
+                                </td>
+                                <td class="px-2 py-1 text-sm text-left">
+                                    {{ $member->education->education }}
                                 </td>
                             </tr> 
                             @endforeach

@@ -24,19 +24,24 @@ class Family extends Model
      */
     public function leader()
     {
-        // return $this->hasOne(Person::class, 'person_id');
         return $this->belongsTo(Person::class, 'person_id');
     }
     
     /**
-     * people relasi one to many, sebuah keluarga memiliki banyak person as member tp person hanya bisa menjadi anggota satu keluarga
-     *
+     * people relasi one to many tp dengan tabel intermediate
      * @return void
      */
     public function people()
     {
-        return $this->hasMany(Person::class, 'family_id');
+        return $this->belongsToMany(Person::class, 'person_has_family', 'family_id', 'person_id')
+            ->withPivot('family_status_id')
+            ->using(PersonFamily::class);
     }
+
+    // public function FunctionName(Type $var = null)
+    // {
+    //     # code...
+    // }
 
     public function keluargaSejahtera()
     {

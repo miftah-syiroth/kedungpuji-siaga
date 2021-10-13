@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\Family;
+use App\Models\FamilyStatus;
 use App\Models\KeluargaSejahtera;
 use App\Models\Person;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,18 +16,97 @@ class FamilyService
 
     public function getAllFamilies()
     {
-        return Family::with(['leader'])->get();
+        return Family::with([
+            'leader',
+            'keluargaSejahtera',
+        ])->withCount('people')->get();
     }
 
+    public function getFamilyStatuses()
+    {
+        return FamilyStatus::all();
+    }
+    
+    /**
+     * SUCCESS
+     *
+     * @param  mixed $family
+     * @return void
+     */
+    public function getFamily($family)
+    {
+        return Family::with([
+            'people' => function($query) {
+                $query->orderBy('family_status_id', 'ASC');
+            },
+            'people.sex',
+            'people.bloodGroup',
+            'people.education',
+            'people.disability',
+            'people.maritalStatus',
+            'keluargaSejahtera',
+        ])->withCount('people')->find($family->id);
+    }
+    
+    /**
+     * SUCCESS
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function store($request)
     {
+        $person = Person::find($request->person_id);
         // buat keluarganya dahulu dgn relasi kepala keluarga
-        $family = Person::find($request->person_id)->kepalaKeluarga()->create([
+        $family = $person->kepalaKeluarga()->create([
             'nomor_kk' => $request->nomor_kk,
             'keluarga_sejahtera_id' => $request->keluarga_sejahtera_id
         ]);
 
-        // update user sebagai anggota keluarga
-        Person::find($request->person_id)->family()->associate($family)->save();
+        // sync dari person ke family yg telah dibuat serta status kekeluargaannya
+        $person->family()->sync([
+            $family->id => ['family_status_id' => 1], // satu adlh status kepala keluarga
+        ]);
+
+        // kembalikan family supaya bisa redirect ke show family
+        return $family;
+    }
+
+    public function update($request, $family)
+    {
+        $attributes = $request->all();
+
+        if ($request->has('person_id')) {
+            $person = Person::find($request->person_id); // calon kepala keluarga
+
+            // detach row kepala keluarga saat ini pada tabel intermediata untuk digantikan dgn calon yg baru
+            $family->people()->detach($family->person_id);
+
+            // sync dari calon yg baru ke family serta status kekeluargaannya
+            $person->family()->sync([
+                $family->id => ['family_status_id' => 1], // satu adlh status kepala keluarga
+            ]);
+
+            $attributes['person_id'] = $person->id;
+        }
+        $family->update($attributes);
+    }
+
+    public function addFamilyMember($request, $family)
+    {
+        Person::find($request->person_id)->family()->sync([
+            $family->id => ['family_status_id' => $request->family_status_id], 
+        ]);
+    }
+
+    public function removeFamilyMember($family, $person)
+    {
+        $family->people()->detach($person->id);
+    }
+
+    public function destroy($family)
+    {
+        $family->people()->detach(); // hapus semua row di tabel intermediate
+        $family->delete();
     }
 }

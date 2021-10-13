@@ -2,13 +2,14 @@
 
 use App\Http\Controllers\CoupleController;
 use App\Http\Controllers\FamilyController;
+use App\Http\Controllers\Invokeables\DeadPerson;
+use App\Http\Controllers\Invokeables\FamilyMemberDelete;
+use App\Http\Controllers\Invokeables\FamilyMemberStore;
 use App\Http\Controllers\KeluargaBerencana\MonthlyReport;
 use App\Http\Controllers\KeluargaBerencanaController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\PregnancyController;
 use App\Http\Controllers\PrenatalClassController;
-use App\Http\Controllers\StoreNewBirth;
-use App\Http\Controllers\StoreNewPregnancy;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 /*
@@ -41,10 +42,19 @@ Route::middleware('auth')->group(function () {
     Route::resource('families', FamilyController::class);
     Route::resource('couples', CoupleController::class);
 
+    // route untuk menambahkan anggota baru pada sebuah keluarga, invokable
+    Route::patch('/families/{family}/people/', FamilyMemberStore::class);
+
+    // menghapus person dari keanggotaan sebuah keluarga
+    Route::delete('/families/{family}/people/{person}/delete', FamilyMemberDelete::class);
+
+    // route untuk set orang meninggal atau hidup
+    Route::patch('/people/{person}/dead', DeadPerson::class);
+
     // route untuk menampilkan semua list pasangan dan status KB mereka
     Route::get('keluarga-berencana', [KeluargaBerencanaController::class, 'index'])->name('keluarga-berencana.index');
     // route untuk menyimpan atau mengupdate laporan bulanan sebuah pasangan
-    Route::post('couples/{couple}/keluarga-berencana', [KeluargaBerencanaController::class, 'store']);
+    Route::post('/couples/{couple}/keluarga-berencana', [KeluargaBerencanaController::class, 'store']);
 
     // route untuk menuju halaman buat data kehamilan baru seorang individu ibu yang punya pasangan
     Route::get('people/{person}/pregnancies/create', [PregnancyController::class, 'create']);
@@ -56,7 +66,7 @@ Route::middleware('auth')->group(function () {
     // route untuk membuat atau merubah data laporan kelas ibu hamil seorang ibu
     Route::post('/pregnancies/{pregnancy}/prenatal-class', [PrenatalClassController::class, 'store']);
 
-    Route::patch('pregnancies/{pregnancy}', [PregnancyController::class, 'update']);
+    // Route::patch('pregnancies/{pregnancy}', [PregnancyController::class, 'update']);
 
     // controller untuk menyimpan laporan kb bulanan
     Route::post('/kb-report/{couple}', MonthlyReport::class);

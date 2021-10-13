@@ -27,8 +27,12 @@ class UserController extends Controller
     public function index(UserService $userService)
     {
         $users = $userService->getAllUsers();
+        $roles = $userService->getAllRoles();
 
-        return view('users.index', compact('users'));
+        return view('users.index',[
+            'users' => $users,
+            'roles' => $roles,
+        ]);
     }
 
     /**
@@ -38,8 +42,9 @@ class UserController extends Controller
      */
     public function create(UserService $userService)
     {
-        $roles = $userService->getAllRoles();
-        return view('users.create', compact('roles'));
+        // $roles = $userService->getAllRoles();
+        // return view('users.create', compact('roles'));
+        return false;
     }
 
     /**
@@ -89,7 +94,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user, UserService $userService)
     {
         $userService->update($request, $user);
-        
+
         return redirect()->back()->with('status', 'Pengguna berhasil diubah!');
     }
 

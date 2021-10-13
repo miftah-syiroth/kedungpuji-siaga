@@ -18,38 +18,44 @@ class PersonService
 {
     public function getAllPeople()
     {
-        return Person::with(['sex', 'bloodGroup', 'family', 'familyStatus'])->get();
+        return Person::with([
+            'sex', 
+            'family' => function ($query) {
+                $query->first();
+            },
+            'maritalStatus',
+            'bloodGroup',
+        ])->get();
     }
 
     public function getPerson($person)
     {
         return Person::with([
-            'sex',
-            'religion',
-            'bloodGroup',
-            'disability',
-            'education',
-            'mother', 'father',
-            'familyStatus',
-            'family.leader',
-            'wifes.wife',
-            'wifes.maritalStatus',
-            'husband.husband',
-            'husband.maritalStatus',
-            'husband.kbService',
-            'kepalaKeluarga.keluargaSejahtera',
-            'kepalaKeluarga.people' => function ($query) {
-                $query->orderBy('family_status_id', 'ASC');
-            },
-            'kepalaKeluarga.people.sex',
-            'kepalaKeluarga.people.bloodGroup',
-            'kepalaKeluarga.people.education',
-            'kepalaKeluarga.people.familyStatus',
-            'keluargaBerencana' => function ($query) {
-                $query->where('year_periode', Carbon::now()->year);
-            },
-            'keluargaBerencana.kbStatus',
-            'pregnancies',
+            'sex', //
+            'religion', //
+            'bloodGroup', //
+            'disability', //
+            'education', //
+            'mother', 'father', //
+            'maritalStatus', //
+            'family.leader', //
+            // 'familyStatus',
+            // 'family.leader',
+            // 'wifes.wife.maritalStatus',
+            // 'husband.husband.maritalStatus',
+            // 'husband.kbService',
+            // 'kepalaKeluarga.keluargaSejahtera',
+            // 'kepalaKeluarga.people' => function ($query) {
+            //     $query->orderBy('family_status_id', 'ASC');
+            // },
+            // 'kepalaKeluarga.people.sex',
+            // 'kepalaKeluarga.people.bloodGroup',
+            // 'kepalaKeluarga.people.education',
+            // 'keluargaBerencana' => function ($query) {
+            //     $query->where('year_periode', Carbon::now()->year);
+            // },
+            // 'keluargaBerencana.kbStatus',
+            // 'pregnancies',
         ])->find($person->id);
     }
     
@@ -103,63 +109,58 @@ class PersonService
         return KbService::all();
     }
 
-    public function store($request)
+    public function storePerson($request)
     {
-        // dd($request->suami_id);
+        $attributes = $request->all();
         // buat secara normal utk semua atribut meskipun null
-        $person = Person::create([
-            'name' => $request->name,
-            'nik' => $request->nik,
-            'place_of_birth' => $request->place_of_birth,
-            'date_of_birth' => $request->date_of_birth,
-            'religion_id' => $request->religion_id,
-            'blood_group_id' => $request->blood_group_id,
-            'sex_id' => $request->sex_id,
-            'educational_id' => $request->educational_id,
-            'rt' => $request->rt,
-            'rw' => $request->rw,
-            'marital_status_id' => $request->marital_status_id,
-            'is_cacat' => $request->is_cacat,
-            'disability_id' => $request->disability_id, // perhatikan jika is_cacat true, maka ada input
-            'family_status_id' => $request->family_status_id,
-            'family_id' => $request->family_id,
-            'ibu_id' => $request->ibu_id,
-            'ayah_id' => $request->ayah_id,
+        return Person::create($attributes);
+    }
+
+    public function update($request, $person)
+    {
+        $attributes = $request->all(); // ubah dalam bentuk array dan simpan ke variable
+
+        if ($request->has('ibu_id')) {
+            $attributes['ibu_id'] = $request->ibu_id;
+        }
+
+        if ($request->has('ayah_id')) {
+            $attributes['ayah_id'] = $request->ayah_id;
+        }
+
+        $person->update($attributes);
+    }
+
+    public function changePersonsFamily($request, $person)
+    {
+        // kalau dia punya relasi sebagai kepala keluarga sebelumnya, hapus saja keluarga tsb, family_id pada child table harusnya menjadi null. ini karena seseorang ga boleh tercantum pada 2 KK
+        if ($person->kepalaKeluarga) {
+            $person->kepalaKeluarga->delete();
+        }
+
+        // kalau family statusnya selain kepala keluarga, cukup update saja, itu cuma pindah keluarga dan status anggotanya
+        if ($request->family_status_id == 1) {
+            $this->createFamily($request, $person);
+        } elseif($request->family_status_id != 1) {
+            // dd($request->family_id);
+            $person->update([
+                'family_status_id' => $request->family_status_id,
+                'family_id' => $request->family_id,
+            ]);
+        }   
+    }
+
+    public function createFamily($request, $person)
+    {
+        // isi untuk tabel famili dulu
+        $family = $person->kepalaKeluarga()->create([
+            'keluarga_sejahtera_id' => $request->keluarga_sejahtera_id,
+            'nomor_kk' => $request->nomor_kk,
         ]);
 
-        // buat keluarga jika input family status ==1 atau ada nomor kk, sbnrnya cukup satu aja, krn ketika family status bukan 1, ga akan muncul input nomor kk
-        if ($request->family_status_id == 1 || $request->nomor_kk) {
-            // isi untuk tabel famili dulu
-            $family = $person->kepalaKeluarga()->create([
-                'keluarga_sejahtera_id' => $request->keluarga_sejahtera_id,
-                'nomor_kk' => $request->nomor_kk,
-            ]);
-
-            // lalu update di model person
-            $person->update([
-                'family_id' => $family->id,
-            ]);
-        }
-        
-        // buat pasangan jika marital status adalah 2 atau 3
-        if ($request->marital_status_id == 2 || $request->marital_status_id == 3) {
-            if ($request->sex_id == 2) { // jika kelamin pria, maka buat row baru
-                $result = $person->husband()->create([
-                    'suami_id' => $request->suami_id,
-                    'is_kb' => $request->is_kb,
-                    'kb_service_id' => $request->kb_service_id,
-                ]);
-            }
-            // elseif ($request->sex_id == 2) { // jika kelamin wanita, maka update atau buat
-            //     $result = Couple::updateOrCreate(
-            //         ['suami_id' => $request->couple_id,],
-            //         [
-            //             'istri_id' => $person->id,
-            //             'is_kb' => $request->is_kb,
-            //             'kb_service_id' => $request->kb_service_id,
-            //         ],
-            //     );
-            // }
-        }
+        // lalu update di model person
+        $person->update([
+            'family_id' => $family->id,
+        ]);
     }
 }
