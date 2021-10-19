@@ -132,17 +132,6 @@
                                 @endforeach
                             </select>
                         </div>
-
-                        {{-- status keanggotaan dalam keluarga --}}
-                        {{-- <div class="mx-2">
-                            <x-label for="family_status_id" :value="__('Keanggotaan Keluarga')" />
-                            <select x-model="status" x-on:click="nomorkk = status " name="family_status_id" id="family_status_id" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
-                                <option hidden>Pilih!</option>
-                                @foreach ($family_statuses as $status)
-                                <option value="{{ $status->id }}">{{ $status->status }}</option>
-                                @endforeach
-                            </select>
-                        </div> --}}
                     </div>
 
                     <div class="flex mt-4">

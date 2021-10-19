@@ -200,6 +200,12 @@ class Person extends Model
     {
         return $this->hasMany(Pregnancy::class, 'mother_id');
     }
+
+    // Get the mother's most recent pregnancy.
+    public function latestPregnancy()
+    {
+        return $this->hasOne(Pregnancy::class, 'mother_id')->latestOfMany();
+    }
     
     /**
      * keluargaBerencana has many through antara ibu/person ke laporan KB

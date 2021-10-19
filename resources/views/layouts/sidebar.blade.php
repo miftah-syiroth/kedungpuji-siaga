@@ -1,5 +1,5 @@
 <!-- Desktop sidebar -->
-<aside class="z-20 flex-shrink-0 hidden w-64 verflow-y-auto bg-white md:block">
+<aside class="z-20 flex-shrink-0 hidden w-60 verflow-y-auto bg-white md:block">
     <div class="py-4 text-gray-500">
         <a class="ml-6 text-lg font-bold text-gray-800 " href="#">
             Kedungpuji Siaga
@@ -167,44 +167,120 @@
                         x-transition:leave-end="opacity-0 max-h-0"
                         class="p-1 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md  shadow-inner bg-gray-100" aria-label="submenu" >
                         <li class="px-2 py-1 transition-colorsduration-150 hover:text-blue-500">
-                            <a class="w-full" href="{{ route('couples.index') }}">Semua Pasangan</a>
+                            <a class="w-full" href="{{ route('couples.index') }}">Pasangan Menikah</a>
                         </li>
                         <li class="px-2 py-1 transition-colorsduration-150 hover:text-blue-500">
                             <a class="w-full" href="{{ route('couples.create') }}">Tambah Pasangan</a>
+                        </li>
+                        <li class="px-2 py-1 transition-colorsduration-150 hover:text-blue-500">
+                            <a class="w-full" href="#">Cerai/Dihapus</a>
                         </li>
                     </ul>
                 </template>
             </li>
 
-            <li class="relative px-6 py-3 shadow">
-                <div class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors" aria-haspopup="true">
-                    <span class="ml-4 inline-flex items-center text-gray-600">Keluarga Berencana</span>
-                </div>
-                <template x-if="{isPenggunaMenuOpen : true}">
+            {{-- menu keluarga berencana --}}
+            <li class="relative px-6 py-3">
+                <button 
+                    class=" inline-flex items-center justify-between  w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
+                    @click="toggleKbMenu"
+                    aria-haspopup="true">
+                    <span class="inline-flex items-center">
+                        <svg
+                            class="w-5 h-5"
+                            aria-hidden="true"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                        <path d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                        </svg>
+                    <span class="ml-4">Keluarga Berencana</span>
+                    </span>
+                        <svg
+                        class="w-4 h-4"
+                        aria-hidden="true"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        >
+                        <path
+                            fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd"
+                        ></path>
+                        </svg>
+                </button>
+                <template x-if="isKbMenuOpen">
                     <ul
-                    x-transition:enter="transition-all ease-in-out duration-300"
-                    x-transition:enter-start="opacity-25 max-h-0"
-                    x-transition:enter-end="opacity-100 max-h-xl"
-                    x-transition:leave="transition-all ease-in-out duration-300"
-                    x-transition:leave-start="opacity-100 max-h-xl"
-                    x-transition:leave-end="opacity-0 max-h-0"
-                    class=" p-2 mt-2 space-y-2 overflow-hidden
-                        text-sm
-                        font-medium
-                        text-gray-500
-                        rounded-md
-                        shadow-inner
-                        bg-gray-100
-                    "
-                    aria-label=""
-                    >
-                        <li class="px-2 py-1  transition-colors duration-150 hover:text-gray-900 hover:bg-blue-100 rounded-lg">
-                            <a class="w-full block" href="{{ route('couples.index') }}">PUS</a>
+                        x-transition:enter="transition-all ease-in-out duration-300"
+                        x-transition:enter-start="opacity-25 max-h-0"
+                        x-transition:enter-end="opacity-100 max-h-xl"
+                        x-transition:leave="transition-all ease-in-out duration-300"
+                        x-transition:leave-start="opacity-100 max-h-xl"
+                        x-transition:leave-end="opacity-0 max-h-0"
+                        class="p-1 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md  shadow-inner bg-gray-100" aria-label="submenu" >
+                        <li class="px-2 py-1 transition-colorsduration-150 hover:text-blue-500">
+                            <a class="w-full" href="/pasangan-usia-subur">PUS</a>
                         </li>
-                        <li class="px-2 py-1  transition-colors duration-150 hover:text-gray-900 hover:bg-blue-100 rounded-lg">
-                            <a class="w-full block" href="{{ route('keluarga-berencana.index') }}">Laporan</a>
+                        <li class="px-2 py-1 transition-colorsduration-150 hover:text-blue-500">
+                            <a class="w-full" href="{{ route('keluarga-berencana.index') }}">Laporan</a>
                         </li>
-                        
+                    </ul>
+                </template>
+            </li>
+
+            {{-- menu pelayanan ibu hamil --}}
+            <li class="relative px-6 py-3">
+                <button 
+                    class=" inline-flex items-center justify-between  w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800"
+                    @click="toggleIbuHamilMenu"
+                    aria-haspopup="true">
+                    <span class="inline-flex items-center">
+                        <svg
+                            class="w-5 h-5"
+                            aria-hidden="true"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                        <path d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                        </svg>
+                    <span class="ml-4">Ibu Hamil</span>
+                    </span>
+                        <svg
+                        class="w-4 h-4"
+                        aria-hidden="true"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        >
+                        <path
+                            fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd"
+                        ></path>
+                        </svg>
+                </button>
+                <template x-if="isIbuHamilMenuOpen">
+                    <ul
+                        x-transition:enter="transition-all ease-in-out duration-300"
+                        x-transition:enter-start="opacity-25 max-h-0"
+                        x-transition:enter-end="opacity-100 max-h-xl"
+                        x-transition:leave="transition-all ease-in-out duration-300"
+                        x-transition:leave-start="opacity-100 max-h-xl"
+                        x-transition:leave-end="opacity-0 max-h-0"
+                        class="p-1 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md  shadow-inner bg-gray-100" aria-label="submenu" >
+                        <li class="px-2 py-1 transition-colorsduration-150 hover:text-blue-500">
+                            <a class="w-full" href="/pregnancies">Ibu Hamil</a>
+                        </li>
+                        <li class="px-2 py-1 transition-colorsduration-150 hover:text-blue-500">
+                            <a class="w-full" href="/pregnancies/create">Tambah Kehamilan</a>
+                        </li>
                     </ul>
                 </template>
             </li>

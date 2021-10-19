@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Couple extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'couples';
     protected $guarded = [];
@@ -61,23 +62,9 @@ class Couple extends Model
         return $this->hasMany(KeluargaBerencana::class, 'couple_id');
     }
 
-    /**
-     * maritaStatus relasi many to one antara status perkawinan dengan org
-     *
-     * @return void
-     */
-    // public function maritalStatus()
-    // {
-    //     return $this->belongsTo(MaritalStatus::class, 'marital_status_id');
-    // }
-    
-    /**
-     * pregnancies, sebuah pasangan tentu saja bisa punya banyak kehamilan dan kelahiran
-     *
-     * @return void
-     */
-    // public function pregnancies()
-    // {
-    //     return $this->hasMany(PregnantWoman::class, 'couple_id');
-    // }
+    // ambil data KB terakhir
+    public function latestKeluargaBerencana()
+    {
+        return $this->hasOne(KeluargaBerencana::class, 'couple_id')->latestOfMany();
+    }
 }

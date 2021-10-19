@@ -14,7 +14,7 @@ class SearchFamilyLeaderForm extends Component
     {
         // ambil person yang blm punya relasi mnjd kepala keluarga dan status anggotanya 1
         return Person::doesntHave('family')
-            // ->where('family_status_id', 1) //kepala keluarga
+            ->whereNull('died_at')
             ->where('marital_status_id', '!=', 1) //menikah
             ->where(function ($query) {
                 $query->where('name', 'like', $this->searchTerm . '%');

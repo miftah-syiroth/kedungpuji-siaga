@@ -21,7 +21,7 @@ class KeluargaBerencanaController extends Controller
     public function index(ServicesKbService $kbService)
     {
         return view('keluarga-berencana.index', [
-            'couples' => $kbService->getAllCouples(),
+            'couples' => $kbService->getAnualReport(),
             'months' => Month::all(),
             // 'year' => Carbon::now()->year,
         ]);

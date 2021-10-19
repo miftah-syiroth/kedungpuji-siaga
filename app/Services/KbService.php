@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Builder;
 
 class KbService
 {
-    public function getAllCouples()
+    public function getAnualReport()
     {
         return Couple::whereHas('wife', function (Builder $query) {
-            $query->whereDate('date_of_birth', '<', Carbon::now()->addYears(-15) )
-                ->whereDate('date_of_birth', '>', Carbon::now()->addYears(-49) );
-        })->with(['kbService', 'keluargaBerencana' => function($query){
+            $query->whereDate('date_of_birth', '<=', Carbon::now()->addYears(-15) )
+                ->whereDate('date_of_birth', '>=', Carbon::now()->addYears(-49) );
+        })->with(['kbService', 'keluargaBerencana.kbStatus', 'keluargaBerencana' => function($query){
             $query->where('year_periode', Carbon::now()->year);
         }])->get();
     }

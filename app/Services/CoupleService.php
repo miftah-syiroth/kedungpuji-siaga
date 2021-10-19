@@ -4,11 +4,17 @@ namespace App\Services;
 use App\Models\Couple;
 use App\Models\KbService;
 use App\Models\KbStatus;
+use App\Models\MaritalStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
 class CoupleService
-{
+{    
+    /**
+     * getAllKbServices buat isi input dropdown form aja
+     *
+     * @return void
+     */
     public function getAllKbServices()
     {
         return KbService::all();
@@ -21,10 +27,11 @@ class CoupleService
      */
     public function getAllCouples()
     {
-        return Couple::whereHas('wife', function (Builder $query) {
-            $query->whereDate('date_of_birth', '<', Carbon::now()->addYears(-15) )
-                ->whereDate('date_of_birth', '>', Carbon::now()->addYears(-49) );
-        })->with(['husband', 'wife.maritalStatus'])->get();
+        return Couple::with([
+            'husband', 
+            'wife.maritalStatus',
+            'kbService',
+        ])->get();
         // $year = Carbon::now()->year;
         // return Couple::whereHas('wife', function (Builder $query) {
         //     $query->whereDate('date_of_birth', '<', Carbon::now()->addYears(-15) )
@@ -35,12 +42,19 @@ class CoupleService
         // }])->get();
     }
 
+    public function getPus()
+    {
+        return Couple::whereHas('wife', function (Builder $query) {
+            $query->whereDate('date_of_birth', '<=', Carbon::now()->addYears(-15) )
+                ->whereDate('date_of_birth', '>=', Carbon::now()->addYears(-49) );
+        })->with(['kbService', 'husband', 'wife.maritalStatus'])->get();
+    }
+
     public function getCouple($couple)
     {
         return Couple::with([
-            'husband',
+            'husband.maritalStatus',
             'wife.maritalStatus',
-            // 'maritalStatus',
             'kbService',
             'keluargaBerencana' => function ($query) {
                 $query->where('year_periode', Carbon::now()->year);
@@ -52,12 +66,39 @@ class CoupleService
 
     public function store($request)
     {
-        Couple::create($request->toArray());
+        return Couple::create($request->toArray());
     }
 
     public function update($request, $couple)
     {
-        $couple->update($request->toArray());
+        $attributes = $request->all();
+
+        if ($request->has('suami_id')) {
+            $attributes['suami_id'] = $request->suami_id;
+        }
+
+        if ($request->has('istri_id')) {
+            $attributes['istri_id'] = $request->istri_id;
+        }
+
+        $couple->update($attributes);
+    }
+    
+    /**
+     * delete couple dengan softdelete
+     *
+     * @return void
+     */
+    public function delete($request, $couple)
+    {
+        // ubah status kawin istri menjadi cerai
+        $istri = $couple->wife;
+        $istri->update(['marital_status_id' => $request->marital_status_id]);
+
+        # hapus dulu KB datanya
+        $couple->keluargaBerencana()->delete();
+        # hapus couplenya
+        $couple->delete();
     }
     
     /**
@@ -78,5 +119,10 @@ class CoupleService
     public function getKbAnualReport($couple, $year)
     {
         return $couple->keluargaBerencana()->with('kbStatus')->where('year_periode', $year)->get();
+    }
+
+    public function getCeraiStatuses()
+    {
+        return MaritalStatus::whereIn('id', [4,5,6])->get();
     }
 }

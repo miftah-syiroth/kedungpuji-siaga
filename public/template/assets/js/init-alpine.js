@@ -75,6 +75,16 @@ function data() {
         togglePasanganMenu() {
             this.isPasanganMenuOpen = !this.isPasanganMenuOpen;
         },
+        // dropdown sidebar page menu Keluarga Berencana
+        isKbMenuOpen: false,
+        toggleKbMenu() {
+            this.isKbMenuOpen = !this.isKbMenuOpen;
+        },
+        // dropdown sidebar page menu pelayanan ibu hamil
+        isIbuHamilMenuOpen: false,
+        toggleIbuHamilMenu() {
+            this.isIbuHamilMenuOpen = !this.isIbuHamilMenuOpen;
+        },
 
         // Modal
         isModalOpen: false,

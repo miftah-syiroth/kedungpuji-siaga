@@ -1,18 +1,33 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Kelola KB Pasangan: ')  }}
+        {{ __('Kelola KB Pasangan')  }}
     </x-slot>
 
     {{-- komponen data pasangan dan edit pasangan --}}
-    <div class="py-4 w-2/3 grid">
+    <div class="py-4 flex flex-col">
         <div x-data="{ isOpen : true }">
             <div class="overflow-hidden px-4 bg-white rounded-lg shadow-2xl">
-                <div class="px-4 py-2">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900 justify-center text-center">
-                        <a href="#dataPersonal" x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">Data Pasangan</a>
+                <div class="px-2 py-2">
+                    <h3 class="text-md leading-6 font-medium text-gray-900 justify-center text-center">
+                        <button x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">Data Pasangan</button>
                     </h3>
+                    <div class="flex justify-between">
+                        <a href="/couples/{{ $couple->id }}/edit" class="bg-blue-500 px-4 py-1 rounded-md text-white text-sm text-center mt-2 hover:bg-blue-700">edit</a>
+                        <form action="/couples/{{ $couple->id }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <select name="marital_status_id" id="marital_status_id" required class="h-auto rounded-md text-xs">
+                                <option hidden>pilih status!</option>
+                                @foreach ($cerai_statuses as $status)
+                                <option value="{{ $status->id }}">{{ $status->status }}</option>
+                                @endforeach
+                            </select>
+                            
+                            <button type="submit" class="bg-red-500 px-4 py-1 rounded-md text-white text-sm text-center mt-2 hover:bg-red-700">cerai/hapus</button>
+                        </form>
+                    </div>
                 </div>
-                <div x-show="isOpen" id="dataPersonal" class="border-t border-gray-200">
+                <div x-show="isOpen" class="border-t border-gray-200">
                     <dl>
                         <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt class="text-sm font-medium text-gray-500">
@@ -32,6 +47,7 @@
                             </dd>
                         </div>
 
+                        <hr>
 
                         <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt class="text-sm font-medium text-gray-500">
@@ -53,7 +69,7 @@
 
                         <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt class="text-sm font-medium text-gray-500">
-                                Status Perkawinan
+                                Status Perkawinan Istri
                             </dt>
                             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                : {{ $couple->wife->maritalStatus->status  }}
@@ -65,35 +81,9 @@
                                 Peserta KB
                             </dt>
                             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                <div class="flex flex-row items-center justify-between">
-                                    <div class="flex flex-row items-center">
-                                        <p class="font-semibold">
-                                            : {{ $couple->is_kb == true ?  $couple->kbService->service ?? '-'  : 'non peserta'  }}
-                                        </p>
-                                        @if ($couple->is_kb == true )
-                                        <form action="/couples/{{ $couple->id }}" method="POST" class="ml-4">
-                                            @csrf
-                                            @method('PATCH')
-                                            <select name="kb_service_id" id="kb_service_id" class="text-xs">
-                                                <option hidden>pilih</option>
-                                                @foreach ($kb_services as $service)
-                                                <option value="{{ $service->id }}">{{ $service->service }}</option>
-                                                @endforeach
-                                            </select>
-                                            <button type="submit" class="bg-green-500 px-2 py-1 text-xs text-white rounded-lg hover:bg-gray-700">ubah</button>
-                                        </form>
-                                        @endif
-                                        
-                                    </div>
-                                    <div>
-                                        <form action="/couples/{{ $couple->id }}" method="post" class="mx-4">
-                                            @csrf
-                                            @method('PATCH')
-                                            <input type="hidden" name="is_kb" value="{{ $couple->is_kb ? 0 : 1 }}">
-                                            <button type="submit" class="text-red-400 hover:text-red-600 underline">{{ $couple->is_kb == true ? 'non peserta' : 'peserta' }}</button>
-                                        </form>
-                                    </div>
-                                </div>
+                                <p class="font-semibold">
+                                    : {{ $couple->is_kb == true ?  $couple->kbService->service ?? '-'  : 'non peserta'  }}
+                                </p>
                             </dd>
                         </div>
                     </dl>
@@ -104,15 +94,16 @@
     {{-- komponen data pasangan dan edit pasangan --}}
 
     {{-- komponen input data kb --}}
+    {{-- kalau umur istri subur, beri input utk laporan KB --}}
     <div class="py-4">
         <div x-data="{ isOpen : true }">
             <div class="overflow-hidden px-4 bg-white rounded-lg shadow-2xl">
                 <div class="px-4 py-2">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900 justify-center text-center">
-                        <a href="#dataPersonal" x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">Laporan KB {{ $current_year }}</a>
+                    <h3 class="text-md leading-6 font-medium text-gray-900 justify-center text-center">
+                        <button x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">Laporan KB {{ $current_year }}</button>
                     </h3>
                 </div>
-                <div x-show="isOpen" id="dataPersonal" class="border-t border-gray-200">
+                <div x-show="isOpen" class="border-t border-gray-200">
                     <dl>
                         <div class="grid gap-4 mb-8 grid-cols-4 mt-4">
                             @foreach ($months as $month)
@@ -133,7 +124,8 @@
                                         @endforeach
                                     </p>
 
-                                    @if ($month->id == $current_month)
+                                    
+                                    @if ($is_pus == true)
                                     <button x-show="editButton" x-on:click=" showForm=true, editButton=false " class="text-sm text-right text-blue-800 hover:underline">
                                         edit
                                     </button>
@@ -163,5 +155,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
+    
 </x-app-layout>

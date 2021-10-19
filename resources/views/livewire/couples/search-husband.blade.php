@@ -1,7 +1,7 @@
 <div>
     <div>
         <x-label for="suami" :value="__('Nama Suami')" />
-        <input type="text" wire:model="husband_search" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Cari Nama Suami">
+        <input type="text" wire:model="husband_search" class="block text-sm mt-1 w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Cari Nama Suami">
     </div>
 
     @unless ($husband_search == null)

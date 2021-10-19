@@ -26,14 +26,14 @@ class StorePrenatalClassRequest extends FormRequest
         return [
             'mother_weight' => ['required'],
             'arm_circumference' => ['required'],
-            'systolic' => ['required'],
-            'diastolic' => ['required'],
+            'systolic' => ['required', 'integer'],
+            'diastolic' => ['required', 'integer'],
             'uterine_height' => ['required'],
             'baby_heart_rate' => ['required'],
             'hemoglobin' => ['required'],
             'urine_protein' => ['required'],
             'blood_sugar' => ['required'],
-            'checkup_periode' => ['required'],
+            'month_periode' => ['required'],
         ];
     }
 }

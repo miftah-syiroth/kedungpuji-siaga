@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PregnantWomen;
+use App\Models\Posyandu;
 use Illuminate\Http\Request;
 
-class PregnantWomenController extends Controller
+class PosyanduController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class PregnantWomenController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\PregnantWomen  $pregnantWomen
+     * @param  \App\Models\Posyandu  $posyandu
      * @return \Illuminate\Http\Response
      */
-    public function show(PregnantWomen $pregnantWomen)
+    public function show(Posyandu $posyandu)
     {
         //
     }
@@ -52,10 +52,10 @@ class PregnantWomenController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\PregnantWomen  $pregnantWomen
+     * @param  \App\Models\Posyandu  $posyandu
      * @return \Illuminate\Http\Response
      */
-    public function edit(PregnantWomen $pregnantWomen)
+    public function edit(Posyandu $posyandu)
     {
         //
     }
@@ -64,10 +64,10 @@ class PregnantWomenController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PregnantWomen  $pregnantWomen
+     * @param  \App\Models\Posyandu  $posyandu
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PregnantWomen $pregnantWomen)
+    public function update(Request $request, Posyandu $posyandu)
     {
         //
     }
@@ -75,10 +75,10 @@ class PregnantWomenController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\PregnantWomen  $pregnantWomen
+     * @param  \App\Models\Posyandu  $posyandu
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PregnantWomen $pregnantWomen)
+    public function destroy(Posyandu $posyandu)
     {
         //
     }

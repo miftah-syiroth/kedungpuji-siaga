@@ -13,13 +13,8 @@ class SearchMember extends Component
 
     public function getPerson()
     {
-        // cari orang yang ga punya relasi dengan keluarga dan status anggotanya bukan kepala keluarga
-        // return Person::where('sex_id', 1)
-        //     ->where('marital_status_id', '!=', 1)
-        //     ->where(function ($query) {
-        //         $query->where('name', 'like', $this->person_search_term . '%');
-        //     })->get();
         return Person::doesntHave('family')
+            ->whereNull('died_at')
             ->where(function ($query) {
                 $query->where('name', 'like', $this->person_search_term . '%');
             })->get();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePrenatalClassRequest;
+use App\Http\Requests\UpdatePrenatalClassRequest;
 use App\Models\Pregnancy;
 use App\Models\PrenatalClass;
 use App\Services\PrenatalClassService;
@@ -25,9 +26,18 @@ class PrenatalClassController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Pregnancy $pregnancy, $month)
     {
-        //
+        // cek disini apakah tgl persalinan udh diisi atau udh hamil, maka cegah input laporan baru
+        if ($pregnancy->childbirth_date != null) {
+            return redirect('/pregnancies/' . $pregnancy->id);
+        } elseif ($pregnancy->childbirth_date == null) {
+            return view('prenatal-classes.create', [
+                'pregnancy' => $pregnancy,
+                'month' => $month,
+            ]);
+        }
+        
     }
 
     /**
@@ -38,9 +48,8 @@ class PrenatalClassController extends Controller
      */
     public function store(StorePrenatalClassRequest $request, Pregnancy $pregnancy, PrenatalClassService $service)
     {
-        // dd($pregnancy);
         $service->store($request, $pregnancy);
-        return redirect()->back();
+        return redirect('/pregnancies/' . $pregnancy->id);
     }
 
     /**
@@ -62,7 +71,9 @@ class PrenatalClassController extends Controller
      */
     public function edit(PrenatalClass $prenatalClass)
     {
-        //
+        return view('prenatal-classes.edit', [
+            'prenatal_class' => $prenatalClass,
+        ]);
     }
 
     /**
@@ -72,9 +83,10 @@ class PrenatalClassController extends Controller
      * @param  \App\Models\PrenatalClass  $prenatalClass
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PrenatalClass $prenatalClass)
+    public function update(UpdatePrenatalClassRequest $request, PrenatalClass $prenatalClass, PrenatalClassService $service)
     {
-        //
+        $service->update($request, $prenatalClass);
+        return redirect('/pregnancies/' . $prenatalClass->pregnancy->id);
     }
 
     /**

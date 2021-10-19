@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreNewPregnancyRequest extends FormRequest
+class UpdatePuerperalRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,10 @@ class StoreNewPregnancyRequest extends FormRequest
     public function rules()
     {
         return [
-            'hpht' => ['required'],
-            'mother_weight' => ['required'],
-            'mother_height' => ['required'],
+            'mother_condition_id' => ['required', 'array'],
+            'puerperal_complication_id' => ['required', 'array'],
+            'baby_condition_id' => ['required', 'array'],
+            'conclusion' => ['required', 'string'],
         ];
     }
 }

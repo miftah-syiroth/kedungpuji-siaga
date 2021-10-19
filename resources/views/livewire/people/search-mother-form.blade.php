@@ -1,5 +1,3 @@
-{{-- <div class="flex mt-4"> --}}
-
     <div class="flex">
         <!-- ibu kandung -->
         <div class="mx-2 items-center">
@@ -25,4 +23,3 @@
         </div>
         @endunless
     </div>  
-{{-- </div> --}}

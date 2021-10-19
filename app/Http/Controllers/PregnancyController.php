@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreNewPregnancyRequest;
+use App\Http\Requests\StorePregnancyRequest;
+use App\Http\Requests\UpdatePregnancyRequest;
+use App\Models\BabyCondition;
 use App\Models\Person;
 use App\Models\Pregnancy;
+use App\Models\Sex;
 use App\Services\PregnancyService;
-use Illuminate\Http\Request;
 
 class PregnancyController extends Controller
 {
@@ -15,9 +18,12 @@ class PregnancyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(PregnancyService $pregnancyService)
     {
-        //
+        // dd($pregnancyService->getAllPregnancies());
+        return view('pregnancies.index', [
+            'pregnancies' => $pregnancyService->getAllPregnancies(),
+        ]);
     }
 
     /**
@@ -25,11 +31,9 @@ class PregnancyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Person $person)
+    public function create()
     {
-        return view('pregnancies.create', [
-            'mother' => $person,
-        ]);
+        return view('pregnancies.create');
     }
 
     /**
@@ -38,10 +42,15 @@ class PregnancyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreNewPregnancyRequest $request, Person $person, PregnancyService $pregnancyService)
+    public function store(StorePregnancyRequest $request, PregnancyService $pregnancyService)
     {
-        $pregnancyService->store($request, $person);
-        return redirect('/people/' . $person->id);
+        $pregnancy = $pregnancyService->store($request);
+
+        if (empty($pregnancy)) {
+            return redirect('/pregnancies/create')->with('message', 'ibu belum melahirkan atau belum selesai Nifas');
+        } else {
+            return redirect('/pregnancies/' . $pregnancy->id);
+        }   
     }
 
     /**
@@ -52,9 +61,13 @@ class PregnancyController extends Controller
      */
     public function show(Pregnancy $pregnancy, PregnancyService $pregnancyService)
     {
+        // kalau 
+
         return view('pregnancies.show', [
             'pregnancy' => $pregnancy,
-            'kb_status' => $pregnancyService->getKbAfterChildbirth($pregnancy)
+            'age_in_months' => $pregnancy->hpht->diffInMonths(now()) + 1,
+            'age_in_weeks' => $pregnancy->hpht->diffInWeeks(now()),
+            'age_in_days' => $pregnancy->hpht->diffInDays(now()),
         ]);
     }
 
@@ -64,9 +77,13 @@ class PregnancyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Pregnancy $pregnancy)
     {
-        //
+        return view('pregnancies.edit', [
+            'pregnancy' => $pregnancy,
+            'sexes' => Sex::all(),
+            'baby_conditions' => BabyCondition::all(),
+        ]);
     }
 
     /**
@@ -76,9 +93,10 @@ class PregnancyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreNewPregnancyRequest $request, Pregnancy $pregnancy, )
+    public function update(UpdatePregnancyRequest $request, Pregnancy $pregnancy, PregnancyService $pregnancyService)
     {
-        
+        $pregnancyService->update($request, $pregnancy);
+        return redirect('/pregnancies/' . $pregnancy->id);
     }
 
     /**

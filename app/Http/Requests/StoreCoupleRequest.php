@@ -24,17 +24,17 @@ class StoreCoupleRequest extends FormRequest
     public function rules()
     {
         // jika dia kb, maka input kb_service menjadi required
-        if ($this->is_kb == 1) {
-            $validasi = 'required';
-        } elseif ($this->is_kb == 0) { // menjadi sometimes
-            $validasi = 'sometimes';
-        }
+        // if ($this->is_kb == 1) {
+        //     $validasi = 'required';
+        // } elseif ($this->is_kb == 0) { 
+        //     $validasi = 'sometimes';
+        // }
 
         return [
-            'istri_id' => ['required', 'string', 'unique:couples'],
+            'istri_id' => ['required', 'string'],
             'suami_id' => ['required', 'string'],
-            'kb_service_id' => [$validasi],
-            'is_kb' => ['required'],
+            'is_kb' => ['required', 'boolean'],
+            'kb_service_id' => ['exclude_unless:is_kb,true', 'required', 'integer'],
         ];
     }
 }
