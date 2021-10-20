@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Posyandu;
+use App\Services\PosyanduService;
 use Illuminate\Http\Request;
 
 class PosyanduController extends Controller
@@ -12,9 +13,11 @@ class PosyanduController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(PosyanduService $service)
     {
-        //
+        return view('posyandu.index', [
+            'balita' => $service->getAllBalita(),
+        ]);
     }
 
     /**
@@ -24,7 +27,7 @@ class PosyanduController extends Controller
      */
     public function create()
     {
-        //
+        return view('posyandu.create');
     }
 
     /**
@@ -33,9 +36,11 @@ class PosyanduController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, PosyanduService $service)
     {
-        //
+        // request belum dicustom
+        $posyandu = $service->store($request);
+        return redirect('/posyandu/' . $posyandu);
     }
 
     /**
@@ -46,7 +51,9 @@ class PosyanduController extends Controller
      */
     public function show(Posyandu $posyandu)
     {
-        //
+        return view('posyandu.show', [
+            'posyandu' => $posyandu,
+        ]);
     }
 
     /**

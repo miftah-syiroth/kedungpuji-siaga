@@ -103,10 +103,6 @@ class Person extends Model
      *
      * @return void
      */
-    // public function family()
-    // {
-    //     return $this->belongsTo(Family::class, 'family_id');
-    // }
     public function family()
     {
         return $this->belongsToMany(Family::class, 'person_has_family', 'person_id', 'family_id')
@@ -222,5 +218,10 @@ class Person extends Model
             'id',
             'id',
         );
+    }
+
+    public function posyandu()
+    {
+        return $this->hasOne(Posyandu::class, 'person_id');
     }
 }

@@ -8,7 +8,9 @@ use App\Http\Controllers\Invokeables\FamilyMemberStore;
 use App\Http\Controllers\Invokeables\PasanganUsiaSubur;
 use App\Http\Controllers\KeluargaBerencana\MonthlyReport;
 use App\Http\Controllers\KeluargaBerencanaController;
+use App\Http\Controllers\NeonatusController;
 use App\Http\Controllers\PersonController;
+use App\Http\Controllers\PosyanduController;
 use App\Http\Controllers\PregnancyController;
 use App\Http\Controllers\PrenatalClassController;
 use App\Http\Controllers\PuerperalClassController;
@@ -67,6 +69,25 @@ Route::middleware('auth')->group(function () {
     Route::get('/puerperals/{puerperal}/puerperal-classes/{periode}/create', [PuerperalClassController::class, 'create']);
     // route untuk menyimpan input laporan kunjungan ibu nifas
     Route::post('/puerperals/{puerperal}/puerperal-classes', [PuerperalClassController::class, 'store']);
+
+
+    // route untuk indeks posyandu balita
+    Route::get('/posyandu', [PosyanduController::class, 'index']);
+    // route untuk menambahkan orang atau balita ke dalam posyandu
+    Route::get('/posyandu/create', [PosyanduController::class, 'create']);
+    // route untuk store input pendaftaran posyandu
+    Route::post('/posyandu', [PosyanduController::class, 'store']);
+    // Route untuk show data posyandu
+    Route::get('/posyandu/{posyandu}', [PosyanduController::class, 'show']);
+    // Route untuk menuju halaman form simpan data pelayanan neonatus
+    Route::get('/posyandu/{posyandu}/neonatuses/{periode}/create', [NeonatusController::class, 'create']);
+    // route menyimpan laporan neonatus
+    Route::post('/posyandu/{posyandu}/neonatuses', [NeonatusController::class, 'store']);
+    // route menuju halaman edit input pelayanan neonatus
+    Route::get('/neonatuses/{neonatus}/edit', [NeonatusController::class, 'edit']);
+    // route untuk update pelayanan neonatus
+    Route::put('/neonatuses/{neonatus}', [NeonatusController::class, 'update']);
+
     
     # INVOKEABLES #
     // route untuk menambahkan anggota baru pada sebuah keluarga, invokable

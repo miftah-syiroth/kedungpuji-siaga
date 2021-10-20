@@ -87,7 +87,6 @@
                 
                 <div x-show="isOpen" class="border-t border-gray-200">
                     <div class="grid gap-2 mb-8 grid-cols-2 mt-4">
-                        {{-- @for ($i = 1; $i <= 4; $i++) --}}
                         @foreach ($periode as $jadwal)
                            
                         <div class="bg-gray-50 rounded-md border-2">
@@ -101,7 +100,7 @@
                                 </div>
                                 
                                 
-                                {{-- variabel ini akan digunakan untuk menampilkan tombol create pada bulan yg sesuai dgn umur kehamilan dan belum ada isinya --}}
+                                {{-- kalau ga terisi, button input muncul --}}
                                 @php $is_filled = false; @endphp
 
                                 @foreach ($puerperal->puerperalClasses as $data)

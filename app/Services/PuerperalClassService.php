@@ -4,8 +4,7 @@ namespace App\Services;
 
 class PuerperalClassService
 {    
-    /**
-     * jika tdk ada waktu kunjungan yg diinput, maka gunakan waktu sekarang
+    /*
      * ambil nilai difference antara bersalin dan waktu kunjungan yg diinput
      * cek kesesuaian waktu kunjungan, input date harus sesuai dengan batasan waktu kunjungan, semisal periode KF1 0-2 hari setelah bersalin, jika lahir pd tgl 1, input date tidak boleh lebih dari H+2 atau tgl 3
      * 

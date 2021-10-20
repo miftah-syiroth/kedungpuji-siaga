@@ -20,9 +20,7 @@ class PersonService
     {
         return Person::with([
             'sex', 
-            'family' => function ($query) {
-                $query->first();
-            },
+            'family',
             'maritalStatus',
             'bloodGroup',
         ])->get();

@@ -85,6 +85,11 @@ function data() {
         toggleIbuHamilMenu() {
             this.isIbuHamilMenuOpen = !this.isIbuHamilMenuOpen;
         },
+        // dropdown posyandu
+        isPosyanduMenuOpen: false,
+        togglePosyanduMenu() {
+            this.isPosyanduMenuOpen = !this.isPosyanduMenuOpen;
+        },
 
         // Modal
         isModalOpen: false,

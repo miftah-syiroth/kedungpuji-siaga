@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePosyanduTable extends Migration
+class AddImunisasiHbToNeonatusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreatePosyanduTable extends Migration
      */
     public function up()
     {
-        Schema::create('posyandu', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('person_id')->constrained('people');
-            $table->foreignId('pregnancy_id')->nullable()->constrained('pregnancies');
-            $table->timestamps();
+        Schema::table('neonatuses', function (Blueprint $table) {
+            $table->boolean('imunisasi_hb')->nullable();
         });
     }
 
@@ -28,6 +25,8 @@ class CreatePosyanduTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posyandu');
+        Schema::table('neonatuses', function (Blueprint $table) {
+            //
+        });
     }
 }

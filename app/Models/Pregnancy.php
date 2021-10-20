@@ -67,4 +67,9 @@ class Pregnancy extends Model
     {
         return $this->hasOne(Puerperal::class, 'pregnancy_id');
     }
+
+    public function posyandu()
+    {
+        return $this->hasOne(Posyandu::class, 'pregnancy_id');
+    }
 }

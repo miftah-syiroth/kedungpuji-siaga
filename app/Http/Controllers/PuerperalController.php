@@ -52,10 +52,10 @@ class PuerperalController extends Controller
     public function show(Puerperal $puerperal)
     {
         $periode = [
-            ['nomor' => 1, 'min' => 0, 'max' => 2],
-            ['nomor' => 2, 'min' => 3, 'max' => 7],
-            ['nomor' => 3, 'min' => 8, 'max' => 28],
-            ['nomor' => 4, 'min' => 29, 'max' => 42],
+            ['nomor' => 1, 'min' => 0, 'max' => 0.25], // 0-6 jam
+            ['nomor' => 2, 'min' => 0.25, 'max' => 2], //6-48 jam
+            ['nomor' => 3, 'min' => 3, 'max' => 7], //3-7 hari
+            ['nomor' => 4, 'min' => 8, 'max' => 28], //8-28 hari
         ];
 
         return view('puerperals.show', [
