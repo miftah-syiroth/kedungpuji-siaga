@@ -18,17 +18,12 @@ class Pregnancy extends Model
         'childbirth_date' => 'datetime:Y-m-d',
     ];
 
-    protected $with = ['mother', 'prenatalClasses'];
+    protected $with = ['mother', 'prenatalClasses', 'sex'];
 
     public function getHphtAttribute($value)
     {
         return Carbon::parse($this->attributes['hpht']);
     }
-
-    // public function getChildbirthDateAttribute()
-    // {
-    //     return Carbon::parse($this->attributes['childbirth_date']);
-    // }
 
     public function babyCondition()
     {
@@ -44,6 +39,16 @@ class Pregnancy extends Model
     public function mother()
     {
         return $this->belongsTo(Person::class, 'mother_id');
+    }
+    
+    /**
+     * setiap kehamilan menghasilkan satu orang atau satu bayi
+     *
+     * @return void
+     */
+    public function baby()
+    {
+        return $this->belongsTo(Person::class, 'baby_id');
     }
 
     public function prenatalClasses()
@@ -66,10 +71,5 @@ class Pregnancy extends Model
     public function puerperal()
     {
         return $this->hasOne(Puerperal::class, 'pregnancy_id');
-    }
-
-    public function posyandu()
-    {
-        return $this->hasOne(Posyandu::class, 'pregnancy_id');
     }
 }

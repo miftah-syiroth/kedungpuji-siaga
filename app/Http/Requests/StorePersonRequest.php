@@ -23,15 +23,6 @@ class StorePersonRequest extends FormRequest
      */
     public function rules()
     {
-        // jika kepala keluarga maka wajib isi nomor KK dan status keluarga sejahtera utk pembuatan model keluarga
-        // if ($this->family_status_id == 1) {
-        //     $new_family_rule = 'required';
-        //     $family_id_rule = 'sometimes';
-        // }else {
-        //     $new_family_rule = 'sometimes';
-        //     $family_id_rule = 'required';
-        // }
-
         return [
             'name' => ['required', 'string'],
             'nik' => ['required', 'string', 'unique:people'],

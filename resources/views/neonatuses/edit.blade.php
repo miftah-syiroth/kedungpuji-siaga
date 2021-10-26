@@ -3,6 +3,12 @@
         {{ __('Edit Laporan Pelayanan Neonatus') }}
     </x-slot>
     
+    @if (session('message'))
+        <span class="text-red-500 text-sm text-center">
+            {{ session('message') }}
+        </span>
+    @endif
+
     <div class="py-4">
         <div class="flex justify-start">
             <div class="px-3 py-6 bg-white rounded-lg shadow-lg">
@@ -15,6 +21,9 @@
                             <div class="mx-4">
                                 <x-label for="visited_at" :value="__('Waktu Pelayanan')" />
                                 <input type="datetime-local" name="visited_at" id="visited_at" value="{{ $neonatus->visited_at->isoFormat('YYYY-MM-DDThh:mm') }}" required class="block mt-1 w-auto border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
+                                <span class="text-sm text-green-800">
+                                    {{ $waktu_awal->isoFormat('DD-MMM-YYYY') }} hingga {{ $waktu_akhir->isoFormat('DD-MMM-YYYY') }}
+                                </span>
                             </div>
 
                             <!-- baby_weight -->

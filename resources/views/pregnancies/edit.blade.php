@@ -3,6 +3,12 @@
         {{ __('Edit Ringkasan Pelayanan Persalinan: ') }}
         <a href="/pregnancies/{{ $pregnancy->id }}" class="text-blue-400 hover:text-blue-700">{{ $pregnancy->mother->name }}</a>
     </x-slot>
+
+    @if (session('message'))
+        <span class="text-red-500 text-sm text-center">
+            {{ session('message') }}
+        </span>
+    @endif
     
     <div class="py-4">
         <div class="flex justify-start">
@@ -34,14 +40,16 @@
                         </div> 
                     </div>
                     
-    
                     <div class="p-2">
                         <h3 class="text-center font-semibold text-gray-600 mb-4">Ringkasan Ibu</h3>
                         <div class="flex flex-row">
                             <!-- tanggal persalinan -->
                             <div class="mx-1 w-auto">
                                 <x-label for="childbirth_date" :value="__('Waktu Persalinan')" />
-                                <input type="datetime-local" name="childbirth_date" id="childbirth_date" value="{{ $pregnancy->childbirth_date->isoFormat('YYYY-MM-DDThh:mm') }}" class="block mt-1 w-60 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
+                                <input type="datetime-local" name="childbirth_date" id="childbirth_date" value="{{ $pregnancy->childbirth_date ? $pregnancy->childbirth_date->isoFormat('YYYY-MM-DDThh:mm') : '' }}" class="block mt-1 w-60 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
+                                <span class="text-sm text-green-800">
+                                    {{ $awal_waktu->isoFormat('DD MMM YYYY') }} - {{ $akhir_waktu->isoFormat('DD MMM YYYY') }} (trimester 3)
+                                </span>
                             </div>
         
                             <!-- penolong persalinan -->

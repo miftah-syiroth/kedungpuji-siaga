@@ -25,28 +25,13 @@ class PuerperalClassController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Puerperal $puerperal, $periode)
+    public function create(Puerperal $puerperal, $periode, PuerperalClassService $service)
     {
-        // buat batasan secara tertulis sebelum via fungsi pada store
-        if ($periode == 1) {
-            $waktu_awal = $puerperal->pregnancy->childbirth_date->addDays(0);
-            $waktu_akhir = $puerperal->pregnancy->childbirth_date->addDays(2);
-        } elseif ($periode == 2) {
-            $waktu_awal = $puerperal->pregnancy->childbirth_date->addDays(3);
-            $waktu_akhir = $puerperal->pregnancy->childbirth_date->addDays(7);
-        } elseif ($periode == 3) {
-            $waktu_awal = $puerperal->pregnancy->childbirth_date->addDays(8);
-            $waktu_akhir = $puerperal->pregnancy->childbirth_date->addDays(28);
-        } elseif ($periode == 4) {
-            $waktu_awal = $puerperal->pregnancy->childbirth_date->addDays(29);
-            $waktu_akhir = $puerperal->pregnancy->childbirth_date->addDays(42);
-        }
-
         return view('puerperal-classes.create', [
             'puerperal' => $puerperal,
             'periode' => $periode,
-            'waktu_awal' => $waktu_awal,
-            'waktu_akhir' => $waktu_akhir,
+            'waktu_awal' => $service->getWaktuAwal($puerperal->pregnancy->childbirth_date, $periode),
+            'waktu_akhir' => $service->getWaktuAkhir($puerperal->pregnancy->childbirth_date, $periode),
         ]);
     }
 

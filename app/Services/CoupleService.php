@@ -45,7 +45,7 @@ class CoupleService
     public function getPus()
     {
         return Couple::whereHas('wife', function (Builder $query) {
-            $query->whereDate('date_of_birth', '<=', Carbon::now()->addYears(-15) )
+            $query->whereDate('date_of_birth', '<=', Carbon::now()->addYears(-15) ) //koreksi lagi
                 ->whereDate('date_of_birth', '>=', Carbon::now()->addYears(-49) );
         })->with(['kbService', 'husband', 'wife.maritalStatus'])->get();
     }

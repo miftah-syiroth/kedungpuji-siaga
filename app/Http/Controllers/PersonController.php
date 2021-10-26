@@ -4,8 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePersonRequest;
 use App\Http\Requests\UpdatePersonRequest;
+use App\Models\BloodGroup;
+use App\Models\Disability;
+use App\Models\Educational;
+use App\Models\MaritalStatus;
 use App\Models\Month;
 use App\Models\Person;
+use App\Models\Religion;
+use App\Models\Sex;
 use App\Services\PersonService;
 use Illuminate\Http\Request;
 
@@ -31,12 +37,12 @@ class PersonController extends Controller
     public function create(PersonService $personService)
     {
         return view('people.create', [
-            'sexes' => $personService->getSexes(),
-            'religions' => $personService->getReligions(),
-            'blood_groups' => $personService->getBloodGroups(),
-            'educationals' => $personService->getEducationals(),
-            'disabilities' => $personService->getDisabilities(),
-            'marital_statuses' => $personService->getMaritalStatuses(),
+            'sexes' => Sex::all(),
+            'religions' => Religion::all(),
+            'blood_groups' => BloodGroup::all(),
+            'educationals' => Educational::all(),
+            'disabilities' => Disability::all(),
+            'marital_statuses' => MaritalStatus::all(),
         ]);
     }
 

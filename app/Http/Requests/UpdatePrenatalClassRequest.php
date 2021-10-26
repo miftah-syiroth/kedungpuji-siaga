@@ -33,6 +33,7 @@ class UpdatePrenatalClassRequest extends FormRequest
             'hemoglobin' => ['required'],
             'urine_protein' => ['required'],
             'blood_sugar' => ['required'],
+            'visited_at' => ['required'],
         ];
     }
 }

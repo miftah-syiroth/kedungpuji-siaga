@@ -225,6 +225,14 @@
                                 <dl>
                                     <div class="px-2 py-1 grid grid-cols-2 gap-2">
                                         <dt class="text-sm font-medium text-gray-500">
+                                            Waktu Kunjungan
+                                        </dt>
+                                        <dd class="mt-1 text-sm sm:mt-0">
+                                            : {{ $data->visited_at->isoFormat('dddd, DD MMMM YYYY') }}
+                                        </dd>
+                                    </div>
+                                    <div class="px-2 py-1 grid grid-cols-2 gap-2">
+                                        <dt class="text-sm font-medium text-gray-500">
                                             Berat Badan
                                         </dt>
                                         <dd class="mt-1 text-sm sm:mt-0">
@@ -288,7 +296,7 @@
                                         </dd>
                                     </div>
                                 </dl>
-                                <a href="/prenatal-classes/{{ $data->id }}/edit" class="text-sm text-center rounded-md px-3 py-1 bg-green-500 hover:bg-green-700 text-white">edit</a>
+                                <a href="/prenatal-classes/{{ $data->id }}/edit" class="text-xs text-center rounded-md py-1 bg-green-500 hover:bg-green-700 text-white m-1">edit</a>
                                 
                                 @break
                                 @endif

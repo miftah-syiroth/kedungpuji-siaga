@@ -7,12 +7,6 @@
                     <button x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">Layanan Neonatus</button>
                 </h3>
 
-                @if (session('message'))
-                    <span class="text-red-500 text-sm text-center">
-                        {{ session('message') }}
-                    </span>
-                @endif
-
                 <div x-show="isOpen">
                     <h3 class="text-sm font-medium">Kelahiran hari ke : {{ $umur_bayi }}</h3>
                 </div>
@@ -29,7 +23,7 @@
                                 <h3 class="text-md font-medium text-dark text-center" >
                                     KN {{ $periode['nomor'] }}
                                 </h3>
-                                <h5 class="text-center text-sm text-gray-600">({{ $periode['min'] }} - {{ $periode['max'] }} hari)</h5>
+                                <h5 class="text-center text-sm text-gray-600">({{ $periode['min'] }} - {{ $periode['max'] }})</h5>
                             </div>
 
                             @php $is_filled = false; @endphp
@@ -56,16 +50,21 @@
                                     <h3 class="font-semibold col-span-2">LK</h3>
                                     <p class="ml-4 col-span-4">: {{ $neonatus->baby_head_circumference }} cm</p>
                                 </div>
-                                <div class="px-2 grid grid-cols-6 gap-1 pt-1">
-                                    <h3 class="font-semibold col-span-2">Perawatan Tali Pusat</h3>
-                                    <label class="inline-flex items-center ml-4 col-span-4">
-                                        : <input class="form-radio ml-1" type="checkbox" {{ $neonatus->perawatan_tali_pusat == true ? 'checked' : '' }} disabled />
-                                    </label>
-                                </div>
+
+                                @if ($neonatus->periode == 1)
                                 <div class="px-2 grid grid-cols-6 gap-1 pt-1">
                                     <h3 class="font-semibold col-span-2">IMD</h3>
                                     <label class="inline-flex items-center ml-4 col-span-4">
                                         : <input class="form-radio ml-1" type="checkbox" {{ $neonatus->imd == true ? 'checked' : '' }} disabled />
+                                    </label>
+                                </div>
+                                @endif
+
+                                @if (in_array($neonatus->periode, [1, 2]))
+                                <div class="px-2 grid grid-cols-6 gap-1 pt-1">
+                                    <h3 class="font-semibold col-span-2">Salep/Tetes Mata</h3>
+                                    <label class="inline-flex items-center ml-4 col-span-4">
+                                        : <input class="form-radio ml-1" type="checkbox" {{ $neonatus->salep_mata == true ? 'checked' : '' }} disabled />
                                     </label>
                                 </div>
                                 <div class="px-2 grid grid-cols-6 gap-1 pt-1">
@@ -74,18 +73,24 @@
                                         : <input class="form-radio ml-1" type="checkbox" {{ $neonatus->vitamin_k1 == true ? 'checked' : '' }} disabled />
                                     </label>
                                 </div>
+                                @endif
+
+                                @if (in_array($neonatus->periode, [1, 2, 3]))
                                 <div class="px-2 grid grid-cols-6 gap-1 pt-1">
                                     <h3 class="font-semibold col-span-2">Imunisasi HB</h3>
                                     <label class="inline-flex items-center ml-4 col-span-4">
                                         : <input class="form-radio ml-1" type="checkbox" {{ $neonatus->imunisasi_hb == true ? 'checked' : '' }} disabled />
                                     </label>
                                 </div>
+                                @endif
+
                                 <div class="px-2 grid grid-cols-6 gap-1 pt-1">
-                                    <h3 class="font-semibold col-span-2">Salep/Tetes Mata</h3>
+                                    <h3 class="font-semibold col-span-2">Perawatan Tali Pusat</h3>
                                     <label class="inline-flex items-center ml-4 col-span-4">
-                                        : <input class="form-radio ml-1" type="checkbox" {{ $neonatus->salep_mata == true ? 'checked' : '' }} disabled />
+                                        : <input class="form-radio ml-1" type="checkbox" {{ $neonatus->perawatan_tali_pusat == true ? 'checked' : '' }} disabled />
                                     </label>
                                 </div>
+                                
                                 <div class="px-2 grid grid-cols-6 gap-1 pt-1">
                                     <h3 class="font-semibold col-span-2">Masalah</h3>
                                     <p class="ml-4 col-span-4 flex">:  

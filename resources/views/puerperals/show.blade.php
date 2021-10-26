@@ -96,7 +96,7 @@
                                     <h3 class="text-md font-medium text-dark text-center" >
                                         KF {{ $jadwal['nomor'] }}
                                     </h3>
-                                    <h5 class="text-center text-sm text-gray-600">({{ $jadwal['min'] }} - {{ $jadwal['max'] }} hari)</h5>
+                                    <h5 class="text-center text-sm text-gray-600">({{ $jadwal['min'] }} - {{ $jadwal['max'] }})</h5>
                                 </div>
                                 
                                 
@@ -125,9 +125,8 @@
                                         <p class="ml-4">{{ $data->action }}</p>
                                     </div>
                                 </dl>
-                                <div class="flex justify-center">
-                                    <a href="/puerperal-classes/{{ $data->id }}/edit" class="text-xs text-center rounded-md px-3 py-1 bg-green-500 hover:bg-green-700 text-white">edit</a>
-                                </div>
+
+                                <a href="/puerperal-classes/{{ $data->id }}/edit" class="text-xs text-center rounded-md py-1 bg-green-500 hover:bg-green-700 text-white m-1">edit</a>
                                 
                                 
                                 @break

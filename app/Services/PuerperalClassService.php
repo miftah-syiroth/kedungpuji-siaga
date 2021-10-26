@@ -56,4 +56,32 @@ class PuerperalClassService
 
         return $is_allowed;
     }
+
+    public function getWaktuAwal($childbirth_date, $periode)
+    {
+        // buat batasan secara tertulis sebelum via fungsi pada store
+        if ($periode == 1) {
+            return $childbirth_date->addHours(6);
+        } elseif ($periode == 2) {
+            return $childbirth_date->addDays(3);
+        } elseif ($periode == 3) {
+            return $childbirth_date->addDays(8);
+        } elseif ($periode == 4) {
+            return $childbirth_date->addDays(29);
+        }
+    }
+
+    public function getWaktuAkhir($childbirth_date, $periode)
+    {
+        // buat batasan secara tertulis sebelum via fungsi pada store
+        if ($periode == 1) {
+            return $childbirth_date->addHours(48);
+        } elseif ($periode == 2) {
+            return $childbirth_date->addDays(7);
+        } elseif ($periode == 3) {
+            return $childbirth_date->addDays(28);
+        } elseif ($periode == 4) {
+            return $childbirth_date->addDays(42);
+        }
+    }
 }

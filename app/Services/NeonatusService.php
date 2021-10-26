@@ -16,15 +16,18 @@ class NeonatusService
 
         if ($is_allowed == true) {
             $posyandu->neonatuses()->create($request->all());
-            return 'berhasil disimpan';
+            return true;
         } else {
-            return 'masukkan waktu kunjungan yg sesuai dengan batasan KN';
+            // return 'masukkan waktu kunjungan yg sesuai dengan batasan KN';
+            return false;
         }
         
     }
 
     public function checkVisiteTime($request, $date_of_birth)
     {
+        $retVal = false;
+
         $diffInHours = $date_of_birth->diffInHours($request->visited_at);
         $diffInDays = $date_of_birth->diffInDays($request->visited_at);
 
@@ -68,9 +71,37 @@ class NeonatusService
                 'referred_to' => $request->referred_to,
                 'health_worker' => $request->health_worker,
             ]);
-            return 'berhasil diubah';
+            return true;
         } else {
-            return 'masukkan waktu kunjungan yg sesuai dengan batasan KN';
+            return false;
         } 
+    }
+
+    public function getWaktuAwal($date_of_birth, $periode)
+    {
+        // buat batasan secara tertulis sebelum via fungsi pada store
+        if ($periode == 1) {
+            return $date_of_birth->addHours(0);
+        } elseif ($periode == 2) {
+            return $date_of_birth->addHours(6);
+        } elseif ($periode == 3) {
+            return $date_of_birth->addDays(3);
+        } elseif ($periode == 4) {
+            return $date_of_birth->addDays(8);
+        }
+    }
+
+    public function getWaktuAkhir($date_of_birth, $periode)
+    {
+        // buat batasan secara tertulis sebelum via fungsi pada store
+        if ($periode == 1) {
+            return $date_of_birth->addHours(6);
+        } elseif ($periode == 2) {
+            return $date_of_birth->addHours(48);
+        } elseif ($periode == 3) {
+            return $date_of_birth->addDays(7);
+        } elseif ($periode == 4) {
+            return $date_of_birth->addDays(28);
+        }
     }
 }

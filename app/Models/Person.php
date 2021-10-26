@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Person extends Model
@@ -18,22 +19,6 @@ class Person extends Model
         'date_of_birth' => 'datetime:Y-m-d',
         'died_at' => 'datetime:Y-m-d',
     ];
-    
-    /**
-     * age method menghitung umur berdasarkan tanggal lahir
-     *
-     * @return void
-     */
-    // public function age()
-    // {
-    //     return Carbon::parse($this->attributes['date_of_birth'])->age;
-    // }
-
-    public function getDateOfBirthAttribute($value)
-    {
-        // return Carbon::parse($this->attributes['date_of_birth'])->isoFormat('DD MMMM Y');
-        return Carbon::parse($this->attributes['date_of_birth']);
-    }
     
     /**
      * sex merelasi many to one pada person ke jenis kelamin
@@ -196,6 +181,16 @@ class Person extends Model
     {
         return $this->hasMany(Pregnancy::class, 'mother_id');
     }
+    
+    /**
+     * setiap orang pasti menjadi satu objek yg dilahirkan dari sebuah kehamilan
+     *
+     * @return void
+     */
+    public function childbirth()
+    {
+        return $this->hasOne(Pregnancy::class, 'baby_id');
+    }
 
     // Get the mother's most recent pregnancy.
     public function latestPregnancy()
@@ -219,7 +214,12 @@ class Person extends Model
             'id',
         );
     }
-
+    
+    /**
+     * pelayanan posyandu selama 5 tahun
+     *
+     * @return void
+     */
     public function posyandu()
     {
         return $this->hasOne(Posyandu::class, 'person_id');

@@ -64,7 +64,10 @@
                             <a class="w-full" href="{{ route('people.index') }}">Semua Penduduk</a>
                         </li>
                         <li class=" px-2 py-1 transition-colorsduration-150 hover:text-blue-500">
-                            <a class="w-full" href="{{ route('people.create') }}">Tambah Penduduk</a>
+                            <a class="w-full" href="{{ route('people.create') }}">Tambah Pendatang</a>
+                        </li>
+                        <li class=" px-2 py-1 transition-colorsduration-150 hover:text-blue-500">
+                            <a class="w-full" href="/childbirths">Kelahiran Baru</a>
                         </li>
                     </ul>
                 </template>
@@ -330,38 +333,6 @@
                         class="p-1 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md  shadow-inner bg-gray-100" aria-label="submenu" >
                         <li class="px-2 py-1 transition-colorsduration-150 hover:text-blue-500">
                             <a class="w-full" href="/posyandu">Balita</a>
-                        </li>
-                        <li class="px-2 py-1 transition-colorsduration-150 hover:text-blue-500">
-                            <a class="w-full" href="/posyandu/create">Tambah Posyandu</a>
-                        </li>
-                    </ul>
-                </template>
-            </li>
-
-            <li class="relative px-6 py-3 shadow">
-                <div class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors" aria-haspopup="true">
-                    <span class="ml-4 inline-flex items-center text-gray-600">Kelas Ibu Hamil</span>
-                </div>
-                <template x-if="{isPrenatalClassMenuOpen : true}">
-                    <ul
-                    x-transition:enter="transition-all ease-in-out duration-300"
-                    x-transition:enter-start="opacity-25 max-h-0"
-                    x-transition:enter-end="opacity-100 max-h-xl"
-                    x-transition:leave="transition-all ease-in-out duration-300"
-                    x-transition:leave-start="opacity-100 max-h-xl"
-                    x-transition:leave-end="opacity-0 max-h-0"
-                    class=" p-2 mt-2 space-y-2 overflow-hidden
-                        text-sm
-                        font-medium
-                        text-gray-500
-                        rounded-md
-                        shadow-inner
-                        bg-gray-100
-                    "
-                    aria-label=""
-                    >
-                        <li class="px-2 py-1  transition-colors duration-150 hover:text-gray-900 hover:bg-blue-100 rounded-lg">
-                            <a class="w-full block" href="#">Tabel</a>
                         </li>
                     </ul>
                 </template>

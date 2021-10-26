@@ -85,6 +85,16 @@ function data() {
         toggleIbuHamilMenu() {
             this.isIbuHamilMenuOpen = !this.isIbuHamilMenuOpen;
         },
+        // dropdown sidebar page menu pelayanan ibu nifas
+        isIbuNifasMenuOpen: false,
+        toggleIbuNifasMenu() {
+            this.isIbuNifasMenuOpen = !this.isIbuNifasMenuOpen;
+        },
+        // dropdown sidebar page menu pelayanan neonatus
+        isNeonatusMenuOpen: false,
+        toggleNeonatusMenu() {
+            this.isNeonatusMenuOpen = !this.isNeonatusMenuOpen;
+        },
         // dropdown posyandu
         isPosyanduMenuOpen: false,
         togglePosyanduMenu() {

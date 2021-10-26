@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Person;
 use App\Models\Posyandu;
 use App\Services\PosyanduService;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class PosyanduController extends Controller
      */
     public function create()
     {
-        return view('posyandu.create');
+        # code ..
     }
 
     /**
@@ -36,10 +37,11 @@ class PosyanduController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, PosyanduService $service)
+    public function store(Request $request, Person $person, PosyanduService $service)
     {
+        dd($request->toArray());
         // request belum dicustom
-        $posyandu = $service->store($request);
+        $posyandu = $service->store($request, $person);
         return redirect('/posyandu/' . $posyandu);
     }
 
@@ -53,6 +55,7 @@ class PosyanduController extends Controller
     {
         return view('posyandu.show', [
             'posyandu' => $posyandu,
+            'umur_bayi' => $posyandu->person->date_of_birth->diffInDays(now()),
         ]);
     }
 

@@ -61,8 +61,6 @@ class PregnancyController extends Controller
      */
     public function show(Pregnancy $pregnancy, PregnancyService $pregnancyService)
     {
-        // kalau 
-
         return view('pregnancies.show', [
             'pregnancy' => $pregnancy,
             'age_in_months' => $pregnancy->hpht->diffInMonths(now()) + 1,
@@ -81,6 +79,8 @@ class PregnancyController extends Controller
     {
         return view('pregnancies.edit', [
             'pregnancy' => $pregnancy,
+            'awal_waktu' => $pregnancy->hpht->addWeeks(28), // batas input waktu persalinan
+            'akhir_waktu' => $pregnancy->hpht->addWeeks(42), // batas input waktu persalinan
             'sexes' => Sex::all(),
             'baby_conditions' => BabyCondition::all(),
         ]);
@@ -93,10 +93,16 @@ class PregnancyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePregnancyRequest $request, Pregnancy $pregnancy, PregnancyService $pregnancyService)
+    public function update(UpdatePregnancyRequest $request, Pregnancy $pregnancy, PregnancyService $service)
     {
-        $pregnancyService->update($request, $pregnancy);
-        return redirect('/pregnancies/' . $pregnancy->id);
+        $is_success = $service->update($request, $pregnancy);
+
+        if ($is_success == true) {
+            return redirect('/pregnancies/' . $pregnancy->id);
+        } else {
+            return redirect()->back()->with('message', 'masukkan batas waktu persalinan dengan benar!');
+        }
+        
     }
 
     /**

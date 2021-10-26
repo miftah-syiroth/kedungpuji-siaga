@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Http\Request;
+
+use App\Http\Controllers\ChildbirthController;
 use App\Http\Controllers\CoupleController;
 use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\Invokeables\DeadPerson;
@@ -16,7 +19,19 @@ use App\Http\Controllers\PrenatalClassController;
 use App\Http\Controllers\PuerperalClassController;
 use App\Http\Controllers\PuerperalController;
 use App\Http\Controllers\UserController;
+use App\Imports\BmiForAgeBoysImport;
+use App\Imports\BmiForAgeGirlsImport;
+use App\Imports\HeadCircumferenceForAgeBoysImport;
+use App\Imports\HeadCircumferenceForAgeGirlsImport;
+use App\Imports\HeightForAgeBoysImport;
+use App\Imports\HeightForAgeGirlsImport;
+use App\Imports\WeightForAgeBoysImport;
+use App\Imports\WeightForAgeGirlsImport;
+use App\Imports\WeightForHeightBoysImport;
+use App\Imports\WeightForHeightGirlsImport;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,22 +47,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/role-permission', function () {
-//     $role = Role::findById(2);
-//     $role->givePermissionTo(['manage kader']);
-// });
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);    
-    Route::resource('people', PersonController::class);
     Route::resource('families', FamilyController::class);
     Route::resource('couples', CoupleController::class);
     Route::resource('keluarga-berencana', KeluargaBerencanaController::class);
     Route::resource('pregnancies', PregnancyController::class);
+    Route::resource('people', PersonController::class);
+
+
+    Route::get('/childbirths', [ChildbirthController::class, 'index'])->name('childbirths.index');
+    Route::get('/childbirths/{pregnancy}/create', [ChildbirthController::class, 'create']);
+    Route::post('/childbirths/{pregnancy}', [ChildbirthController::class, 'store']);
+
 
     // Route halaman input laporan bulanan kesehatan ibu hamil
     Route::get('/pregnancies/{pregnancy}/prenatal-classes/{month}/create', [PrenatalClassController::class, 'create']);
@@ -59,6 +75,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/prenatal-classes/{prenatalClass}', [PrenatalClassController::class, 'update']);
 
 
+    // Route untuk menampilkan list ibu nifas
+    Route::get('/puerperals', [PuerperalController::class, 'index']);
     // route untuk melihat data pelayanan nifas
     Route::get('/puerperals/{puerperal}', [PuerperalController::class, 'show']);
     // Route untuk menuju halaman input kesimpulan ibu nifas
@@ -69,16 +87,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/puerperals/{puerperal}/puerperal-classes/{periode}/create', [PuerperalClassController::class, 'create']);
     // route untuk menyimpan input laporan kunjungan ibu nifas
     Route::post('/puerperals/{puerperal}/puerperal-classes', [PuerperalClassController::class, 'store']);
+    // route untuk menunju halaman edit puerperal
 
 
-    // route untuk indeks posyandu balita
-    Route::get('/posyandu', [PosyanduController::class, 'index']);
-    // route untuk menambahkan orang atau balita ke dalam posyandu
-    Route::get('/posyandu/create', [PosyanduController::class, 'create']);
-    // route untuk store input pendaftaran posyandu
-    Route::post('/posyandu', [PosyanduController::class, 'store']);
-    // Route untuk show data posyandu
-    Route::get('/posyandu/{posyandu}', [PosyanduController::class, 'show']);
+    // Route untuk melihat semua laporan neonatuses
+    Route::get('/people/{person}/neonatuses', [NeonatusController::class, 'index']);
     // Route untuk menuju halaman form simpan data pelayanan neonatus
     Route::get('/posyandu/{posyandu}/neonatuses/{periode}/create', [NeonatusController::class, 'create']);
     // route menyimpan laporan neonatus
@@ -87,6 +100,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/neonatuses/{neonatus}/edit', [NeonatusController::class, 'edit']);
     // route untuk update pelayanan neonatus
     Route::put('/neonatuses/{neonatus}', [NeonatusController::class, 'update']);
+
+
+    // route untuk indeks posyandu balita
+    Route::get('/posyandu', [PosyanduController::class, 'index']);
+    // route untuk menambahkan orang atau balita ke dalam posyandu
+    Route::get('/posyandu/create', [PosyanduController::class, 'create']);
+    // route untuk store input pendaftaran posyandu
+    Route::post('/people/{person}/posyandu', [PosyanduController::class, 'store']);
+    // Route untuk show data posyandu
+    Route::get('/posyandu/{posyandu}', [PosyanduController::class, 'show']);
+
+
+
+    
 
     
     # INVOKEABLES #
@@ -101,7 +128,6 @@ Route::middleware('auth')->group(function () {
 
     // route untuk menampilkan pasangan usia subur
     Route::get('/pasangan-usia-subur', PasanganUsiaSubur::class);
-
     # INVOKEABLES #
 
     // route untuk menampilkan semua list pasangan dan status KB mereka
@@ -127,6 +153,14 @@ Route::middleware('auth')->group(function () {
     // Route::patch('/new-pregnancy/{pregnancy?}', StoreNewPregnancy::class); // pakai patch karena hanya sebagian
     // controller untuk menyimpan ringkasan kelahiran baru
     // Route::patch('/new-birth/{pregnancy}', StoreNewBirth::class); // pakai patch karena hanya sebagian
+});
+
+Route::view('/imports', 'imports');
+
+// route untuk import table
+Route::post('/import-excel/import', function (Request $request){
+    Excel::import(new HeightForAgeGirlsImport, $request->file_excel);
+    return redirect('/imports');
 });
 
 

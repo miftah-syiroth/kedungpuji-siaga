@@ -26,7 +26,7 @@ class PrenatalClassController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Pregnancy $pregnancy, $month)
+    public function create(Pregnancy $pregnancy, $month, PrenatalClassService $service)
     {
         // cek disini apakah tgl persalinan udh diisi atau udh hamil, maka cegah input laporan baru
         if ($pregnancy->childbirth_date != null) {
@@ -35,6 +35,8 @@ class PrenatalClassController extends Controller
             return view('prenatal-classes.create', [
                 'pregnancy' => $pregnancy,
                 'month' => $month,
+                'waktu_awal' => $service->getWaktuAwal($pregnancy->hpht, $month),
+                'waktu_akhir' => $service->getWaktuAkhir($pregnancy->hpht, $month),
             ]);
         }
         
@@ -48,8 +50,13 @@ class PrenatalClassController extends Controller
      */
     public function store(StorePrenatalClassRequest $request, Pregnancy $pregnancy, PrenatalClassService $service)
     {
-        $service->store($request, $pregnancy);
-        return redirect('/pregnancies/' . $pregnancy->id);
+        $is_success = $service->store($request, $pregnancy);
+        if ($is_success == true) {
+            return redirect('/pregnancies/' . $pregnancy->id);
+        } else {
+            return redirect()->back()->with('message', 'masukkan waktu kunjungan yang sesuai');
+        }
+        
     }
 
     /**
@@ -69,10 +76,12 @@ class PrenatalClassController extends Controller
      * @param  \App\Models\PrenatalClass  $prenatalClass
      * @return \Illuminate\Http\Response
      */
-    public function edit(PrenatalClass $prenatalClass)
+    public function edit(PrenatalClass $prenatalClass, PrenatalClassService $service)
     {
         return view('prenatal-classes.edit', [
             'prenatal_class' => $prenatalClass,
+            'waktu_awal' => $service->getWaktuAwal($prenatalClass->pregnancy->hpht, $prenatalClass->month_periode),
+            'waktu_akhir' => $service->getWaktuAkhir($prenatalClass->pregnancy->hpht, $prenatalClass->month_periode),
         ]);
     }
 
@@ -85,8 +94,12 @@ class PrenatalClassController extends Controller
      */
     public function update(UpdatePrenatalClassRequest $request, PrenatalClass $prenatalClass, PrenatalClassService $service)
     {
-        $service->update($request, $prenatalClass);
-        return redirect('/pregnancies/' . $prenatalClass->pregnancy->id);
+        $is_success = $service->update($request, $prenatalClass);
+        if ($is_success == true) {
+            return redirect('/pregnancies/' . $prenatalClass->pregnancy->id);
+        } else {
+            return redirect()->back()->with('message', 'masukkan waktu kunjungan yang sesuai');
+        }
     }
 
     /**

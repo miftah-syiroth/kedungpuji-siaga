@@ -25,7 +25,7 @@ class StorePregnancyRequest extends FormRequest
     {
         return [
             'mother_id' => ['required', 'integer'],
-            'hpht' => ['required'],
+            'hpht' => ['required', 'date', 'before:today'],
             'mother_weight' => ['required'],
             'mother_height' => ['required'],
         ];

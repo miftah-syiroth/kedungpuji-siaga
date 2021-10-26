@@ -67,36 +67,6 @@ class PersonService
         return FamilyStatus::all();
     }
 
-    public function getSexes()
-    {
-        return Sex::all();
-    }
-
-    public function getReligions()
-    {
-        return Religion::all();
-    }
-
-    public function getBloodGroups()
-    {
-        return BloodGroup::all();
-    }
-
-    public function getEducationals()
-    {
-        return Educational::all();
-    }
-
-    public function getDisabilities()
-    {
-        return Disability::all();
-    }
-
-    public function getMaritalStatuses()
-    {
-        return MaritalStatus::all();
-    }
-
     public function getKeluargaSejahtera()
     {
         return KeluargaSejahtera::all();

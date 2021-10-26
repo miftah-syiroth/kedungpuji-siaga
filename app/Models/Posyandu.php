@@ -17,10 +17,10 @@ class Posyandu extends Model
         return $this->belongsTo(Person::class, 'person_id');
     }
 
-    public function pregnancy()
-    {
-        return $this->belongsTo(Pregnancy::class, 'pregnancy_id');
-    }
+    // public function pregnancy()
+    // {
+    //     return $this->belongsTo(Pregnancy::class, 'pregnancy_id');
+    // }
 
     public function neonatuses()
     {

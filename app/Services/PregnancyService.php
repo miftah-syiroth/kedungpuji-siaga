@@ -57,36 +57,66 @@ class PregnancyService
 
     public function update($request, $pregnancy)
     {
-        // hitung umur kehamilan berdasarkan hpht dan tanggal kelahiran, dlm minggu dan hari
-        $gestational_age =  $this->calculateGestationalAge($request->childbirth_date, $pregnancy);
-        
-        $pregnancy->update([
-            'hpht' => $request->hpht,
-            'mother_weight' => $request->mother_weight,
-            'mother_height' => $request->mother_height,
-            'childbirth_date' => $request->childbirth_date,
-            'gestational_age' => $gestational_age,
-            'childbirth_attendant' => $request->childbirth_attendant,
-            'childbirth_method' => $request->childbirth_method,
-            'post_partum_condition' => $request->post_partum_condition,
-            'mother_additional_information' => $request->mother_additional_information,
-            'childbirth_order' => $request->childbirth_order,
-            'baby_weight' => $request->baby_weight,
-            'baby_lenght' => $request->baby_lenght,
-            'baby_head_circumference' => $request->baby_head_circumference,
-            'sex_id' => $request->sex_id,
-            'baby_additional_information' => $request->baby_additional_information,
-        ]);
+        // kehamilan adalah trimester ke tiga yaitu 28 - 42 minggu sejak hpht
+        $is_allowed = $this->checkChildbirthDate($request->childbirth_date, $pregnancy);
 
-        if ($request->has('baby_condition_id')) {
-            $pregnancy->babyConditions()->sync($request->baby_condition_id);
+        if ($is_allowed == true) {
+            $pregnancy->update([
+                'hpht' => $request->hpht,
+                'mother_weight' => $request->mother_weight,
+                'mother_height' => $request->mother_height,
+                'childbirth_date' => $request->childbirth_date,
+                'gestational_age' => $this->calculateGestationalAge($request->childbirth_date, $pregnancy),
+                'childbirth_attendant' => $request->childbirth_attendant,
+                'childbirth_method' => $request->childbirth_method,
+                'post_partum_condition' => $request->post_partum_condition,
+                'mother_additional_information' => $request->mother_additional_information,
+                'childbirth_order' => $request->childbirth_order,
+                'baby_weight' => $request->baby_weight,
+                'baby_lenght' => $request->baby_lenght,
+                'baby_head_circumference' => $request->baby_head_circumference,
+                'sex_id' => $request->sex_id,
+                'baby_additional_information' => $request->baby_additional_information,
+            ]);
+    
+            if ($request->has('baby_condition_id')) {
+                $pregnancy->babyConditions()->sync($request->baby_condition_id);
+            }
+    
+            // pembuatan model ibu nifas jika ada input waktu persalinan
+            $this->createIbuNifas($request, $pregnancy);
+
+            return true;
+        } else {
+            return false;
         }
-
-        // pembuatan model ibu nifas jika ada input waktu persalinan
-        $this->createIbuNifas($request, $pregnancy);
-        
     }
+    
+    /**
+     * checkChildbirthDate harus pada trimester ke tiga yaitu 28 hingga 42 minggu sejak hpht
+     *
+     * @return void
+     */
+    public function checkChildbirthDate($childbirth_date, $pregnancy)
+    {
+        $awal_waktu = $pregnancy->hpht->addWeeks(28); 
+        $akhir_waktu = $pregnancy->hpht->addWeeks(42); 
 
+        if ($childbirth_date >= $awal_waktu && $childbirth_date <= $akhir_waktu) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * createIbuNifas, ketika waktu persalinan diisi maka otomatis model nifas dibuat
+     * namun cek juga udah dibuat atau blm sebelumnya, krn model nifas one to one dgn pregnancy
+     *
+     * @param  mixed $request
+     * @param  mixed $pregnancy
+     * @return void
+     */
     public function createIbuNifas($request, $pregnancy)
     {
         if ($request->has('childbirth_date')) {
@@ -116,22 +146,5 @@ class PregnancyService
         $pembilang = $weight;
         $penyebut = pow($height, 2) / 10000;
         return round(($pembilang/$penyebut), 2);
-        // return  $pembilang/$penyebut;
     }
-
-    // public function getKbAfterChildbirth($pregnancy)
-    // {
-        // ambil tahun dan bulan dari childbirth_date
-        // lewat pregnancy ambil ortu/person, lalu ambil KeluargaBerencana dengan tahun dan bulan kelahiran, first
-        // $childbirth_year = $pregnancy->childbirth_date->year;
-        // $childbirth_month = $pregnancy->childbirth_date->month;
-
-        // dd($pregnancy->mother->keluargaBerencana->where('year_periode', $childbirth_year)
-        // ->where('month_periode', $childbirth_month)
-        // ->first()->kbStatus);
-        // return $pregnancy->mother->keluargaBerencana
-        //     ->where('year_periode', $childbirth_year)
-        //     ->where('month_periode', $childbirth_month)
-        //     ->first()->kbStatus;
-    // }
 }

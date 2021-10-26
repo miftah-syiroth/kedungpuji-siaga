@@ -12,6 +12,10 @@ class PrenatalClass extends Model
     protected $table = 'prenatal_classes';
     protected $guarded = [];
 
+    protected $casts = [
+        'visited_at' => 'datetime:Y-m-d',
+    ];
+
     public function pregnancy()
     {
         return $this->belongsTo(Pregnancy::class, 'pregnancy_id');
