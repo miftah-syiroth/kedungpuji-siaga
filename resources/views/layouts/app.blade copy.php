@@ -1,36 +1,48 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <title>{{ config('app.name', 'Laravel') }}</title>
-
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-
-        <!-- Styles -->
+        {{-- fonts --}}
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+        />
+        {{-- styles --}}
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
-        <!-- Scripts -->
+        {{-- script --}}
         <script src="{{ asset('js/app.js') }}" defer></script>
+        <script src="{{ asset('template/assets/js/init-alpine.js') }}" ></script>
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" defer></script>
+        <script src="{{ asset('template/assets/js/charts-lines.js') }}" defer></script>
+        
+        <script src="{{ asset('template/assets/js/charts-pie.js') }}" defer></script>
+
+        {{-- livewire --}}
+        @livewireStyles
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+    <body>
+        <div class="flex h-screen bg-gray-100" :class="{ 'overflow-hidden': isSideMenuOpen}">
+            @include('layouts.sidebar')
 
-            <!-- Page Heading -->
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
+            <div class="flex flex-col flex-1">
+                @include('layouts.navbar')
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+                <main class="h-full overflow-y-auto">
+                    <div class="container px-2 mx-auto grid">
+                        <h2 class="my-4 text-xl px-6 font-semibold text-gray-700 dark:text-gray-200">
+                           {{ $header }}
+                        </h2>
+                        {{ $slot }}
+                    </div>
+                </main>
+            </div>
         </div>
+        @livewireScripts
+        @stack('scripts')
     </body>
 </html>

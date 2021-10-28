@@ -11,4 +11,9 @@ class WeightForAgeCategory extends Model
     
     protected $table = 'weight_for_age_categories';
     protected $guarded = [];
+
+    public function anthropometries()
+    {
+        return $this->hasMany(Anthropometry::class, 'weight_for_age_category_id');
+    }
 }

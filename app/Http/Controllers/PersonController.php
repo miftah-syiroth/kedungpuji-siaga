@@ -13,7 +13,6 @@ use App\Models\Person;
 use App\Models\Religion;
 use App\Models\Sex;
 use App\Services\PersonService;
-use Illuminate\Http\Request;
 
 class PersonController extends Controller
 {

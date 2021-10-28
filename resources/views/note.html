@@ -1,38 +1,47 @@
-<div x-show="dataShow" class="bg-white p-4 mx-auto rounded-lg">
-    <table class="w-full">
-        <tr class="text-left border-b text-sm">
-            <th>Timbang</th>
-            <td>
-                : {{ $data->mother_weight }}kg
-            </td>
-        </tr>
-        <tr class="text-left border-b text-sm">
-            <th>Lingkar Lengan</th>
-            <td>: {{ $data->arm_circumference }} cm</td>
-        </tr>
-        <tr class="text-left border-b text-sm">
-            <th>Tekanan Darah</th>
-            <td>: {{ $data->systolic }}/{{ $data->diastolic }}</td>
-        </tr>
-        <tr class="text-left border-b text-sm">
-            <th>Tinggi Rahim</th>
-            <td>: {{ $data->uterine_height }} cm</td>
-        </tr>
-        <tr class="text-left border-b text-sm">
-            <th>Denyut Jantung Bayi</th>
-            <td>: {{ $data->baby_heart_rate }} /menit</td>
-        </tr>
-        <tr class="text-left border-b text-sm">
-            <th>HB</th>
-            <td>: {{ $data->hemoglobin }}</td>
-        </tr>
-        <tr class="text-left border-b text-sm">
-            <th>Protein Urine</th>
-            <td>: {{ $data->urine_protein }}</td>
-        </tr>
-        <tr class="text-left border-b text-sm">
-            <th>GulaDarah</th>
-            <td>: {{ $data->blood_sugar }}</td>
-        </tr>                                                
-    </table>
-</div>
+$table->id();
+            $table->decimal('height');
+            $table->decimal('height_difference');
+            $table->decimal('weight');
+            $table->decimal('weight_difference');
+            $table->decimal('head_circumference');
+            $table->decimal('head_circumference_difference');
+            $table->decimal('bmi');
+            $table->integer('month_periode');
+            $table->dateTime('visited_at');
+            $table->foreignId('height_for_age_category_id')->constrained('height_for_age_categories');
+            $table->foreignId('weight_for_age_category_id')->constrained('weight_for_age_categories');
+            $table->foreignId('weight_for_height_category_id')->constrained('weight_for_height_categories');
+            $table->foreignId('bmi_for_age_category_id')->constrained('bmi_for_age_categories');
+            $table->timestamps();
+
+
+
+            Schema::create('bmi_for_age_categories', function (Blueprint $table) {
+                $table->id();
+                $table->string('category');
+                $table->timestamps();
+            });
+    
+            Schema::create('head_circumference_for_age_categories', function (Blueprint $table) {
+                $table->id();
+                $table->string('category');
+                $table->timestamps();
+            });
+    
+            Schema::create('height_for_age_categories', function (Blueprint $table) {
+                $table->id();
+                $table->string('category');
+                $table->timestamps();
+            });
+    
+            Schema::create('weight_for_age_categories', function (Blueprint $table) {
+                $table->id();
+                $table->string('category');
+                $table->timestamps();
+            });
+    
+            Schema::create('weight_for_height_categories', function (Blueprint $table) {
+                $table->id();
+                $table->string('category');
+                $table->timestamps();
+            });

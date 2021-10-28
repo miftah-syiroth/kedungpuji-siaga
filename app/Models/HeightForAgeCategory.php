@@ -11,4 +11,9 @@ class HeightForAgeCategory extends Model
 
     protected $table = 'height_for_age_categories';
     protected $guarded = [];
+
+    public function anthropometries()
+    {
+        return $this->hasMany(Anthropometry::class, 'height_for_age_category_id');
+    }
 }

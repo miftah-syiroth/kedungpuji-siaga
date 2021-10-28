@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnthropometryController;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\ChildbirthController;
@@ -14,34 +15,19 @@ use App\Http\Controllers\KeluargaBerencanaController;
 use App\Http\Controllers\NeonatusController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\PosyanduController;
+use App\Http\Controllers\PosyanduServiceController;
 use App\Http\Controllers\PregnancyController;
 use App\Http\Controllers\PrenatalClassController;
 use App\Http\Controllers\PuerperalClassController;
 use App\Http\Controllers\PuerperalController;
+use App\Http\Controllers\ToddlerMeasurementController;
 use App\Http\Controllers\UserController;
-use App\Imports\BmiForAgeBoysImport;
-use App\Imports\BmiForAgeGirlsImport;
-use App\Imports\HeadCircumferenceForAgeBoysImport;
-use App\Imports\HeadCircumferenceForAgeGirlsImport;
-use App\Imports\HeightForAgeBoysImport;
-use App\Imports\HeightForAgeGirlsImport;
-use App\Imports\WeightForAgeBoysImport;
-use App\Imports\WeightForAgeGirlsImport;
-use App\Imports\WeightForHeightBoysImport;
-use App\Imports\WeightForHeightGirlsImport;
 use Illuminate\Support\Facades\Route;
-use Maatwebsite\Excel\Facades\Excel;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+
+// route untuk uji coba template
+Route::view('/dashboard-template', 'template.index');
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -112,7 +98,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/posyandu/{posyandu}', [PosyanduController::class, 'show']);
 
 
-
+    // menampilkan tabel layanan pengukuran seorang bayi
+    Route::get('/posyandu/{posyandu}/anthropometries', [AnthropometryController::class, 'index']);
+    // menuju halaman input laporan antropometries bulanan
+    Route::get('/posyandu/{posyandu}/age-in-month/{month}/anthropometries/create', [AnthropometryController::class, 'create']);
+    // store input laporan bulanan
+    Route::post('/posyandu/{posyandu}/age-in-month/{month}/anthropometries', [AnthropometryController::class, 'store']);
+    // route untuk menuju halaman edit
+    Route::get('/anthropometries/{anthropometry}/edit', [AnthropometryController::class, 'edit']);
+    // update anthropometry data dari hhalaman edit
+    Route::put('/anthropometries/{anthropometry}', [AnthropometryController::class, 'update']);
     
 
     
@@ -155,13 +150,13 @@ Route::middleware('auth')->group(function () {
     // Route::patch('/new-birth/{pregnancy}', StoreNewBirth::class); // pakai patch karena hanya sebagian
 });
 
-Route::view('/imports', 'imports');
+// Route::view('/imports', 'imports');
 
-// route untuk import table
-Route::post('/import-excel/import', function (Request $request){
-    Excel::import(new HeightForAgeGirlsImport, $request->file_excel);
-    return redirect('/imports');
-});
+// // route untuk import table
+// Route::post('/import-excel/import', function (Request $request){
+//     Excel::import(new HeightForAgeGirlsImport, $request->file_excel);
+//     return redirect('/imports');
+// });
 
 
 require __DIR__.'/auth.php';
