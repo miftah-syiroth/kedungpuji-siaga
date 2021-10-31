@@ -24,9 +24,9 @@ class StoreFamilyRequest extends FormRequest
     public function rules()
     {
         return [
-            'nomor_kk' => ['required', 'string', 'unique:families'],
-            'keluarga_sejahtera_id' => ['required'],
-            'person_id' => ['required', 'unique:families'],
+            'nomor_kk' => ['required', 'numeric', 'unique:families'],
+            'keluarga_sejahtera_id' => ['required', 'integer'],
+            'person_id' => ['required', 'integer', 'unique:families'],
         ];
     }
 }

@@ -1,25 +1,23 @@
-<div x-data="{ person: '' }" class="flex">
-    <div class="mx-2 items-center">
-        <x-label for="person" :value="__('Nama Penduduk')" />
-        <input x-model="person" type="text" wire:model="person_search_term" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm" placeholder="Cari Anggota Keluarga">
+<div class="flex flex-wrap items-center mr-2">
+    <label class="block text-sm mr-2" for="name">
+        <span class="text-gray-700 dark:text-gray-400">Nama Lengkap</span>
+        <input type="text" wire:model="person_search_term" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+    </label>
+
+    <div class="texr-gray-700 dark:text-gray-400 font-bold">
+        :
     </div>
 
-    <div class="mt-8">
-        : 
-    </div>
-
-    <div>
-        @unless ($person_search_term == null)
-        <div class="flex flex-col justify-between mt-8">
-            @foreach ($people as $person)
-            <div>
-                <label class="inline-flex items-center mx-2">
-                    <input x-on:click=" person = '{{ $person->name }}'" class="form-radio" type="radio" name="person_id" value="{{ $person->id }}" />
-                    <span class="ml-2">{{ $person->name }} ({{ $person->nik }})</span>
-                </label>                    
-            </div>
-            @endforeach 
+    @unless ($person_search_term == null)
+    <div class="flex flex-col justify-between">
+        @foreach ($people as $person)
+        <div>
+            <label class="inline-flex items-center mx-2">
+                <input class="form-radio" type="radio" name="person_id" value="{{ $person->id }}" />
+                <span class="ml-2">{{ $person->name }} ({{ $person->nik }})</span>
+            </label>                    
         </div>
-        @endunless
+        @endforeach 
     </div>
+    @endunless
 </div>

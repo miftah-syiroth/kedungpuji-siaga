@@ -13,7 +13,9 @@ class SearchWife extends Component
 
     public function searchWife()
     {
-        $this->wifes = Person::whereNull('died_at')->where('sex_id', 2)
+        $this->wifes = Person::where('is_alive', true)
+            ->where('village_id', 1)
+            ->where('sex_id', 2)
             ->whereIn('marital_status_id', [2, 3])
             ->doesntHave('husband')
             ->where(function($query){

@@ -1,76 +1,65 @@
 <x-app-layout>
     <x-slot name="header">
-        {{-- {{ __('Show Penduduk') }} --}}
+        {{ __('Detail Penduduk') }}
     </x-slot>
-    
-    <div class="py-4">
-        <div class="flex justify-start">
-            <div class="px-6 py-6 bg-black rounded-lg shadow-lg">
-                <ul>
-                    <li>
-                        tampilkan semua atribut personal dari tabel penduduk
-                    </li>
-                    <li>
-                        tampilkan tabel keluarga dan anggota keluarga dia
-                    </li>
-                    <li>
-                        jika dia sudah menikah atau memiliki pasangan, tampilkan identitas pasangan dan status kb
-                    </li>
-                    <li>
-                        jika dia wanita memiliki relasi ke PregnantWomen, tampilkan data riwayat kehamilan yang akan link ke halaman prenatal class
-                    </li>
-                    <li>
-                        jika dia memiliki relasi ke laporan nifas, tampilkan, ini dibuat pada iterasi 2
-                    </li>
-                    <li>
-                        jika dia memiliki relasi ke posyandu anak, tampilkan, ini dibuat pada iterasi 2
-                    </li>
-                </ul>
-            </div>
-        </div>
+
     </div>
-
-    {{-- komponen data personal --}}
-    <x-people.personal-data :person="$person" />
-    {{-- komponen data personal --}}
     
+    <div class="px-4 py-3 mb-8 bg-white shadow-md dark:bg-gray-800"> 
+        <dl>
+            {{-- komponen data personal --}}
+            <x-people.personal-data :person="$person" />
+            {{-- END komponen data personal --}}
 
-    {{-- kalau kepala keluarga, tampilkan komponen data anggotanya --}}
-    @if ($person->kepalaKeluarga )
-    {{-- <x-people.family-data :person="$person" /> --}}
-    @endif
-    {{-- komponen anggota keluarga --}}
-
-    {{-- jika dia adalah seorang istri (punya suami), tampilkan komponen KB, kehamilan, kelas nifas, posyandu anak --}}
-    @if ($person->husband)
-    {{-- komponen laporan kb --}}
-    {{-- <x-people.keluarga-berencana-data :person="$person" /> --}}
-
-    {{-- komponen riwayat kehamilan --}}
-    {{-- <x-people.pregnancy-data :person="$person" /> --}}
-    @endif
-    
-
-    {{-- <div class="py-4">
-        <div class="flex justify-start">
-            <div class="px-4 py-4 rounded-lg shadow-2xl">
-                <h4 class="mb-4 text-lg font-semibold text-gray-600">
-                    Responsive cards
-                </h4>
-                <div class="grid gap-6 mb-8 grid-cols-3">
-                    <div class="flex items-center p-4 bg-white rounded-lg shadow-xs border-2">
-                        <div>
-                            <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-                                Pending contacts
-                            </p>
-                            <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                35
-                            </p>
-                        </div>
-                    </div>
-                </div>
+            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">
+                    Full name
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-3">
+                    Margot Foster
+                </dd>
             </div>
-        </div>
-    </div> --}}
-    
+            <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">
+                    Attachments
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-3">
+                    <ul role="list" class="border border-gray-200 rounded-md divide-y divide-gray-200">
+                        <li class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+                            <div class="w-0 flex-1 flex items-center">
+                            <!-- Heroicon name: solid/paper-clip -->
+                            <svg class="flex-shrink-0 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="ml-2 flex-1 w-0 truncate">
+                                resume_back_end_developer.pdf
+                            </span>
+                            </div>
+                            <div class="ml-4 flex-shrink-0">
+                            <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+                                Download
+                            </a>
+                            </div>
+                        </li>
+                        <li class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+                            <div class="w-0 flex-1 flex items-center">
+                            <!-- Heroicon name: solid/paper-clip -->
+                            <svg class="flex-shrink-0 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="ml-2 flex-1 w-0 truncate">
+                                coverletter_back_end_developer.pdf
+                            </span>
+                            </div>
+                            <div class="ml-4 flex-shrink-0">
+                            <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+                                Download
+                            </a>
+                            </div>
+                        </li>
+                    </ul>
+                </dd>
+            </div>
+        </dl>  
+    </div>
 </x-app-layout>

@@ -16,15 +16,12 @@ class SearchMother extends Component
     {
         // cari org yg punya suami (cewe menikah) dan dia usia subur
         return Person::has('husband')
+            ->where('is_alive', true)
+            ->where('village_id', 1)
+            ->where('sex_id', 2)
             ->where(function ($query) {
-                $query->whereDate('date_of_birth', '<=', Carbon::now()->addYears(-15) )
-                ->whereDate('date_of_birth', '>=', Carbon::now()->addYears(-49) );
-            })->where(function ($query) {
                 $query->where('name', 'like', $this->mother_search_term . '%');
             })->get();
-
-            // ->where('marital_status_id', '!=', 1)
-            // ->where('sex_id', 2)
     }
 
     public function render()

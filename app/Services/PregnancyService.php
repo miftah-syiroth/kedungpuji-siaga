@@ -23,9 +23,9 @@ class PregnancyService
         // tidak diperbolehkan jika kehamilan terakhir belum lahir atau sudah lahir tp belum 42 hari
 
         $lastPregnancy = Person::find($request->mother_id)->latestPregnancy;
-        $is_finished = $this->finishPregnancyAndPuerperal($lastPregnancy);
+        $is_allowed = $this->finishPregnancyAndPuerperal($lastPregnancy);
 
-        if ($is_finished == true) {
+        if ($is_allowed == true) {
             return Pregnancy::create([
                 'mother_id' => $request->mother_id,
                 'hpht' => $request->hpht,
@@ -58,7 +58,8 @@ class PregnancyService
     public function update($request, $pregnancy)
     {
         // kehamilan adalah trimester ke tiga yaitu 28 - 42 minggu sejak hpht
-        $is_allowed = $this->checkChildbirthDate($request->childbirth_date, $pregnancy);
+        // $is_allowed = $this->checkChildbirthDate($request->childbirth_date, $pregnancy);
+        $is_allowed = true;
 
         if ($is_allowed == true) {
             $pregnancy->update([

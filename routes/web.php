@@ -14,6 +14,7 @@ use App\Http\Controllers\KeluargaBerencana\MonthlyReport;
 use App\Http\Controllers\KeluargaBerencanaController;
 use App\Http\Controllers\NeonatusController;
 use App\Http\Controllers\PersonController;
+use App\Http\Controllers\PersonFamilyController;
 use App\Http\Controllers\PosyanduController;
 use App\Http\Controllers\PosyanduServiceController;
 use App\Http\Controllers\PregnancyController;
@@ -38,12 +39,79 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::resource('users', UserController::class);    
-    Route::resource('families', FamilyController::class);
-    Route::resource('couples', CoupleController::class);
-    Route::resource('keluarga-berencana', KeluargaBerencanaController::class);
+
+    // REFACTORING
+
+    # Route ini akan menampilkan tabel data semua warga desa kedungpuji
+    Route::get('/people', [PersonController::class, 'index'])->name('people.index');
+    # untuk menampilkan warga yang pindah atau mati
+    Route::view('/people/move-or-die', 'people.hidden-people-table')->name('people.index.hidden'); 
+    # rount untuk menampilkan halaman input warga baru
+    Route::get('/people/create', [PersonController::class, 'create'])->name('people.create');
+    # Route untuk menyimpan request input ke database
+    Route::post('/people', [PersonController::class, 'store'])->name('people.store');
+    # show data individu penduduk
+    Route::get('/people/{person}', [PersonController::class, 'show'])->name('people.show');
+    # menuju halaman edit data penduduk
+    Route::get('/people/{person}/edit', [PersonController::class, 'edit'])->name('people.edit');
+    # Route update data penduduk
+    Route::put('/people/{person}', [PersonController::class, 'update'])->name('people.update');
+
+
+    // Route untuk menampilkan semua keluarga di desa kedungpuji
+    Route::get('/families', [FamilyController::class, 'index'])->name('families.index');
+    // Route untuk menampilkan halaman form buat keluarga
+    Route::get('/families/create', [FamilyController::class, 'create'])->name('families.create');
+    // menyimpan data input form buat keluarga ke database
+    Route::post('/families', [FamilyController::class, 'store'])->name('families.store');
+    // menampilkan data detail family
+    Route::get('/families/{family}', [FamilyController::class, 'show'])->name('families.show');
+    // menuju halaman edit keluarga
+    Route::get('/families/{family}/edit', [FamilyController::class, 'edit'])->name('families.edit');
+    // update ke dalam database
+    Route::put('/families/{family}', [FamilyController::class, 'update'])->name('families.update');
+    // hapus keluarga supaya
+    Route::delete('/families/{family}', [FamilyController::class, 'destroy'])->name('families.destroy');
+
+
+    // Route untuk menambahkan anggota pada sebuat keluarga
+    Route::post('/families/{family}/people', [PersonFamilyController::class, 'store']);
+    // menghapus person dari keanggotaan sebuah keluarga
+    Route::delete('/families/{family}/people/{person}/delete', [PersonFamilyController::class, 'destroy']);
+
+
+    // menampilkan semua pasangan yang ada
+    Route::get('/couples', [CoupleController::class, 'index'])->name('couples.index');
+    // menampilkan halaman form tambah pasangan
+    Route::get('/couples/create', [CoupleController::class, 'create'])->name('couples.create');
+    // store ke database data pasangan pada create veiw
+    Route::post('/couples', [CoupleController::class, 'store'])->name('couples.store');
+    // menampilkan data sebuah pasangan
+    Route::get('/couples/{couple}', [CoupleController::class, 'show'])->name('couples.show');
+    // menampilkan halaman form edit pasangan
+    Route::get('/couples/{couple}/edit', [CoupleController::class, 'edit'])->name('couples.edit');
+    // route menyimpan input dari halaman edit
+    Route::put('/couples/{couple}', [CoupleController::class, 'update'])->name('couples.update');
+    // hapus atau cerai pasangan
+    Route::delete('/couples/{couple}', [CoupleController::class, 'destroy'])->name('couples.destroy');
+
+
+    // route untuk menampilkan semua list pasangan dan status KB mereka
+    Route::get('/keluarga-berencana', [KeluargaBerencanaController::class, 'index']);
+    //menyimpan data laporan kb bulanan per pasangan
+    Route::post('/couples/{couple}/keluarga-berencana', [KeluargaBerencanaController::class, 'store']);
+
+
     Route::resource('pregnancies', PregnancyController::class);
-    Route::resource('people', PersonController::class);
+
+
+    // Route halaman input laporan bulanan kesehatan ibu hamil
+    Route::get('/pregnancies/{pregnancy}/prenatal-classes/{month}/create', [PrenatalClassController::class, 'create']);
+
+    // END REFACTORING
+
+
+    Route::resource('users', UserController::class);    
 
 
     Route::get('/childbirths', [ChildbirthController::class, 'index'])->name('childbirths.index');
@@ -51,8 +119,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/childbirths/{pregnancy}', [ChildbirthController::class, 'store']);
 
 
-    // Route halaman input laporan bulanan kesehatan ibu hamil
-    Route::get('/pregnancies/{pregnancy}/prenatal-classes/{month}/create', [PrenatalClassController::class, 'create']);
+    
     // Route store laporan bulanan kesehatan ibu hamil
     Route::post('/pregnancies/{pregnancy}/prenatal-classes', [PrenatalClassController::class, 'store']);
     // route untuk menuju halaman input edit laporan kesehatan ibu hamil
@@ -112,23 +179,13 @@ Route::middleware('auth')->group(function () {
 
     
     # INVOKEABLES #
-    // route untuk menambahkan anggota baru pada sebuah keluarga, invokable
-    Route::patch('/families/{family}/people/', FamilyMemberStore::class);
-
-    // menghapus person dari keanggotaan sebuah keluarga
-    Route::delete('/families/{family}/people/{person}/delete', FamilyMemberDelete::class);
-
-    // route untuk set orang meninggal atau hidup
-    Route::patch('/people/{person}/dead', DeadPerson::class);
+    
 
     // route untuk menampilkan pasangan usia subur
     Route::get('/pasangan-usia-subur', PasanganUsiaSubur::class);
     # INVOKEABLES #
 
-    // route untuk menampilkan semua list pasangan dan status KB mereka
-    // Route::get('keluarga-berencana', [KeluargaBerencanaController::class, 'index'])->name('keluarga-berencana.index');
-    // route untuk menyimpan atau mengupdate laporan bulanan sebuah pasangan
-    Route::post('/couples/{couple}/keluarga-berencana', [KeluargaBerencanaController::class, 'store']);
+        // route untuk menyimpan atau mengupdate laporan bulanan sebuah pasangan
 
     // route untuk menuju halaman buat data kehamilan baru seorang individu ibu yang punya pasangan
     // Route::get('people/{person}/pregnancies/create', [PregnancyController::class, 'create']);

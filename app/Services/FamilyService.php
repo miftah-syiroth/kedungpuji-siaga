@@ -9,22 +9,12 @@ use Illuminate\Database\Eloquent\Builder;
 
 class FamilyService
 {
-    public function getAllKeluargaSejahtera()
-    {
-        return KeluargaSejahtera::all();
-    }
-
     public function getAllFamilies()
     {
         return Family::with([
             'leader',
             'keluargaSejahtera',
         ])->withCount('people')->get();
-    }
-
-    public function getFamilyStatuses()
-    {
-        return FamilyStatus::all();
     }
     
     /**
@@ -56,12 +46,14 @@ class FamilyService
      */
     public function store($request)
     {
+        $family = Family::create($request->all());
+
         $person = Person::find($request->person_id);
         // buat keluarganya dahulu dgn relasi kepala keluarga
-        $family = $person->kepalaKeluarga()->create([
-            'nomor_kk' => $request->nomor_kk,
-            'keluarga_sejahtera_id' => $request->keluarga_sejahtera_id
-        ]);
+        // $family = $person->kepalaKeluarga()->create([
+        //     'nomor_kk' => $request->nomor_kk,
+        //     'keluarga_sejahtera_id' => $request->keluarga_sejahtera_id
+        // ]);
 
         // sync dari person ke family yg telah dibuat serta status kekeluargaannya
         $person->family()->sync([

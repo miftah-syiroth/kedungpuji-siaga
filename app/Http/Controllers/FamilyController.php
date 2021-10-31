@@ -5,22 +5,27 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreFamilyRequest;
 use App\Http\Requests\UpdateFamilyRequest;
 use App\Models\Family;
+use App\Models\FamilyStatus;
 use App\Models\KeluargaSejahtera;
 use App\Services\FamilyService;
-use Illuminate\Http\Request;
 
 class FamilyController extends Controller
 {
+    private $familyService;
+
+    public function __construct(FamilyService $service)
+    {
+        $this->familyService = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(FamilyService $familyService)
+    public function index()
     {
-        return view('families.index', [
-            'families' => $familyService->getAllFamilies(),
-        ]);
+        return view('families.index');
     }
 
     /**
@@ -28,10 +33,10 @@ class FamilyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(FamilyService $familyService)
+    public function create()
     {
         return view('families.create', [
-            'keluarga_sejahtera' => $familyService->getAllKeluargaSejahtera(),
+            'keluarga_sejahtera' => KeluargaSejahtera::all(),
         ]);
     }
 
@@ -41,9 +46,9 @@ class FamilyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreFamilyRequest $request, FamilyService $familyService)
+    public function store(StoreFamilyRequest $request)
     {
-        $family = $familyService->store($request);
+        $family = $this->familyService->store($request);
         return redirect('/families/' . $family->id);
     }
 
@@ -53,11 +58,11 @@ class FamilyController extends Controller
      * @param  \App\Models\Family  $family
      * @return \Illuminate\Http\Response
      */
-    public function show(Family $family, FamilyService $familyService)
+    public function show(Family $family)
     {
         return view('families.show', [
-            'family' => $familyService->getFamily($family),
-            'family_statuses' => $familyService->getFamilyStatuses(),
+            'family' => $family,
+            'family_statuses' => FamilyStatus::whereNotIn('id', [1])->get(),
         ]);
     }
 
@@ -82,9 +87,9 @@ class FamilyController extends Controller
      * @param  \App\Models\Family  $family
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateFamilyRequest $request, Family $family, FamilyService $familyService)
+    public function update(UpdateFamilyRequest $request, Family $family)
     {
-        $familyService->update($request, $family);
+        $this->familyService->update($request, $family);
         return redirect('/families/' . $family->id);
     }
 
@@ -94,9 +99,9 @@ class FamilyController extends Controller
      * @param  \App\Models\Family  $family
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Family $family, FamilyService $familyService)
+    public function destroy(Family $family)
     {
-        $familyService->destroy($family);
+        $this->familyService->destroy($family);
         return redirect('/families');
     }
 }

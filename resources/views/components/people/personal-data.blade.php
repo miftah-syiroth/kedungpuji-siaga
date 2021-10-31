@@ -1,142 +1,82 @@
-<div class="py-4">
-    <div x-data="{ isOpen : true }">
-        <div class="overflow-hidden px-4 bg-white rounded-lg shadow-2xl">
-            <div class="px-4 py-2">
-                <h3 class="text-lg leading-6 font-medium text-gray-900 justify-center text-center">
-                    <button x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">Data Personal</button>
-                </h3>
-                <div x-show="isOpen" class="flex">
-                    <a href="/people/{{ $person->id }}/edit" class="mt-1 text-center text-xs rounded-md px-4 py-1 bg-blue-400 hover:bg-blue-600 text-white">edit</a>
-                </div>
-            </div>
-            <div x-show="isOpen" class="border-t border-gray-200">
-                <dl>
-                    <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            Nama
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                           : {{ $person->name  }}
-                        </dd>
-                    </div>
-
-                    <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            NIK
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                           : {{ $person->nik  }}
-                        </dd>
-                    </div>
-
-                    <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            Tempat, tanggal lahir
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                           : {{ $person->place_of_birth . ', ' . $person->date_of_birth->isoFormat('DD MMMM Y') . ' (' . $person->date_of_birth->age . ' tahun)'  }}
-                        </dd>
-                    </div>
-                    <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            Jenis Kelamin
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            : {{ $person->sex->sex }}
-                        </dd>
-                    </div>
-                    <div class="bg-gray-50 px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            Agama
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            : {{ $person->religion->religion }}
-                        </dd>
-                    </div>
-                    
-                    <div class="bg-white px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            Golongan Darah
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            : {{ $person->bloodGroup->group }}
-                        </dd>
-                    </div>
-
-                    <div class="bg-white px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            Disabilitas
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            : {{ $person->is_cacat == true ? $person->disability->type : '-' }}
-                        </dd>
-                    </div>
-
-                    <div class="bg-white px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            Pendidikan
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            : {{ $person->education->education }}
-                        </dd>
-                    </div>
-
-                    <div class="bg-white px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            Ibu Kandung
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            : {{ $person->mother->name ?? '-' }}
-                        </dd>
-                    </div>
-
-                    <div class="bg-white px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            Ayah Kandung
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            : {{ $person->father->name ?? '-' }}
-                        </dd>
-                    </div>
-
-                    <div class="bg-white px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            Status Anggota Keluarga
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            <p>
-                                : 
-                                @foreach ($person->family as $family)
-                                {{ $family->pivot->familyStatus->status }} dari 
-                                <a href="/families/{{ $family->id }}" class="text-blue-500 hover:text-blue-700">{{ $family->leader->name }}</a>
-                                @endforeach
-                            </p>    
-                            
-                        </dd>
-                    </div>
-
-                    <div class="bg-white px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            Status Pernikahan
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            : {{ $person->maritalStatus->status }}
-                        </dd>
-                    </div>
-
-                    {{-- kalau ada isi dari kolom waktu mati --}}
-                    @if ($person->died_at)
-                    <div class="bg-white px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            Waktu Kematian
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            : {{ $person->died_at }}
-                        </dd>
-                    </div>
-                    @endif
-                </dl>
-            </div>
+<div x-data="{ open: true }" class="px-4 py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6">
+    <dt class="text-sm font-medium text-gray-500 dark:text-gray-200">
+        <button x-on:click="open = ! open" class="border-b-2 hover:bg-gray-100 dark:hover:text-gray-700 rounded-lg shadow-md w-full">Personal</button>
+    </dt>
+    <dd x-show="open" class="flex justify-between mt-1 py-2 text-sm text-gray-900 border border-gray-200 rounded-md dark:text-gray-200 sm:mt-0 sm:col-span-3">
+        <div class="order-last mr-4">
+            <a href="/people/{{ $person->id }}/edit" class="px-3 py-1 rounded-md bg-blue-500 dark:bg-gray-500 dark:hover:bg-gray-600 text-gray-200">edit</a>
         </div>
-    </div>
+        <ul role="list">
+            <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
+                <div>Nama Lengkap</div>
+                <div class="col-span-2">: {{ $person->name }}</div>
+            </li>
+            <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
+                <div>NIK</div>
+                <div class="col-span-2">: {{ $person->nik }}</div>
+            </li>
+            <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
+                <div>Tempat, Tanggal Lahir</div>
+                <div class="col-span-2">: {{ $person->place_of_birth }}, {{ $person->date_of_birth->isoFormat('DD MMMM Y') }} ({{ $person->date_of_birth->age }} tahun)</div>
+            </li>
+            <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
+                <div>Golongan Darah</div>
+                <div class="col-span-2">: {{ $person->bloodGroup->group }}</div>
+            </li>
+
+            
+            <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
+                <div>Ayah Kandung</div>
+                <div class="col-span-2">: 
+                    @isset($person->father)
+                    <a href="{{ $person->father->id }}" class="text-blue-500 hover:text-blue-700">
+                        {{ $person->father->name }}
+                    </a>
+                    @endisset
+                </div>
+            </li>
+            
+            <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
+                <div>Ibu Kandung</div>
+                <div class="col-span-2">: 
+                    @isset($person->mother)
+                    <a href="{{ $person->mother->id }}" class="text-blue-500 hover:text-blue-700">
+                        {{ $person->mother->name }}
+                    </a>
+                    @endisset
+                </div>
+            </li>
+            
+            <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
+                <div>Disabilitas</div>
+                <div class="col-span-2">: {{ $person->is_cacat == true ? $person->disability->disability : 'tidak' }}</div>
+            </li>
+            <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
+                <div>Pendidikan</div>
+                <div class="col-span-2">: {{ $person->educational->education }}</div>
+            </li>
+            <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
+                <div>Status Kawin</div>
+                <div class="col-span-2">: {{ $person->maritalStatus->status }}</div>
+            </li>
+            <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
+                <div>Agama</div>
+                <div class="col-span-2">: {{ $person->religion->religion }}</div>
+            </li>
+            <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
+                <div>Domisili</div>
+                <div class="col-span-2 capitalize">: 
+                    {{ $person->village_id == 1 ? 'RT ' . $person->rt .'/'. $person->rw : 'pindah' }}    
+                </div>  
+            </li>
+            @if ($person->is_alive == false)
+            <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
+                <div>Meninggal</div>
+                <div class="col-span-2 capitalize">: 
+                    {{ $person->died_at->isoFormat('DD MMMM Y') }}
+                </div>  
+            </li>
+            @endif
+        </ul>
+    </dd>
 </div>

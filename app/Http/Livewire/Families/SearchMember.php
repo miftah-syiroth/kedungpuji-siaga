@@ -14,6 +14,9 @@ class SearchMember extends Component
     public function getPerson()
     {
         return Person::doesntHave('family')
+            ->doesntHave('ledFamily')
+            ->where('is_alive', true)
+            ->where('village_id', 1)
             ->whereNull('died_at')
             ->where(function ($query) {
                 $query->where('name', 'like', $this->person_search_term . '%');

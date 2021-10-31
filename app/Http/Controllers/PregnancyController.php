@@ -13,16 +13,23 @@ use App\Services\PregnancyService;
 
 class PregnancyController extends Controller
 {
+    private $pregnancyService;
+
+    public function __construct(PregnancyService $service)
+    {
+        $this->pregnancyService = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(PregnancyService $pregnancyService)
+    public function index()
     {
         // dd($pregnancyService->getAllPregnancies());
         return view('pregnancies.index', [
-            'pregnancies' => $pregnancyService->getAllPregnancies(),
+            'pregnancies' => $this->pregnancyService->getAllPregnancies(),
         ]);
     }
 
@@ -42,9 +49,9 @@ class PregnancyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePregnancyRequest $request, PregnancyService $pregnancyService)
+    public function store(StorePregnancyRequest $request)
     {
-        $pregnancy = $pregnancyService->store($request);
+        $pregnancy = $this->pregnancyService->store($request);
 
         if (empty($pregnancy)) {
             return redirect('/pregnancies/create')->with('message', 'ibu belum melahirkan atau belum selesai Nifas');
@@ -59,18 +66,20 @@ class PregnancyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Pregnancy $pregnancy, PregnancyService $pregnancyService)
+    public function show(Pregnancy $pregnancy)
     {
         return view('pregnancies.show', [
             'pregnancy' => $pregnancy,
-            'age_in_months' => $pregnancy->hpht->diffInMonths(now()) + 1,
-            'age_in_weeks' => $pregnancy->hpht->diffInWeeks(now()),
-            'age_in_days' => $pregnancy->hpht->diffInDays(now()),
+            // 'age_in_months' => $pregnancy->hpht->diffInMonths(now()) + 1,
+            // 'age_in_weeks' => $pregnancy->hpht->diffInWeeks(now()),
+            // 'age_in_days' => $pregnancy->hpht->diffInDays(now()),
         ]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * trimester 3 adalah 28 s.d. 42 pekan. 
+     * awal_waktu adalah tgl pada pekan ke 28
+     * akhir_waktu adalah tgl pada pekan ke 42
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -79,8 +88,6 @@ class PregnancyController extends Controller
     {
         return view('pregnancies.edit', [
             'pregnancy' => $pregnancy,
-            'awal_waktu' => $pregnancy->hpht->addWeeks(28), // batas input waktu persalinan
-            'akhir_waktu' => $pregnancy->hpht->addWeeks(42), // batas input waktu persalinan
             'sexes' => Sex::all(),
             'baby_conditions' => BabyCondition::all(),
         ]);
@@ -93,9 +100,9 @@ class PregnancyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePregnancyRequest $request, Pregnancy $pregnancy, PregnancyService $service)
+    public function update(UpdatePregnancyRequest $request, Pregnancy $pregnancy)
     {
-        $is_success = $service->update($request, $pregnancy);
+        $is_success = $this->pregnancyService->update($request, $pregnancy);
 
         if ($is_success == true) {
             return redirect('/pregnancies/' . $pregnancy->id);

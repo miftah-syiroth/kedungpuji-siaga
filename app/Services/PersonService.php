@@ -1,31 +1,10 @@
 <?php
 namespace App\Services;
 
-use App\Models\BloodGroup;
-use App\Models\Couple;
-use App\Models\Disability;
-use App\Models\Educational;
-use App\Models\FamilyStatus;
-use App\Models\KbService;
-use App\Models\KeluargaSejahtera;
-use App\Models\MaritalStatus;
 use App\Models\Person;
-use App\Models\Religion;
-use App\Models\Sex;
-use Carbon\Carbon;
 
 class PersonService
 {
-    public function getAllPeople()
-    {
-        return Person::with([
-            'sex', 
-            'family',
-            'maritalStatus',
-            'bloodGroup',
-        ])->get();
-    }
-
     public function getPerson($person)
     {
         return Person::with([
@@ -33,7 +12,7 @@ class PersonService
             'religion', //
             'bloodGroup', //
             'disability', //
-            'education', //
+            'educational', //
             'mother', 'father', //
             'maritalStatus', //
             'family.leader', //
@@ -56,44 +35,29 @@ class PersonService
             // 'pregnancies',
         ])->find($person->id);
     }
-    
-    /**
-     * getFamilyStatuses menampilkan semua status keanggotaan keluarga untuk looping pada form create person
-     *
-     * @return void
-     */
-    public function getFamilyStatuses()
-    {
-        return FamilyStatus::all();
-    }
 
-    public function getKeluargaSejahtera()
+    public function store($request)
     {
-        return KeluargaSejahtera::all();
-    }
-
-    public function getKbServices()
-    {
-        return KbService::all();
-    }
-
-    public function storePerson($request)
-    {
-        $attributes = $request->all();
-        // buat secara normal utk semua atribut meskipun null
-        return Person::create($attributes);
+        $atttributes = $request->all();
+        $atttributes['village_id'] = 1;
+        $atttributes['is_alive'] = true;
+        return Person::create($atttributes);
     }
 
     public function update($request, $person)
     {
         $attributes = $request->all(); // ubah dalam bentuk array dan simpan ke variable
 
-        if ($request->has('ibu_id')) {
-            $attributes['ibu_id'] = $request->ibu_id;
+        if ($request->is_alive == true) {
+            $attributes['died_at'] = null;
         }
 
-        if ($request->has('ayah_id')) {
-            $attributes['ayah_id'] = $request->ayah_id;
+        if ($request->has('mother_id')) {
+            $attributes['mother_id'] = $request->mother_id;
+        }
+
+        if ($request->has('father_id')) {
+            $attributes['father_id'] = $request->father_id;
         }
 
         $person->update($attributes);

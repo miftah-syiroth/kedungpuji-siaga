@@ -16,16 +16,21 @@ use App\Services\PersonService;
 
 class PersonController extends Controller
 {
+    private $personService;
+
+    public function __construct(PersonService $service)
+    {
+        $this->personService = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(PersonService $personService)
+    public function index()
     {
-        $people = $personService->getAllPeople();
-
-        return view('people.index', compact('people'));
+        return view('people.index');
     }
 
     /**
@@ -33,7 +38,7 @@ class PersonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(PersonService $personService)
+    public function create()
     {
         return view('people.create', [
             'sexes' => Sex::all(),
@@ -51,9 +56,9 @@ class PersonController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePersonRequest $request, PersonService $personService)
+    public function store(StorePersonRequest $request)
     {
-        $person = $personService->storePerson($request);
+        $person = $this->personService->store($request);
         return redirect('/people/' . $person->id);
     }
 
@@ -63,10 +68,10 @@ class PersonController extends Controller
      * @param  \App\Models\Person  $person
      * @return \Illuminate\Http\Response
      */
-    public function show(Person $person, PersonService $personService)
+    public function show(Person $person)
     {
         return view('people.show', [
-            'person' => $personService->getPerson($person), // tidak langsung karena butuh banyak eager loading
+            'person' => $person, // tidak langsung karena butuh banyak eager loading
             'months' => Month::all(),
         ]);
     }
@@ -77,19 +82,16 @@ class PersonController extends Controller
      * @param  \App\Models\Person  $person
      * @return \Illuminate\Http\Response
      */
-    public function edit(Person $person, PersonService $personService)
+    public function edit(Person $person)
     {
         return view('people.edit', [
             'person' => $person,
-            'sexes' => $personService->getSexes(),
-            'religions' => $personService->getReligions(),
-            'blood_groups' => $personService->getBloodGroups(),
-            'educationals' => $personService->getEducationals(),
-            'disabilities' => $personService->getDisabilities(),
-            'marital_statuses' => $personService->getMaritalStatuses(),
-            // 'family_statuses' => $personService->getFamilyStatuses(),
-            // 'keluarga_sejahtera' => $personService->getKeluargaSejahtera(),
-            // 'kb_services' => $personService->getKbServices(),
+            'sexes' => Sex::all(),
+            'religions' => Religion::all(),
+            'blood_groups' => BloodGroup::all(),
+            'educationals' => Educational::all(),
+            'disabilities' => Disability::all(),
+            'marital_statuses' => MaritalStatus::all(),
         ]);
     }
 
@@ -100,9 +102,9 @@ class PersonController extends Controller
      * @param  \App\Models\Person  $person
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePersonRequest $request, Person $person, PersonService $personService)
+    public function update(UpdatePersonRequest $request, Person $person)
     {
-        $personService->update($request, $person);
+        $this->personService->update($request, $person);
         return redirect('/people/' . $person->id);
     }
 

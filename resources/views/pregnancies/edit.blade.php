@@ -10,145 +10,143 @@
         </span>
     @endif
     
-    <div class="py-4">
-        <div class="flex justify-start">
-            <div class="px-3 py-6 bg-white rounded-lg shadow-lg">
-                <x-auth-validation-errors class="mb-4" :errors="$errors" />
-                <form method="POST" action="/pregnancies/{{ $pregnancy->id }}">
-                    @csrf
-                    @method('PUT')
-                    <div class="border border-b-0 p-2">
-                        <h3 class="text-center font-semibold text-gray-600 mb-4">Data Awal Kehamilan</h3>
-                        <div class="flex flex-row">
-                            <!-- hpht -->
-                            <div class="mx-1">
-                                <x-label for="hpht" :value="__('HPHT')" />
-                                <input type="date" name="hpht" id="hpht" value="{{ $pregnancy->hpht->isoFormat('YYYY-MM-DD') }}" class="block mt-1 w-40 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
-                            </div>
-        
-                            <!-- bb ibu -->
-                            <div class="mx-1 w-auto">
-                                <x-label for="mother_weight" :value="__('BB Ibu (kg)')" />
-                                <input type="number" name="mother_weight" id="mother_weight" min="1" value="{{ $pregnancy->mother_weight }}" class="block mt-1 w-24 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
-                            </div>
+    <div class="px-4 py-3 mb-8 bg-white shadow-md dark:bg-gray-800"> 
+        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+        <form method="POST" action="/pregnancies/{{ $pregnancy->id }}">
+            @csrf
+            @method('PUT')
 
-                            <!-- tb ibu -->
-                            <div class="mx-1">
-                                <x-label for="mother_height" :value="__('TB Ibu (cm)')" />
-                                <input type="number" name="mother_height" id="mother_height" min="1" value="{{ $pregnancy->mother_height }}" class="block mt-1 w-24 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
-                            </div>
-                        </div> 
-                    </div>
-                    
-                    <div class="p-2">
-                        <h3 class="text-center font-semibold text-gray-600 mb-4">Ringkasan Ibu</h3>
-                        <div class="flex flex-row">
-                            <!-- tanggal persalinan -->
-                            <div class="mx-1 w-auto">
-                                <x-label for="childbirth_date" :value="__('Waktu Persalinan')" />
-                                <input type="datetime-local" name="childbirth_date" id="childbirth_date" value="{{ $pregnancy->childbirth_date ? $pregnancy->childbirth_date->isoFormat('YYYY-MM-DDThh:mm') : '' }}" class="block mt-1 w-60 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
-                                <span class="text-sm text-green-800">
-                                    {{ $awal_waktu->isoFormat('DD MMM YYYY') }} - {{ $akhir_waktu->isoFormat('DD MMM YYYY') }} (trimester 3)
-                                </span>
-                            </div>
-        
-                            <!-- penolong persalinan -->
-                            <div class="mx-1 auto">
-                                <x-label for="childbirth_attendant" :value="__('Penolong Persalinan')" />
-                                <input type="text" name="childbirth_attendant" id="childbirth_attendant" value="{{ $pregnancy->childbirth_attendant }}" class="block mt-1 w-48 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm" placeholder="SpOg/Dokter Umum/Bidan">
-                            </div>
+            <h3 class="text-center font-semibold text-gray-600 mb-4">Data Awal Kehamilan</h3>
+            <div class="flex flex-wrap">
+                <!-- hpht -->
+                <label class="block text-sm mr-2" for="hpht">
+                    <span class="text-gray-700 dark:text-gray-400">HPHT</span>
+                    <input type="date" name="hpht" id="hpht" value="{{ $pregnancy->hpht->isoFormat('YYYY-MM-DD') }}" required class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                </label>
 
-                            <!-- cara persalinan -->
-                            <div class="mx-1 auto">
-                                <x-label for="childbirth_method" :value="__('Metode Persalinan')" />
-                                <input type="text" name="childbirth_method" id="childbirth_method" value="{{ $pregnancy->childbirth_method }}" class="block mt-1 w-48 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm" placeholder="Normal/Tindakan ...">
-                            </div>
+                <!-- bb ibu -->
+                <label class="block text-sm mx-2" for="mother_weight">
+                    <span class="text-gray-700 dark:text-gray-400">BB Ibu (kg)</span>
+                    <input type="number" name="mother_weight" id="mother_weight" min="1" value="{{ $pregnancy->mother_weight }}" required class="block w-24 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                </label>
 
-                            <!-- keadaan ibu pasca melahirkan -->
-                            <div class="mx-1 auto">
-                                <x-label for="post_partum_condition" :value="__('Kondisi Pasca Melahirkan')" />
-                                <input type="text" name="post_partum_condition" id="post_partum_condition" value="{{ $pregnancy->post_partum_condition }}" class="block mt-1 w-48 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm" placeholder="sehat/sakit/meninggal ...">
-                            </div>
-                        </div>
-                        <!-- Informasi Tambahan -->
-                        <div class="mx-1 w-auto mt-4">
-                            <x-label for="mother_additional_information" :value="__('Keterangan Tambahan')" />
-                            <textarea name="mother_additional_information" id="mother_additional_information" cols="70" rows="2" class="block mt-1 w-auto border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">{{ $pregnancy->additional_information }}</textarea>
-                        </div>
-                    </div>
-                    
-                    <div class="p-2">
-                        <h3 class="text-center font-semibold text-gray-600 mb-4">Ringkasan Anak</h3>
-                        <div class="flex flex-row">
-                            <!-- Kelahiran ke -->
-                            <div class="mx-1 w-auto">
-                                <x-label for="childbirth_order" :value="__('Kelahiran Ke')" />
-                                <input type="number" value="{{ $pregnancy->childbirth_order }}" name="childbirth_order" id="childbirth_order" min="1" class="block mt-1 w-16 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
-                            </div>
+                <!-- tb ibu -->
+                <label class="block text-sm mx-2" for="mother_height">
+                    <span class="text-gray-700 dark:text-gray-400">TB Ibu (cm)</span>
+                    <input type="number" name="mother_height" id="mother_height" min="1" value="{{ $pregnancy->mother_height }}" required class="block w-24 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                </label>
+            </div> 
+            
+            <div class="p-2">
+                <h3 class="text-center font-semibold text-gray-600 mb-4">Ringkasan Akhir</h3>
+                <div class="flex flex-wrap">
+                    <!-- tanggal persalinan -->
+                    <label class="block text-sm mr-2" for="childbirth_date">
+                        <span class="text-gray-700 dark:text-gray-400">Waktu Persalinan</span>
+                        <input type="datetime-local" name="childbirth_date" id="childbirth_date" value="{{ $pregnancy->childbirth_date ? $pregnancy->childbirth_date->isoFormat('YYYY-MM-DDThh:mm') : '' }}" required class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    </label>
 
-                            <!-- Berat Bayi -->
-                            <div class="mx-1 w-auto">
-                                <x-label for="baby_weight" :value="__('Berat (gr)')" />
-                                <input type="number" value="{{ $pregnancy->baby_weight }}" name="baby_weight" id="baby_weight" min="1" class="block mt-1 w-20 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
-                            </div>
+                    <!-- penolong persalinan -->
+                    <label class="block text-sm mx-2" for="childbirth_attendant">
+                        <span class="text-gray-700 dark:text-gray-400">Penolong Persalinan</span>
+                        <input type="text" name="childbirth_attendant" id="childbirth_attendant" value="{{ $pregnancy->childbirth_attendant }}" required class="block w-48 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="SpOg/Dokter Umum/Bidan"/>
+                    </label>
 
-                            <!-- Panjang Bayi -->
-                            <div class="mx-1 w-auto">
-                                <x-label for="baby_lenght" :value="__('Panjang (cm)')" />
-                                <input type="number" value="{{ $pregnancy->baby_lenght }}" name="baby_lenght" id="baby_lenght" min="1" class="block mt-1 w-20 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
-                            </div>
+                    <!-- cara persalinan -->
+                    <label class="block text-sm mx-2" for="childbirth_method">
+                        <span class="text-gray-700 dark:text-gray-400">Metode Persalinan</span>
+                        <input type="text" name="childbirth_method" id="childbirth_method" value="{{ $pregnancy->childbirth_method }}" required class="block w-48 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Normal/Tindakan ..."/>
+                    </label>
 
-                            <!-- Lingkar Kepala Bayi -->
-                            <div class="mx-1 w-auto">
-                                <x-label for="baby_head_circumference" :value="__('Lingkar Kepala (cm)')" />
-                                <input type="number" value="{{ $pregnancy->baby_head_circumference }}" name="baby_head_circumference" id="baby_head_circumference" min="1" class="block mt-1 w-20 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
-                            </div>
+                    <!-- keadaan ibu pasca melahirkan -->
+                    <label class="block text-sm mx-2" for="post_partum_condition">
+                        <span class="text-gray-700 dark:text-gray-400">Kondisi Pasca Melahirkan</span>
+                        <input type="text" name="post_partum_condition" id="post_partum_condition" value="{{ $pregnancy->post_partum_condition }}" required class="block w-48 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="sehat/sakit/meninggal ..."/>
+                    </label>
+                </div>
 
-                            <!-- Jenis Kelamin Bayi -->
-                            <div class="mx-1 w-auto">
-                                <x-label for="sex_id" :value="__('Jenis Kelamin (cm)')" />
-                                <select name="sex_id" id="sex_id" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
-                                    <option selected disabled hidden>Pilih!</option>
-                                    @foreach ($sexes as $sex)
-                                    <option {{ $pregnancy->sex_id == $sex->id ? 'selected' : '' }} value="{{ $sex->id }}">{{ $sex->sex }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="flex flex-row">
-                             <!-- Kondisi bayi saat lahir -->
-                             <div class="mx-1 w-auto mt-4">
-                                <x-label for="baby_condition_id" :value="__('Kondisi bayi:')" />
-                                <div class="grid grid-cols-2 gap-2">
-                                    @foreach ($baby_conditions as $condition)
-                                    <label class="inline-flex items-center mx-2">
-                                        <input class="form-radio" type="checkbox" name="baby_condition_id[]" value="{{ $condition->id }}" />
-                                        <span class="ml-2 text-sm">{{ $condition->condition }}</span>
-                                    </label> 
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex">
-                            
-
-                            <!-- Informasi Tambahan -->
-                            <div class="mx-1 w-auto mt-4">
-                                <x-label for="baby_additional_information" :value="__('Keterangan Tambahan Bayi')" />
-                                <textarea name="baby_additional_information" id="baby_additional_information" cols="50" rows="2" class="block mt-1 w-auto border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">{{ $pregnancy->baby_additional_information }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center justify-between mt-4">
-                        <x-button class="ml-4">
-                            {{ __('Edit Ringkasan') }}
-                        </x-button>
-                    </div>
-                </form>
+                <!-- Informasi Tambahan -->
+                <label class="block mt-4 text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">Keterangan Tambahan</span>
+                    <textarea name="mother_additional_information" id="mother_additional_information" class="block w-1/2 mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" rows="3">
+                        {{ $pregnancy->additional_information }}
+                    </textarea>
+                </label>
             </div>
-        </div>
+            
+            <div class="p-2">
+                <h3 class="text-center font-semibold text-gray-600 mb-4">Ringkasan Anak</h3>
+                <div class="flex flex-wrap">
+                    <!-- Kelahiran ke -->
+                    <label class="block text-sm mr-2" for="childbirth_order">
+                        <span class="text-gray-700 dark:text-gray-400">Kelahiran ke?</span>
+                        <input type="number" name="childbirth_order" id="childbirth_order" min="1" value="{{ $pregnancy->childbirth_order }}" required class="block w-16 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    </label>
+
+                    <!-- Berat Bayi -->
+                    <label class="block text-sm mx-2" for="baby_weight">
+                        <span class="text-gray-700 dark:text-gray-400">Berat (gr)</span>
+                        <input type="number" name="baby_weight" id="baby_weight" min="1" value="{{ $pregnancy->baby_weight }}" required class="block w-24 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    </label>
+
+                    <!-- Panjang Bayi -->
+                    <label class="block text-sm mx-2" for="baby_lenght">
+                        <span class="text-gray-700 dark:text-gray-400">Panjang (cm)</span>
+                        <input type="number" name="baby_lenght" id="baby_lenght" min="1" value="{{ $pregnancy->baby_lenght }}" required class="block w-24 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    </label>
+
+                    <!-- Lingkar Kepala Bayi -->
+                    <label class="block text-sm mx-2" for="baby_head_circumference">
+                        <span class="text-gray-700 dark:text-gray-400">Lingkar Kepala (cm)</span>
+                        <input type="number" name="baby_head_circumference" id="baby_head_circumference" min="1" value="{{ $pregnancy->baby_head_circumference }}" required class="block w-24 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    </label>
+
+                    <!-- Jenis Kelamin Bayi -->
+                    <label class="block mx-2 text-sm">
+                        <span class="text-gray-700 dark:text-gray-400">
+                            Jenis Kelamin
+                        </span>
+                        <select name="sex_id" id="sex_id" required class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
+                            <option selected disabled hidden>Pilih!</option>
+                            @foreach ($sexes as $sex)
+                            <option {{ $pregnancy->sex_id == $sex->id ? 'selected' : '' }} value="{{ $sex->id }}">
+                                {{ $sex->sex }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </label>
+                </div>
+
+                <div class="flex flex-wrap">
+                    <!-- Kondisi bayi saat lahir -->
+                    <div class="mx-1 w-auto mt-4">
+                        <x-label for="baby_condition_id" :value="__('Kondisi bayi:')" />
+                        <div class="grid grid-cols-2 gap-2 mt-2">
+                            @foreach ($baby_conditions as $condition)
+                            <label class="inline-flex items-center mx-2">
+                                <input class="form-checkbox" type="checkbox" name="baby_condition_id[]" value="{{ $condition->id }}" />
+                                <span class="ml-2 text-sm">{{ $condition->condition }}</span>
+                            </label> 
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informasi Tambahan -->
+                <label class="block mt-4 text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">Keterangan Tambahan Bayi</span>
+                    <textarea name="baby_additional_information" id="baby_additional_information" class="block w-1/2 mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" rows="3">
+                        {{ $pregnancy->baby_additional_information }}
+                    </textarea>
+                </label>
+            </div>
+            
+            <div class="flex items-center justify-between mt-4">
+                <x-button class="ml-4">
+                    {{ __('Edit Ringkasan') }}
+                </x-button>
+            </div>
+        </form>
     </div>
+
 </x-app-layout>

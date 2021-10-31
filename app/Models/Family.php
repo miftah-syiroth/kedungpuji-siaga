@@ -12,10 +12,10 @@ class Family extends Model
     protected $table = 'families';
     protected $guarded = [];
 
-    public function scopeOrder($query)
-    {
-        return $query->where('votes', '>', 100);
-    }
+    // public function scopeOrder($query)
+    // {
+    //     return $query->where('votes', '>', 100);
+    // }
     
     /**
      * kepalaKeluarga relasi one to one bahwa sebuah keluarga hanya memiliki satu kepala keluarga
@@ -37,11 +37,6 @@ class Family extends Model
             ->withPivot('family_status_id')
             ->using(PersonFamily::class);
     }
-
-    // public function FunctionName(Type $var = null)
-    // {
-    //     # code...
-    // }
 
     public function keluargaSejahtera()
     {

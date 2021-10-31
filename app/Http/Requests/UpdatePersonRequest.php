@@ -25,7 +25,7 @@ class UpdatePersonRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'nik' => ['required', 'string'],
+            'nik' => ['required', 'numeric'],
             'place_of_birth' => ['required', 'string'],
             'date_of_birth' => ['required', 'date'],
             'religion_id' => ['required', 'integer'],
@@ -37,8 +37,11 @@ class UpdatePersonRequest extends FormRequest
             'marital_status_id' => ['required', 'integer'],
             'is_cacat' => ['required', 'boolean'], // perhatikan
             'disability_id' => ['exclude_unless:is_cacat,true', 'required', 'integer'],
-            'ibu_id' => ['sometimes', 'integer'],
-            'ayah_id' => ['sometimes', 'integer'],
+            'mother_id' => ['sometimes', 'integer'],
+            'father_id' => ['sometimes', 'integer'],
+            'village_id' => ['required', 'integer'],
+            'is_alive' => ['required', 'boolean'],
+            'died_at' => ['exclude_unless:is_alive,false', 'required', 'date'],
         ];
     }
 }

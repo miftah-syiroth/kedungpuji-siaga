@@ -27,23 +27,23 @@ class Couple extends Model
     // START RELASI
 
     /**
-     * namanya pasangan ya hanya ada 2 org, satu husband satu wife
-     *
+     * namanya pasangan ya hanya ada 2 org, satu husband satu wife.
+     * husband_id yg ada pada tabel couples hanya mencau pada satu org
      * @return void
      */
     public function husband()
     {
-        return $this->belongsTo(Person::class, 'suami_id');
+        return $this->belongsTo(Person::class, 'husband_id');
     }
     
     /**
      * namanya pasangan ya hanya ada 2 org, satu husband satu wife
-     *
+     * wife_id yg ada pada tabel couples hanya mencau pada satu org
      * @return void
      */
     public function wife()
     {
-        return $this->belongsTo(Person::class, 'istri_id');
+        return $this->belongsTo(Person::class, 'wife_id');
     }
     
     /**

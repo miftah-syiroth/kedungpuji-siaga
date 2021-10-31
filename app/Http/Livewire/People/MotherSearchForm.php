@@ -5,7 +5,7 @@ namespace App\Http\Livewire\People;
 use App\Models\Person;
 use Livewire\Component;
 
-class SearchMotherForm extends Component
+class MotherSearchForm extends Component
 {
     public $mothers;
 
@@ -24,7 +24,6 @@ class SearchMotherForm extends Component
     public function render()
     {
         $this->mothers = $this->getMothers();
-
-        return view('livewire.people.search-mother-form');
+        return view('livewire.people.mother-search-form');
     }
 }

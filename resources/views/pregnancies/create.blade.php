@@ -1,45 +1,44 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Tambah Kehamilan') }}
+        {{ __('Tambah Kehamilan Baru') }}
     </x-slot>
     
-    <div class="py-4">
-        <div class="flex justify-start">
-            <div class="px-6 py-6 bg-white rounded-lg shadow-lg">
-                @if (session('message'))
-                    <p class="text-red-500 text-sm mx-4">
-                        {{ session('message') }}
-                    </p>
-                @endif
-                <form action="/pregnancies" method="post">
-                    @csrf
-                    <div class="flex mx-4">
-                        {{-- input nama ibu --}}
-                        @livewire('pregnancies.search-mother')
-                        
-                        {{-- hpht --}}
-                        <div class="ml-4">
-                            <x-label for="hpht" :value="__('HPHT')" />
-                            <input type="date" name="hpht" id="hpht" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
-                        </div>
-                    </div>
-                    
-                    <div class="flex mt-4 mx-4">
-                        <div>
-                            <x-label for="mother_weight" :value="__('Berat Badan Ibu Hamil')" />
-                            <input type="number" name="mother_weight" id="mother_weight" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm"" required>
-                        </div>
-                        <div class="ml-4">
-                            <x-label for="mother_height" :value="__('Tinggi Badan Ibu Hamil')" />
-                            <input type="number" name="mother_height" id="mother_height" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm" required>
-                        </div>
-                    </div>
-                    
-                    <div class="mx-4 mt-4">
-                        <button type="submit" class="rounded-lg px-2 py-1 border bg-blue-500 hover:bg-blue-700 text-white">simpan</button>
-                    </div>
-                </form>
-            </div>
+    <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+        @if (session('message'))
+        <div class="text-sm text-red-600">
+            {{ session('message') }}
         </div>
+        @endif
+
+        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+
+        <form action="/pregnancies" method="post">
+            @csrf
+
+            <div class="flex flex-wrap mt-4">
+                @livewire('pregnancies.search-mother')
+
+                <label class="block text-sm mx-2" for="name">
+                    <span class="text-gray-700 dark:text-gray-400">HPHT</span>
+                    <input type="date" name="hpht" id="hpht" value="{{ old('hpht') }}" required class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                </label>
+            </div>
+
+            <div class="flex mt-4">
+                <label class="block text-sm mx-2" for="nik">
+                    <span class="text-gray-700 dark:text-gray-400">Berat Ibu Hamil</span>
+                    <input type="number" name="mother_weight" id="mother_weight" value="{{ old('mother_weight') }}" required class="block w-auto mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                </label>
+
+                <label class="block text-sm mx-2" for="nik">
+                    <span class="text-gray-700 dark:text-gray-400">Tinggi Ibu Hamil</span>
+                    <input type="number" name="mother_height" id="mother_height" value="{{ old('mother_height') }}" required class="block w-auto mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                </label>
+            </div>
+            
+            <div>
+                <button type="submit" class="bg-gray-600 dark:bg-gray-400 text-white dark:text-gray-800 py-2 px-3 rounded-md hover:bg-gray-700 dark:hover:bg-gray-300 mx-2 my-4">Tambah Kehamilan</button>
+            </div>
+        </form>
     </div>
 </x-app-layout>

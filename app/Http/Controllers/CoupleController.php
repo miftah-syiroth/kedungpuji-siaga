@@ -5,24 +5,29 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DeleteCoupleRequest;
 use App\Http\Requests\StoreCoupleRequest;
 use App\Http\Requests\UpdateCoupleRequest;
-use Illuminate\Http\Request;
 use App\Models\Couple;
+use App\Models\KbService;
 use App\Models\Month;
 use App\Services\CoupleService;
 use Carbon\Carbon;
 
 class CoupleController extends Controller
 {
+    private $coupleService;
+
+    public function __construct(CoupleService $service)
+    {
+        $this->coupleService = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(CoupleService $coupleService)
+    public function index()
     {
-        return view('couples.index', [
-            'couples' => $coupleService->getAllCouples(),
-        ]);
+        return view('couples.index');
     }
 
     /**
@@ -30,10 +35,10 @@ class CoupleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(CoupleService $coupleService)
+    public function create()
     {
         return view('couples.create', [
-            'kb_services' => $coupleService->getAllKbServices(),
+            'kb_services' => KbService::all(),
         ]);
     }
 
@@ -43,9 +48,9 @@ class CoupleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCoupleRequest $request, CoupleService $coupleService)
+    public function store(StoreCoupleRequest $request)
     {
-        $couple = $coupleService->store($request);
+        $couple = $this->coupleService->store($request);
         return redirect('/couples/' . $couple->id);
     }
 
@@ -55,26 +60,11 @@ class CoupleController extends Controller
      * @param  \App\Models\Couple  $couple
      * @return \Illuminate\Http\Response
      */
-    public function show(Couple $couple, CoupleService $coupleService)
+    public function show(Couple $couple)
     {
-        // cek apakah dia pasangan usia subur atau bukan
-        $is_pus = false;
-        if ($couple->wife->date_of_birth->age >= 15 && $couple->wife->date_of_birth->age <= 49) {
-            $is_pus = true;
-        }
-
-        $year = Carbon::now()->year;
-
         return view('couples.show', [
-            'couple' => $coupleService->getCouple($couple),
-            'kb_services' => $coupleService->getAllKbServices(),
-            'is_pus' => $is_pus,
-            'cerai_statuses' => $coupleService->getCeraiStatuses(),
-            'kb_statuses' => $coupleService->getKbStatuses($couple),
-            'kb_anual_report' => $coupleService->getKbAnualReport($couple, $year),
-            'months' => Month::all(),
-            'current_month' => Carbon::now()->month,
-            'current_year' => $year,
+            'couple' => $couple,
+            'cerai_statuses' => $this->coupleService->getCeraiStatuses(),
         ]);
     }
 
@@ -84,11 +74,11 @@ class CoupleController extends Controller
      * @param  \App\Models\Couple  $couple
      * @return \Illuminate\Http\Response
      */
-    public function edit(Couple $couple, CoupleService $coupleService)
+    public function edit(Couple $couple)
     {
         return view('couples.edit', [
             'couple' => $couple,
-            'kb_services' => $coupleService->getAllKbServices(),
+            'kb_services' => KbService::all(),
         ]);
     }
 
@@ -99,9 +89,9 @@ class CoupleController extends Controller
      * @param  \App\Models\Couple  $couple
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCoupleRequest $request, Couple $couple, CoupleService $coupleService)
+    public function update(UpdateCoupleRequest $request, Couple $couple)
     {
-        $coupleService->update($request, $couple);
+        $this->coupleService->update($request, $couple);
         return redirect('/couples/' . $couple->id);
     }
 
@@ -111,9 +101,9 @@ class CoupleController extends Controller
      * @param  \App\Models\Couple  $couple
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DeleteCoupleRequest $request, Couple $couple, CoupleService $coupleService)
+    public function destroy(DeleteCoupleRequest $request, Couple $couple)
     {
-        $coupleService->delete($request, $couple);
+        $this->coupleService->delete($request, $couple);
         return redirect('/couples');
     }
 }

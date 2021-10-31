@@ -10,38 +10,6 @@ use Illuminate\Database\Eloquent\Builder;
 
 class CoupleService
 {    
-    /**
-     * getAllKbServices buat isi input dropdown form aja
-     *
-     * @return void
-     */
-    public function getAllKbServices()
-    {
-        return KbService::all();
-    }
-        
-    /**
-     * ambil semua pasangan yang umur istrinya di atas 15 tahun dan dibawah 49 tahun
-     *
-     * @return void
-     */
-    public function getAllCouples()
-    {
-        return Couple::with([
-            'husband', 
-            'wife.maritalStatus',
-            'kbService',
-        ])->get();
-        // $year = Carbon::now()->year;
-        // return Couple::whereHas('wife', function (Builder $query) {
-        //     $query->whereDate('date_of_birth', '<', Carbon::now()->addYears(-15) )
-        //         ->whereDate('date_of_birth', '>', Carbon::now()->addYears(-49) );
-        // })->with(['kbService', 'keluargaBerencana.kbStatus', 'keluargaBerencana' => function($query) {
-        //     $query->where('year_periode', Carbon::now()->year)
-        //         ->whereIn('month_periode', [Carbon::now()->month - 1, Carbon::now()->month]);
-        // }])->get();
-    }
-
     public function getPus()
     {
         return Couple::whereHas('wife', function (Builder $query) {
