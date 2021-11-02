@@ -17,6 +17,31 @@ class Person extends Model
         'date_of_birth' => 'datetime:Y-m-d',
         'died_at' => 'datetime:Y-m-d',
     ];
+
+
+    // SCOPE
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['sex_id'] ?? false, function($query, $sex_id) {
+            return $query->where('sex_id', $sex_id);
+        });
+
+        $query->when($filters['rt'] ?? false, function($query, $rt) {
+            return $query->where('rt', $rt);
+        });
+
+        $query->when($filters['rw'] ?? false, function($query, $rw) {
+            return $query->where('rw', $rw);
+        });
+
+        $query->when($filters['name'] ?? false, function($query, $name) {
+            return $query->where('name', 'like', '%' .  $name . '%');
+        });
+
+        $query->when($filters['marital_status_id'] ?? false, function($query, $marital_status_id) {
+            return $query->where('marital_status_id', $marital_status_id);
+        });
+    }
     
     
     public function bloodGroup()

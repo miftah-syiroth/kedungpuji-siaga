@@ -1,13 +1,35 @@
-<div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+<div class="px-4 py-2 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
     <table class="w-full whitespace-no-wrap">
         <thead>
             <tr class="text-xs font-semibold tracking-wide text-center uppercase border-b dark:border-gray-700">
-                <th class="pl-4 py-3 text-left">Nama</th>
-                <th class="px-2 py-3">RT/RT</th>
-                <th class="px-2 py-3">L/P</th>
-                <th class="px-2 py-3">Umur</th>
-                <th class="px-2 py-3">Goldar</th>
-                <th class="px-2 py-3 text-left">Status Kawin</th>
+                <th class="pl-4 py-3 text-left">
+                    <button wire:click="sortByName" class="font-semibold text-xs uppercase hover:text-blue-500">Nama</button>
+                </th>
+                <th class="px-2 py-3">
+                    <button wire:click="sortByRw" class="font-semibold text-xs uppercase hover:text-blue-500">
+                        RT/RW
+                    </button>
+                </th>
+                <th class="px-2 py-3">
+                    <button wire:click="sortBySex" class="font-semibold text-xs uppercase hover:text-blue-500">
+                        L/P
+                    </button>
+                </th>
+                <th class="px-2 py-3">
+                    <button wire:click="sortByBirthDate" class="font-semibold text-xs uppercase hover:text-blue-500">
+                        Umur
+                    </button>
+                </th>
+                <th class="px-2 py-3">
+                    <button wire:click="sortByBloodGroup" class="font-semibold text-xs uppercase hover:text-blue-500">
+                        Goldar
+                    </button>
+                </th>
+                <th class="px-2 py-3 text-left">
+                    <button wire:click="sortByMaritalStatus" class="font-semibold text-xs uppercase hover:text-blue-500">
+                        Status Kawin
+                    </button>
+                </th>
                 <th class="px-2 py-3 text-left">Keluarga</th>
                 <th class="px-2 py-3 text-left">Status Keluarga</th>
             </tr>
@@ -22,7 +44,7 @@
                             {{ $key + 1 . '.' }}
                         </div>
                         <div>
-                            <a href="/people/{{ $person->id }}" class="font-normal capitalize text-blue-500 hover:text-blue-800 hover:shadow">{{ $person->name }}</a>
+                            <a href="/people/{{ $person->id }}" class="font-normal capitalize text-blue-500 hover:text-blue-400 hover:underline">{{ $person->name }}</a>
                         </div>
                     </div>
                 </td>

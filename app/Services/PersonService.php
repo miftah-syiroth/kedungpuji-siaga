@@ -5,6 +5,20 @@ use App\Models\Person;
 
 class PersonService
 {
+    public function getPeople($filters)
+    {
+        return Person::with([
+            'bloodGroup',
+            'maritalStatus',
+            'sex',
+            'family'
+        ])->where('is_alive', true)
+            ->where('village_id', 1)
+            ->filter($filters)
+            ->latest()
+            ->paginate(20);
+    }
+
     public function getPerson($person)
     {
         return Person::with([
@@ -13,9 +27,11 @@ class PersonService
             'bloodGroup', //
             'disability', //
             'educational', //
-            'mother', 'father', //
+            'mother.motherChildren', 'father.fatherChildren', //
             'maritalStatus', //
             'family.leader', //
+            // 'wifes',
+            // 'husband',
             // 'familyStatus',
             // 'family.leader',
             // 'wifes.wife.maritalStatus',

@@ -7,10 +7,16 @@ use App\Http\Requests\UpdatePrenatalClassRequest;
 use App\Models\Pregnancy;
 use App\Models\PrenatalClass;
 use App\Services\PrenatalClassService;
-use Illuminate\Http\Request;
 
 class PrenatalClassController extends Controller
 {
+    private $service;
+
+    public function __construct(PrenatalClassService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +32,7 @@ class PrenatalClassController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Pregnancy $pregnancy, $month, PrenatalClassService $service)
+    public function create(Pregnancy $pregnancy, $month)
     {
         // cek disini apakah tgl persalinan udh diisi atau udh hamil, maka cegah input laporan baru
         if ($pregnancy->childbirth_date != null) {
@@ -35,8 +41,8 @@ class PrenatalClassController extends Controller
             return view('prenatal-classes.create', [
                 'pregnancy' => $pregnancy,
                 'month' => $month,
-                'waktu_awal' => $service->getWaktuAwal($pregnancy->hpht, $month),
-                'waktu_akhir' => $service->getWaktuAkhir($pregnancy->hpht, $month),
+                'waktu_awal' => $this->service->getWaktuAwal($pregnancy->hpht, $month),
+                'waktu_akhir' => $this->service->getWaktuAkhir($pregnancy->hpht, $month),
             ]);
         }
         
@@ -48,9 +54,9 @@ class PrenatalClassController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePrenatalClassRequest $request, Pregnancy $pregnancy, PrenatalClassService $service)
+    public function store(StorePrenatalClassRequest $request, Pregnancy $pregnancy, $month)
     {
-        $is_success = $service->store($request, $pregnancy);
+        $is_success = $this->service->store($request, $pregnancy, $month);
         if ($is_success == true) {
             return redirect('/pregnancies/' . $pregnancy->id);
         } else {
@@ -76,12 +82,12 @@ class PrenatalClassController extends Controller
      * @param  \App\Models\PrenatalClass  $prenatalClass
      * @return \Illuminate\Http\Response
      */
-    public function edit(PrenatalClass $prenatalClass, PrenatalClassService $service)
+    public function edit(PrenatalClass $prenatalClass)
     {
         return view('prenatal-classes.edit', [
             'prenatal_class' => $prenatalClass,
-            'waktu_awal' => $service->getWaktuAwal($prenatalClass->pregnancy->hpht, $prenatalClass->month_periode),
-            'waktu_akhir' => $service->getWaktuAkhir($prenatalClass->pregnancy->hpht, $prenatalClass->month_periode),
+            'waktu_awal' => $this->service->getWaktuAwal($prenatalClass->pregnancy->hpht, $prenatalClass->month_periode),
+            'waktu_akhir' => $this->service->getWaktuAkhir($prenatalClass->pregnancy->hpht, $prenatalClass->month_periode),
         ]);
     }
 
@@ -92,9 +98,9 @@ class PrenatalClassController extends Controller
      * @param  \App\Models\PrenatalClass  $prenatalClass
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePrenatalClassRequest $request, PrenatalClass $prenatalClass, PrenatalClassService $service)
+    public function update(UpdatePrenatalClassRequest $request, PrenatalClass $prenatalClass)
     {
-        $is_success = $service->update($request, $prenatalClass);
+        $is_success = $this->service->update($request, $prenatalClass);
         if ($is_success == true) {
             return redirect('/pregnancies/' . $prenatalClass->pregnancy->id);
         } else {

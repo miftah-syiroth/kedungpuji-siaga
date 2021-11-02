@@ -144,6 +144,8 @@ class AnthropometryService
         } else { // perempuan
             $standard = WeightForHeightGirl::where('periode', $periode)->where('height', $height)->first();
         }
+        
+        dd($request->all());
 
         // pengecekan kategori
         if ($request->weight < $standard->negative_3sd) {

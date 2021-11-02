@@ -6,7 +6,7 @@ use Illuminate\View\Component;
 
 class FamilyData extends Component
 {
-    public $person;
+    public $person; // anggota keluarga
 
     /**
      * Create a new component instance.

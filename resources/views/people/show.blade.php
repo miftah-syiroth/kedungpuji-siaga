@@ -2,24 +2,26 @@
     <x-slot name="header">
         {{ __('Detail Penduduk') }}
     </x-slot>
-
-    </div>
     
-    <div class="px-4 py-3 mb-8 bg-white shadow-md dark:bg-gray-800"> 
+    <div class="px-2 py-3 mb-8 bg-white shadow-md dark:bg-gray-800"> 
         <dl>
             {{-- komponen data personal --}}
             <x-people.personal-data :person="$person" />
             {{-- END komponen data personal --}}
 
-            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6">
-                <dt class="text-sm font-medium text-gray-500">
-                    Full name
-                </dt>
-                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-3">
-                    Margot Foster
-                </dd>
-            </div>
-            <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6">
+            {{-- komponen ringkas keluarga --}}
+            <x-people.family-data :person="$person" />
+            {{-- komponen ringkas keluarga --}}
+
+            {{-- komponen pasangan dan KB --}}
+            <x-people.couple-data :person="$person" />
+            {{-- komponen pasangan dan KB --}}
+
+            {{-- komponen kehamilan dan nifas --}}
+            <x-people.pregnancy-data :person="$person" />
+            {{-- komponen kehamilan dan nifas --}}
+            
+            {{-- <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
                     Attachments
                 </dt>
@@ -59,7 +61,7 @@
                         </li>
                     </ul>
                 </dd>
-            </div>
+            </div> --}}
         </dl>  
     </div>
 </x-app-layout>

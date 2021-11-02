@@ -11,6 +11,13 @@ use App\Services\NeonatusService;
 
 class NeonatusController extends Controller
 {
+    private $neonatusService;
+
+    public function __construct(NeonatusService $service)
+    {
+        $this->neonatusService = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,9 +25,7 @@ class NeonatusController extends Controller
      */
     public function index(Person $person)
     {
-        return view('neonatuses.index', [
-            'person' => $person,
-        ]);
+        # code ...;
     }
 
     /**
@@ -28,7 +33,7 @@ class NeonatusController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Posyandu $posyandu, $periode, NeonatusService $service)
+    public function create(Posyandu $posyandu, $periode)
     {
         // batasi kalau posyandu neonatus dgn periode tsb sudah ada, maka batalkan
         $row = $posyandu->neonatuses()->where('periode', $periode)->first();
@@ -37,11 +42,11 @@ class NeonatusController extends Controller
             return view('neonatuses.create', [
                 'posyandu' => $posyandu,
                 'periode' => $periode,
-                'waktu_awal' => $service->getWaktuAwal($posyandu->person->date_of_birth, $periode),
-                'waktu_akhir' => $service->getWaktuAkhir($posyandu->person->date_of_birth, $periode),
+                'waktu_awal' => $this->neonatusService->getWaktuAwal($posyandu->person->date_of_birth, $periode),
+                'waktu_akhir' => $this->neonatusService->getWaktuAkhir($posyandu->person->date_of_birth, $periode),
             ]);
         } else {
-            return redirect()->back();
+            return redirect('/posyandu/' . $posyandu->id);
         }
     }
 
@@ -51,9 +56,9 @@ class NeonatusController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreNeonatusRequest $request, Posyandu $posyandu, NeonatusService $service)
+    public function store(StoreNeonatusRequest $request, Posyandu $posyandu, $periode)
     {
-        $is_success = $service->store($request, $posyandu);
+        $is_success = $this->neonatusService->store($request, $posyandu, $periode);
 
         if ($is_success == true) {
             return redirect('/posyandu/' . $posyandu->id);
@@ -80,12 +85,12 @@ class NeonatusController extends Controller
      * @param  \App\Models\Neonatus  $neonatus
      * @return \Illuminate\Http\Response
      */
-    public function edit(Neonatus $neonatus, NeonatusService $service)
+    public function edit(Neonatus $neonatus)
     {
         return view('neonatuses.edit', [
             'neonatus' => $neonatus,
-            'waktu_awal' => $service->getWaktuAwal($neonatus->posyandu->person->date_of_birth, $neonatus->periode),
-            'waktu_akhir' => $service->getWaktuAkhir($neonatus->posyandu->person->date_of_birth, $neonatus->periode),
+            'waktu_awal' => $this->neonatusService->getWaktuAwal($neonatus->posyandu->person->date_of_birth, $neonatus->periode),
+            'waktu_akhir' => $this->neonatusService->getWaktuAkhir($neonatus->posyandu->person->date_of_birth, $neonatus->periode),
         ]);
     }
 
@@ -96,9 +101,9 @@ class NeonatusController extends Controller
      * @param  \App\Models\Neonatus  $neonatus
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateNeonatusRequest $request, Neonatus $neonatus, NeonatusService $service)
+    public function update(UpdateNeonatusRequest $request, Neonatus $neonatus)
     {
-        $is_success = $service->update($request, $neonatus);
+        $is_success = $this->neonatusService->update($request, $neonatus);
 
         if ($is_success == true) {
             return redirect('/posyandu/' . $neonatus->posyandu->id);

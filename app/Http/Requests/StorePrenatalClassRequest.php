@@ -33,7 +33,7 @@ class StorePrenatalClassRequest extends FormRequest
             'hemoglobin' => ['required'],
             'urine_protein' => ['required'],
             'blood_sugar' => ['required'],
-            'month_periode' => ['required'],
+            // 'month_periode' => ['required'],
             'visited_at' => ['required'],
         ];
     }

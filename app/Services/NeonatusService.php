@@ -10,12 +10,15 @@ class NeonatusService
      * @param  mixed $posyandu
      * @return void
      */
-    public function store($request, $posyandu)
+    public function store($request, $posyandu, $periode)
     {
-        $is_allowed = $this->checkVisiteTime($request, $posyandu->person->date_of_birth);
+        $is_allowed = $this->checkVisiteTime($request->visited_at, $posyandu->person->date_of_birth, $periode);
 
         if ($is_allowed == true) {
-            $posyandu->neonatuses()->create($request->all());
+            $attributes = $request->all();
+            $attributes['periode'] = $periode;
+            
+            $posyandu->neonatuses()->create($attributes);
             return true;
         } else {
             // return 'masukkan waktu kunjungan yg sesuai dengan batasan KN';
@@ -24,20 +27,20 @@ class NeonatusService
         
     }
 
-    public function checkVisiteTime($request, $date_of_birth)
+    public function checkVisiteTime($visited_at, $date_of_birth, $periode)
     {
         $retVal = false;
 
-        $diffInHours = $date_of_birth->diffInHours($request->visited_at);
-        $diffInDays = $date_of_birth->diffInDays($request->visited_at);
+        $diffInHours = $date_of_birth->diffInHours($visited_at); // perbedaan waktu dlm jam
+        $diffInDays = $date_of_birth->diffInDays($visited_at); // perbedaan waktu dlm hari
 
-        if ($request->periode == 1) { //0-6jam
+        if ($periode == 1) { //0-6jam
             $retVal = ($diffInHours >= 0 && $diffInHours <= 6) ? true : false ;
-        } elseif ($request->periode == 2) { //6-48 jam
+        } elseif ($periode == 2) { //6-48 jam
             $retVal = ($diffInHours > 6 && $diffInHours <= 48) ? true : false ;
-        } elseif ($request->periode == 3) { // 3 - 7 hari
+        } elseif ($periode == 3) { // 3 - 7 hari
             $retVal = ($diffInDays >= 3 && $diffInDays <= 7) ? true : false ;
-        } elseif ($request->periode == 4) { // 8 - 28 hari
+        } elseif ($periode == 4) { // 8 - 28 hari
             $retVal = ($diffInDays >= 8 && $diffInDays <= 28) ? true : false ;
         }
 
@@ -54,7 +57,7 @@ class NeonatusService
     public function update($request, $neonatus)
     {
         
-        $is_allowed = $this->checkVisiteTime($request, $neonatus->posyandu->person->date_of_birth);
+        $is_allowed = $this->checkVisiteTime($request->visited_at, $neonatus->posyandu->person->date_of_birth, $neonatus->periode);
 
         if ($is_allowed == true) {
             $neonatus->update([

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePuerperalClassRequest;
+use App\Http\Requests\UpdatePuerperalClassRequest;
 use App\Models\Puerperal;
 use App\Models\PuerperalClass;
 use App\Services\PuerperalClassService;
@@ -10,6 +11,13 @@ use Illuminate\Http\Request;
 
 class PuerperalClassController extends Controller
 {
+    private $service;
+
+    public function __construct(PuerperalClassService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -25,13 +33,13 @@ class PuerperalClassController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Puerperal $puerperal, $periode, PuerperalClassService $service)
+    public function create(Puerperal $puerperal, $periode)
     {
         return view('puerperal-classes.create', [
             'puerperal' => $puerperal,
             'periode' => $periode,
-            'waktu_awal' => $service->getWaktuAwal($puerperal->pregnancy->childbirth_date, $periode),
-            'waktu_akhir' => $service->getWaktuAkhir($puerperal->pregnancy->childbirth_date, $periode),
+            'waktu_awal' => $this->service->getWaktuAwal($puerperal->pregnancy->childbirth_date, $periode),
+            'waktu_akhir' => $this->service->getWaktuAkhir($puerperal->pregnancy->childbirth_date, $periode),
         ]);
     }
 
@@ -41,10 +49,15 @@ class PuerperalClassController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePuerperalClassRequest $request, Puerperal $puerperal, PuerperalClassService $service)
+    public function store(StorePuerperalClassRequest $request, Puerperal $puerperal, $periode)
     {
-        $message = $service->store($request, $puerperal);
-        return redirect('/puerperals/' . $puerperal->id)->with('message', $message);
+        $is_success = $this->service->store($request, $puerperal, $periode);
+
+        if ($is_success == true) {
+            return redirect('/puerperals/' . $puerperal->id)->with('message', 'berhasil');
+        } else {
+            return redirect()->back()->with('message', 'gagal');
+        }
     }
 
     /**
@@ -66,7 +79,11 @@ class PuerperalClassController extends Controller
      */
     public function edit(PuerperalClass $puerperalClass)
     {
-        //
+        return view('puerperal-classes.edit', [
+            'puerperal_class' => $puerperalClass,
+            'waktu_awal' => $this->service->getWaktuAwal($puerperalClass->puerperal->pregnancy->childbirth_date, $puerperalClass->periode),
+            'waktu_akhir' => $this->service->getWaktuAkhir($puerperalClass->puerperal->pregnancy->childbirth_date, $puerperalClass->periode),
+        ]);
     }
 
     /**
@@ -76,9 +93,15 @@ class PuerperalClassController extends Controller
      * @param  \App\Models\PuerperalClass  $puerperalClass
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PuerperalClass $puerperalClass)
+    public function update(UpdatePuerperalClassRequest $request, PuerperalClass $puerperalClass)
     {
-        //
+        $is_success = $this->service->update($request, $puerperalClass);
+
+        if ($is_success == true) {
+            return redirect('/puerperals/' . $puerperalClass->puerperal->id)->with('message', 'berhasil');
+        } else {
+            return redirect()->back()->with('message', 'gagal');
+        }
     }
 
     /**

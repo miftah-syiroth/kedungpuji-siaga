@@ -68,9 +68,7 @@
                 <!-- Informasi Tambahan -->
                 <label class="block mt-4 text-sm">
                     <span class="text-gray-700 dark:text-gray-400">Keterangan Tambahan</span>
-                    <textarea name="mother_additional_information" id="mother_additional_information" class="block w-1/2 mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" rows="3">
-                        {{ $pregnancy->additional_information }}
-                    </textarea>
+                    <textarea name="mother_additional_information" id="mother_additional_information" class="block w-1/2 mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" rows="3">{{ $pregnancy->additional_information }}</textarea>
                 </label>
             </div>
             
@@ -119,12 +117,12 @@
 
                 <div class="flex flex-wrap">
                     <!-- Kondisi bayi saat lahir -->
-                    <div class="mx-1 w-auto mt-4">
-                        <x-label for="baby_condition_id" :value="__('Kondisi bayi:')" />
+                    <div class="mx-1 w-auto mt-4 text-sm">
+                        <span class="text-gray-700 dark:text-gray-400">Kondisi Bayi</span>
                         <div class="grid grid-cols-2 gap-2 mt-2">
                             @foreach ($baby_conditions as $condition)
                             <label class="inline-flex items-center mx-2">
-                                <input class="form-checkbox" type="checkbox" name="baby_condition_id[]" value="{{ $condition->id }}" />
+                                <input class="border" type="checkbox" name="baby_condition_id[]" value="{{ $condition->id }}" />
                                 <span class="ml-2 text-sm">{{ $condition->condition }}</span>
                             </label> 
                             @endforeach
@@ -135,16 +133,11 @@
                 <!-- Informasi Tambahan -->
                 <label class="block mt-4 text-sm">
                     <span class="text-gray-700 dark:text-gray-400">Keterangan Tambahan Bayi</span>
-                    <textarea name="baby_additional_information" id="baby_additional_information" class="block w-1/2 mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" rows="3">
-                        {{ $pregnancy->baby_additional_information }}
-                    </textarea>
+                    <textarea name="baby_additional_information" id="baby_additional_information" class="block w-1/2 mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" rows="3">{{ $pregnancy->baby_additional_information }}</textarea>
                 </label>
             </div>
-            
-            <div class="flex items-center justify-between mt-4">
-                <x-button class="ml-4">
-                    {{ __('Edit Ringkasan') }}
-                </x-button>
+            <div>
+                <button type="submit" class="bg-gray-600 dark:bg-gray-400 text-white dark:text-gray-800 py-2 px-3 rounded-md hover:bg-gray-700 dark:hover:bg-gray-300 mx-2 my-4">Edit Ringkasan</button>
             </div>
         </form>
     </div>

@@ -13,6 +13,7 @@ class Couple extends Model
     protected $table = 'couples';
     protected $guarded = [];
     
+    // protected $with = ['kbService', 'wife', 'husband'];
     
     public function monthlyReport($year, $month)
     {

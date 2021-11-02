@@ -61,10 +61,6 @@ function data() {
 
 
     // alpine refactory
-    isKependudukanMenuOpen: false,
-    toggleKependudukanMenu() {
-      this.isKependudukanMenuOpen = !this.isKependudukanMenuOpen
-    },
     isKeluargaMenuOpen: false,
     toggleKeluargaMenu() {
       this.isKeluargaMenuOpen = !this.isKeluargaMenuOpen
@@ -72,6 +68,10 @@ function data() {
     isKesehatanIbuMenuOpen: false,
     toggleKesehatanIbuMenu() {
       this.isKesehatanIbuMenuOpen = !this.isKesehatanIbuMenuOpen
+    },
+    isKesehatanAnakMenuOpen: false,
+    toggleKesehatanAnakMenu() {
+      this.isKesehatanAnakMenuOpen = !this.isKesehatanAnakMenuOpen
     },
   }
 }

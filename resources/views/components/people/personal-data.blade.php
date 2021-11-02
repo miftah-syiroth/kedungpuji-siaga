@@ -1,5 +1,5 @@
-<div x-data="{ open: true }" class="px-4 py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6">
-    <dt class="text-sm font-medium text-gray-500 dark:text-gray-200">
+<div x-data="{ open: true }" class="px-4 py-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6">
+    <dt class="text-sm font-medium text-gray-700 dark:text-gray-200">
         <button x-on:click="open = ! open" class="border-b-2 hover:bg-gray-100 dark:hover:text-gray-700 rounded-lg shadow-md w-full">Personal</button>
     </dt>
     <dd x-show="open" class="flex justify-between mt-1 py-2 text-sm text-gray-900 border border-gray-200 rounded-md dark:text-gray-200 sm:mt-0 sm:col-span-3">
@@ -18,6 +18,10 @@
             <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
                 <div>Tempat, Tanggal Lahir</div>
                 <div class="col-span-2">: {{ $person->place_of_birth }}, {{ $person->date_of_birth->isoFormat('DD MMMM Y') }} ({{ $person->date_of_birth->age }} tahun)</div>
+            </li>
+            <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
+                <div>Jenis Kelamin</div>
+                <div class="col-span-2">: {{ $person->sex->sex }}</div>
             </li>
             <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
                 <div>Golongan Darah</div>
@@ -77,6 +81,24 @@
                 </div>  
             </li>
             @endif
+            <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
+                <div>Anak Kandung</div>
+                <div class="col-span-2 flex flex-row">
+                    <span class="mr-1">:</span>
+                    <ul>
+                        @forelse ($descendants as $person)
+                            <li>
+                                <a href="/people/{{ $person->id }}" class="text-blue-500 hover:text-blue-700">
+                                    {{ $person->name }}
+                                </a>
+                            </li>
+                        @empty
+                            <li>belum punya anak</li>
+                        @endforelse
+                    </ul>
+                    
+                </div>
+            </li>
         </ul>
     </dd>
 </div>

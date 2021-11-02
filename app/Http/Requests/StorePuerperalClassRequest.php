@@ -24,11 +24,10 @@ class StorePuerperalClassRequest extends FormRequest
     public function rules()
     {
         return [
-            'periode' => ['required', 'integer'],
             'visited_at' => ['required', 'date'],
-            'problem' => ['required', 'string'],
+            'problem' => ['sometimes'],
             'faskes' => ['required', 'string'],
-            'action' => ['required', 'string'],
+            'action' => ['sometimes'],
         ];
     }
 }

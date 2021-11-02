@@ -24,7 +24,7 @@ class StoreNeonatusRequest extends FormRequest
     public function rules()
     {
         return [
-            'periode' => ['required', 'integer'],
+            // 'periode' => ['required', 'integer'],
             'visited_at' => ['required',],
             'baby_weight' => ['required',],
             'baby_lenght' => ['required',],

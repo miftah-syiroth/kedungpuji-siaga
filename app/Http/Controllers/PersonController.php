@@ -30,7 +30,14 @@ class PersonController extends Controller
      */
     public function index()
     {
-        return view('people.index');
+        $filters = request()->all();
+
+        return view('people.index', [
+            'people' => $this->personService->getPeople($filters),
+            'sexes' => Sex::all(),
+            'blood_groups' => BloodGroup::all(),
+            'marital_statuses' => MaritalStatus::all(),
+        ]);
     }
 
     /**
@@ -71,7 +78,7 @@ class PersonController extends Controller
     public function show(Person $person)
     {
         return view('people.show', [
-            'person' => $person, // tidak langsung karena butuh banyak eager loading
+            'person' => $this->personService->getPerson($person), // tidak langsung karena butuh banyak eager loading
             'months' => Month::all(),
         ]);
     }

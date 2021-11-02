@@ -11,6 +11,13 @@ use Illuminate\Http\Request;
 
 class AnthropometryController extends Controller
 {
+    private $anthropometryService;
+
+    public function __construct(AnthropometryService $service)
+    {
+        $this->anthropometryService = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -49,9 +56,9 @@ class AnthropometryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreAnthropometryRequest $request, Posyandu $posyandu, $month, AnthropometryService $service)
+    public function store(StoreAnthropometryRequest $request, Posyandu $posyandu, $month)
     {
-        $service->store($request, $posyandu, $month);
+        $this->anthropometryService->store($request, $posyandu, $month);
         return redirect('/posyandu/' . $posyandu->id . '/anthropometries');
     }
 

@@ -106,28 +106,15 @@ Route::middleware('auth')->group(function () {
 
 
     // Route halaman input laporan bulanan kesehatan ibu hamil
-    Route::get('/pregnancies/{pregnancy}/prenatal-classes/{month}/create', [PrenatalClassController::class, 'create']);
-
-    // END REFACTORING
-
-
-    Route::resource('users', UserController::class);    
-
-
-    Route::get('/childbirths', [ChildbirthController::class, 'index'])->name('childbirths.index');
-    Route::get('/childbirths/{pregnancy}/create', [ChildbirthController::class, 'create']);
-    Route::post('/childbirths/{pregnancy}', [ChildbirthController::class, 'store']);
-
-
-    
+    Route::get('/pregnancies/{pregnancy}/month/{month}/prenatal-classes/create', [PrenatalClassController::class, 'create']);
     // Route store laporan bulanan kesehatan ibu hamil
-    Route::post('/pregnancies/{pregnancy}/prenatal-classes', [PrenatalClassController::class, 'store']);
+    Route::post('/pregnancies/{pregnancy}/month/{month}/prenatal-classes', [PrenatalClassController::class, 'store']);
     // route untuk menuju halaman input edit laporan kesehatan ibu hamil
     Route::get('/prenatal-classes/{prenatalClass}/edit', [PrenatalClassController::class, 'edit']);
     // route untuk update data laporan kkesehatan ibu hamil
     Route::put('/prenatal-classes/{prenatalClass}', [PrenatalClassController::class, 'update']);
 
-
+    
     // Route untuk menampilkan list ibu nifas
     Route::get('/puerperals', [PuerperalController::class, 'index']);
     // route untuk melihat data pelayanan nifas
@@ -136,23 +123,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/puerperals/{puerperal}/edit', [PuerperalController::class, 'edit']);
     // route untuk update kesimpulan puerperals
     Route::put('/puerperals/{puerperal}', [PuerperalController::class, 'update']);
+
+
     // route untuk menuju halaman input baru laporan kunjungan ibu nifas
-    Route::get('/puerperals/{puerperal}/puerperal-classes/{periode}/create', [PuerperalClassController::class, 'create']);
+    Route::get('/puerperals/{puerperal}/periode/{periode}/puerperal-classes/create', [PuerperalClassController::class, 'create']);
     // route untuk menyimpan input laporan kunjungan ibu nifas
-    Route::post('/puerperals/{puerperal}/puerperal-classes', [PuerperalClassController::class, 'store']);
+    Route::post('/puerperals/{puerperal}/periode/{periode}/puerperal-classes', [PuerperalClassController::class, 'store']);
     // route untuk menunju halaman edit puerperal
-
-
-    // Route untuk melihat semua laporan neonatuses
-    Route::get('/people/{person}/neonatuses', [NeonatusController::class, 'index']);
-    // Route untuk menuju halaman form simpan data pelayanan neonatus
-    Route::get('/posyandu/{posyandu}/neonatuses/{periode}/create', [NeonatusController::class, 'create']);
-    // route menyimpan laporan neonatus
-    Route::post('/posyandu/{posyandu}/neonatuses', [NeonatusController::class, 'store']);
-    // route menuju halaman edit input pelayanan neonatus
-    Route::get('/neonatuses/{neonatus}/edit', [NeonatusController::class, 'edit']);
-    // route untuk update pelayanan neonatus
-    Route::put('/neonatuses/{neonatus}', [NeonatusController::class, 'update']);
+    Route::get('/puerperal-classes/{puerperalClass}/edit', [PuerperalClassController::class, 'edit']);
+    // route untuk update data input laporan ibu nifas
+    Route::put('/puerperal-classes/{puerperalClass}', [PuerperalClassController::class, 'update']);
 
 
     // route untuk indeks posyandu balita
@@ -165,16 +145,57 @@ Route::middleware('auth')->group(function () {
     Route::get('/posyandu/{posyandu}', [PosyanduController::class, 'show']);
 
 
+    // Route untuk menuju halaman form simpan data pelayanan neonatus
+    Route::get('/posyandu/{posyandu}/periode/{periode}/neonatuses/create', [NeonatusController::class, 'create']);
+    // route menyimpan laporan neonatus
+    Route::post('/posyandu/{posyandu}/periode/{periode}/neonatuses', [NeonatusController::class, 'store']);
+    // route menuju halaman edit input pelayanan neonatus
+    Route::get('/neonatuses/{neonatus}/edit', [NeonatusController::class, 'edit']);
+    // route untuk update pelayanan neonatus
+    Route::put('/neonatuses/{neonatus}', [NeonatusController::class, 'update']);
+
+
     // menampilkan tabel layanan pengukuran seorang bayi
     Route::get('/posyandu/{posyandu}/anthropometries', [AnthropometryController::class, 'index']);
     // menuju halaman input laporan antropometries bulanan
-    Route::get('/posyandu/{posyandu}/age-in-month/{month}/anthropometries/create', [AnthropometryController::class, 'create']);
+    Route::get('/posyandu/{posyandu}/month/{month}/anthropometries/create', [AnthropometryController::class, 'create']);
     // store input laporan bulanan
-    Route::post('/posyandu/{posyandu}/age-in-month/{month}/anthropometries', [AnthropometryController::class, 'store']);
+    Route::post('/posyandu/{posyandu}/month/{month}/anthropometries', [AnthropometryController::class, 'store']);
     // route untuk menuju halaman edit
     Route::get('/anthropometries/{anthropometry}/edit', [AnthropometryController::class, 'edit']);
     // update anthropometry data dari hhalaman edit
     Route::put('/anthropometries/{anthropometry}', [AnthropometryController::class, 'update']);
+
+
+    Route::resource('users', UserController::class);    
+
+    // END REFACTORING
+
+
+
+
+    // childbirth ini kmrn aku passing ke view utk menambah penduduk berdasarkan kelahiran
+    Route::get('/childbirths', [ChildbirthController::class, 'index'])->name('childbirths.index');
+    Route::get('/childbirths/{pregnancy}/create', [ChildbirthController::class, 'create']);
+    Route::post('/childbirths/{pregnancy}', [ChildbirthController::class, 'store']);
+
+
+    
+    
+    
+
+
+    
+    
+
+
+    
+
+
+    
+
+
+    
     
 
     

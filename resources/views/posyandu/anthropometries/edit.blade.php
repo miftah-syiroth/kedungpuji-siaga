@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Input Laporan Anthropometri') }}
+        {{ __('Edit Laporan Anthropometri') }}
     </x-slot>
     
     @if (session('message'))
@@ -9,52 +9,47 @@
         </span>
     @endif
 
-    <div class="py-4">
-        <div class="flex justify-start">
-            <div class="px-3 py-6 bg-white rounded-lg shadow-lg">
-                <x-auth-validation-errors class="mb-4" :errors="$errors" />
-                <form method="POST" action="/anthropometries/{{ $anthropometry->id }}">
-                    @csrf
-                    @method('PUT')
-                    <div class="p-2">
-                        <div class="flex flex-row flex-wrap">
-                            <!-- mother_weight -->
-                            <div class="mx-4">
-                                <x-label for="weight" :value="__('Berat Badan (kg)')" />
-                                <input type="number" name="weight" id="weight" step="0.01" value="{{ $anthropometry->weight }}" required class="block mt-1 w-28 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
-                            </div>
-        
-                            <!-- panjang badan -->
-                            <div class="mx-4 w-auto">
-                                <x-label for="height" :value="__('Panjang Badan (cm)')" />
-                                <input type="number" name="height" id="height" step="0.01" value="{{ $anthropometry->height }}" required class="block mt-1 w-32 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
-                            </div>
+ 
+    <div class="px-4 py-3 mb-8 bg-white shadow-md dark:bg-gray-800"> 
+        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+        <form method="POST" action="/anthropometries/{{ $anthropometry->id }}">
+            @csrf
+            @method('PUT')
+            <div class="p-2">
+                <div class="flex flex-wrap mt-4">
+                    <!-- mother_weight -->
+                    <label class="block text-sm mr-2" for="weight">
+                        <span class="text-gray-700 dark:text-gray-400">Berat Badan (gram)</span>
+                        <input type="number" name="weight" id="weight" value="{{ $anthropometry->weight }}" step="any" min="500" required class="block w-24 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    </label>
 
-                            <!-- lingkar kepala -->
-                            <div class="mx-4 w-auto">
-                                <x-label for="head_circumference" :value="__('Lingkar Kepala (cm)')" />
-                                <input type="number" step="0.01" name="head_circumference" id="head_circumference" value="{{ $anthropometry->head_circumference }}" required class="block mt-1 w-32 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
-                            </div>
-                        </div>
+                    <!-- panjang badan -->
+                    <label class="block text-sm mx-2" for="height">
+                        <span class="text-gray-700 dark:text-gray-400">Panjang Badan (cm)</span>
+                        <input type="number" name="height" id="height" value="{{ $anthropometry->height }}" step="any" min="10" required class="block w-24 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    </label>
 
-                        <!-- tanggal kunjungan -->
-                        <div class="mx-4 w-80 mt-4">
-                            <x-label for="visited_at" :value="__('Tanggal Kunjungan')" />
-                            <input type="date" name="visited_at" id="visited_at" value="{{ $anthropometry->visited_at->isoFormat('YYYY-MM-DD') }}" required class="block mt-1 w-auto border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-sm">
-                            <span class="text-sm text-green-800">
-                                Lorem, ipsum dolor.
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center justify-between mt-4">
-                        <x-button class="ml-4">
-                            {{ __('Input Kunjungan') }}
-                        </x-button>
-                    </div>
-                </form>
+                    <!-- lingkar kepala -->
+                    <label class="block text-sm mx-2" for="head_circumference">
+                        <span class="text-gray-700 dark:text-gray-400">Lingkar Kepala (cm)</span>
+                        <input type="number" name="head_circumference" id="head_circumference" value="{{ $anthropometry->head_circumference }}" step="any" min="10" required class="block w-24 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    </label>
+                </div>
+
+                <!-- tanggal kunjungan -->
+                <label class="block text-sm mr-2 mt-4 w-auto" for="visited_at">
+                    <span class="text-gray-700 dark:text-gray-400">Waktu Kunjungan</span>
+                    <input type="datetime-local" name="visited_at" id="visited_at" value="{{ $anthropometry->visited_at->isoFormat('YYYY-MM-DD') }}" required class="block w-auto mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    <span class="text-sm text-green-800 dark:text-gray-500">
+                        {{-- {{ $waktu_awal->isoFormat('DD MMM YYYY HH:mm') }} s.d. {{ $waktu_akhir->isoFormat('DD MMM YYYY HH:mm') }} --}}
+                    </span>
+                </label>
             </div>
-        </div>
+            
+            <div>
+                <button type="submit" class="bg-gray-600 dark:bg-gray-400 text-white dark:text-gray-800 py-2 px-3 rounded-md hover:bg-gray-700 dark:hover:bg-gray-300 mx-2 my-4">Edit Laporan</button>
+            </div>
+        </form>
     </div>
 
 </x-app-layout>

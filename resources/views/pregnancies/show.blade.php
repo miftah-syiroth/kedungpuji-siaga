@@ -204,7 +204,7 @@
             <div class="grid gap-2 mb-8 grid-cols-3 mt-4">
                 @for ($i = 1; $i <= 9; $i++)
                 <div class="rounded-md border-2">
-                    <div class="flex flex-col">
+                    <div class="flex flex-col flex-wrap">
 
                         <p class="mb-2 text-sm font-medium text-dark text-center" >
                             Bulan ke {{ $i }}
@@ -300,7 +300,7 @@
                         
                         @if ($is_filled == false && $pregnancy->childbirth_date == null)
                         <div class="flex justify-center">
-                            <a href="/pregnancies/{{ $pregnancy->id }}/prenatal-classes/{{ $i }}/create" class="text-sm rounded-md px-3 py-1 bg-blue-500 hover:bg-blue-700 text-white">input</a>
+                            <a href="/pregnancies/{{ $pregnancy->id }}/month/{{ $i }}/prenatal-classes/create" class="text-sm rounded-md px-3 py-1 bg-blue-500 hover:bg-blue-700 text-white">input</a>
                         </div>
                         @endif
                     </div>

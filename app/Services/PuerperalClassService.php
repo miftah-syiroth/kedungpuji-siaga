@@ -6,30 +6,49 @@ class PuerperalClassService
 {    
     /*
      * ambil nilai difference antara bersalin dan waktu kunjungan yg diinput
-     * cek kesesuaian waktu kunjungan, input date harus sesuai dengan batasan waktu kunjungan, semisal periode KF1 0-2 hari setelah bersalin, jika lahir pd tgl 1, input date tidak boleh lebih dari H+2 atau tgl 3
-     * 
+     * cek kesesuaian waktu kunjungan, input date harus sesuai dengan batasan waktu kunjungan, 
+     * semisal periode KF1 0-2 hari setelah bersalin, jika lahir pd tgl 1, input date tidak boleh lebih dari H+2 atau tgl 3
      * @param  mixed $request
      * @param  mixed $puerperal
      * @return void
      */
-    public function store($request, $puerperal)
+    public function store($request, $puerperal, $periode)
     {
         $attributes = $request->all();
 
-        if ($request->missing('visited_at')) {
-            $attributes['visited_at'] = now();
-        }
+        // if ($request->missing('visited_at')) {
+        //     $attributes['visited_at'] = now();
+        // }
 
         $time_difference = $puerperal->pregnancy->childbirth_date->diffInDays($attributes['visited_at']);
-        
-        $is_allowed = $this->checkVisitDate($attributes['periode'], $time_difference);
+        $is_allowed = $this->checkVisitDate($periode, $time_difference);
 
         if ($is_allowed == true) {
+            $attributes['periode'] = $periode;
             $puerperal->puerperalClasses()->create($attributes);
-            return 'berhasil disimpan';
+            return true;
         } else {
-            return 'masukkan waktu kunjungan yg sesuai dengan batasan KF';
+            return false;
         }
+    }
+
+    public function update($request, $puerperal_class)
+    {
+        $attributes = $request->all();
+
+        $time_difference = $puerperal_class->puerperal->pregnancy->childbirth_date->diffInDays($attributes['visited_at']);
+
+        $is_allowed = $this->checkVisitDate($puerperal_class->periode, $time_difference);
+
+        if ($is_allowed == true) {
+            // dd($attributes);
+            $puerperal_class->update($attributes);
+            // $puerperal->puerperalClasses()->create($attributes);
+            return true;
+        } else {
+            return false;
+        }
+        
     }
 
     public function checkVisitDate($periode, $time_difference)

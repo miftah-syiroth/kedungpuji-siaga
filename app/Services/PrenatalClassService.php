@@ -5,13 +5,15 @@ use App\Models\PrenatalClass;
 
 class PrenatalClassService
 {
-    public function store($request, $pregnancy)
+    public function store($request, $pregnancy, $month)
     {
         // cek waktu input visited_at harus sesuai month_periodenya, artinya di antara waktu awal dan waktu akhir pada periode tersebut
-        $is_allowed = $this->checkVisitDate($request->visited_at, $request->month_periode, $pregnancy);
+        $is_allowed = $this->checkVisitDate($request->visited_at, $month, $pregnancy);
 
         if ($is_allowed == true) {
-            $pregnancy->prenatalClasses()->create($request->all());
+            $attributes = $request->all();
+            $attributes['month_periode'] = $month;
+            $pregnancy->prenatalClasses()->create($attributes);
             return true;
         } else {
             return false;

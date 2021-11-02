@@ -12,6 +12,13 @@ use Illuminate\Http\Request;
 
 class PuerperalController extends Controller
 {
+    private $puerperalService;
+
+    public function __construct(PuerperalService $service)
+    {
+        $this->puerperalService = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -51,16 +58,9 @@ class PuerperalController extends Controller
      */
     public function show(Puerperal $puerperal)
     {
-        $periode = [
-            ['nomor' => 1, 'min' => '0', 'max' => '6 jam'], // 0-6 jam
-            ['nomor' => 2, 'min' => '6', 'max' => '48 jam'], //6-48 jam
-            ['nomor' => 3, 'min' => '3', 'max' => '7 hari'], //3-7 hari
-            ['nomor' => 4, 'min' => '8', 'max' => '48 hari'], //8-28 hari
-        ];
-
         return view('puerperals.show', [
             'puerperal' => $puerperal,
-            'periode' => $periode,
+            'periode' => $this->puerperalService->getPeriode(),
             'puerperal_day_to' => $puerperal->pregnancy->childbirth_date->diffInDays(now()),
         ]);
     }

@@ -14,8 +14,11 @@ use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
-    public function __construct()
+    private $userService;
+
+    public function __construct(UserService $service)
     {
+        $this->userService = $service;
         $this->middleware(['role:admin|bidan desa'])->except('edit', 'update');
     }
 
@@ -77,9 +80,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user, UserService $userService)
+    public function edit(User $user)
     {
-        $roles = $userService->getAllRoles();
+        $roles = $this->userService->getAllRoles();
 
         return view('users.edit', compact('user', 'roles'));
     }
@@ -91,9 +94,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request, User $user, UserService $userService)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $userService->update($request, $user);
+        $this->userService->update($request, $user);
 
         return redirect()->back()->with('status', 'Pengguna berhasil diubah!');
     }
