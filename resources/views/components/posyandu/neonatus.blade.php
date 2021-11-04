@@ -1,6 +1,4 @@
-{{-- komponen input data kb --}}
-
-<div x-data="{ isOpen : true }" class="px-4 py-3 mb-8 bg-white shadow-md dark:bg-gray-800"> 
+<div x-data="{ isOpen : true }" class="px-4 py-1 mb-4 bg-white shadow-md dark:bg-gray-800"> 
     <div class="px-4 py-2">
         <h3 class="text-md leading-6 font-medium justify-center text-center">
             <button x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">Layanan Neonatus</button>
@@ -116,7 +114,7 @@
                     @endforeach
 
                     @if ($is_filled == false)
-                        <div class="text-center">
+                        <div class="text-center my-2">
                             <a href="/posyandu/{{ $posyandu->id }}/periode/{{ $periode['nomor'] }}/neonatuses/create" class="text-sm rounded-md px-3 py-1 bg-blue-500 hover:bg-blue-700 text-white">input</a>
                         </div>
                     @endif

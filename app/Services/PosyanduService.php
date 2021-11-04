@@ -8,17 +8,23 @@ use Carbon\Carbon;
 
 class PosyanduService
 {
-    public function getAllBalita()
+    public function getAllBalita($filters)
     {
-        // return Posyandu::with([
-        //     'person',
-        //     'neonatuses',
-        // ])->get();
-        
-        // ambil semua person yang umurnya < 6 tahun
-        return Person::with(['posyandu'])
-            ->whereDate('date_of_birth', '>', Carbon::now()->addYears(-5))
-            ->get();
+        if (isset($filters['status_id'])) {
+            if ($filters['status_id'] == true) {
+                $filters['posyandu'] = true;
+            } else {
+                $filters['non_posyandu'] = true;
+            }
+        }
+
+        // ambil semua person yang umurnya < 60 bulan
+        return Person::where('is_alive', true)
+            ->where('village_id', 1)
+            ->whereDate('date_of_birth', '>', Carbon::now()->addMonths(-60))
+            ->filter($filters)
+            ->latest()
+            ->paginate(20);
     }
 
     public function store($request, $person)

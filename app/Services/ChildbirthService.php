@@ -20,12 +20,14 @@ class ChildbirthService
         $attributes['date_of_birth'] = $pregnancy->childbirth_date;
         $attributes['educational_id'] = 1; // tidak/belum sekolah
         $attributes['marital_status_id'] = 1; //belum kawin
-        $attributes['ibu_id'] = $pregnancy->mother_id;
+        $attributes['mother_id'] = $pregnancy->mother_id;
+        $attributes['village_id'] = 1;
+        $attributes['is_alive'] = true;
 
         // cek kalau ga ada input ayah, ambil ayah dari suami ibu
-        if ($request->missing('ayah_id')) {
+        if ($request->missing('father_id')) {
             if (isset($pregnancy->mother->husband)) {
-                $attributes['ayah_id'] = $pregnancy->mother->husband->suami_id;
+                $attributes['father_id'] = $pregnancy->mother->husband->husband_id;
             }
         }
 

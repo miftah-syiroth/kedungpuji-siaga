@@ -46,8 +46,9 @@
                 </label>
             </div>
             
-            <div>
+            <div class="flex flex-wrap justify-between text-sm">
                 <button type="submit" class="bg-gray-600 dark:bg-gray-400 text-white dark:text-gray-800 py-2 px-3 rounded-md hover:bg-gray-700 dark:hover:bg-gray-300 mx-2 my-4">Edit</button>
+                <a href="/puerperals/{{ $puerperal_class->puerperal->id }}" type="submit" class=" bg-purple-400 dark:bg-gray-400 text-white dark:text-gray-800 py-2 px-3 rounded-md hover:bg-purple-700 dark:hover:bg-gray-300 mx-2 my-4">Batal Ubah</a>
             </div>
         </form>
     </div>

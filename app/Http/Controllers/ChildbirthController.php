@@ -15,15 +15,22 @@ use Illuminate\Http\Request;
  */
 class ChildbirthController extends Controller
 {
+    private $childbirthService;
+
+    public function __construct(ChildbirthService $service)
+    {
+        $this->childbirthService = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(ChildbirthService $service)
+    public function index()
     {
         return view('childbirths.index', [
-            'childbirths' => $service->getNewBirths(),
+            'childbirths' => $this->childbirthService->getNewBirths(),
         ]);
     }
 
@@ -53,9 +60,9 @@ class ChildbirthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreChildbirthRequest $request, Pregnancy $pregnancy, ChildbirthService $service)
+    public function store(StoreChildbirthRequest $request, Pregnancy $pregnancy)
     {
-        $person = $service->store($request, $pregnancy);
+        $person = $this->childbirthService->store($request, $pregnancy);
         return redirect('/people/' . $person->id);
     }
 

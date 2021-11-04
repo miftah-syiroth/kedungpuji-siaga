@@ -19,6 +19,20 @@ class PersonService
             ->paginate(20);
     }
 
+    public function getPeopleDeadOrMoved($filters)
+    {
+        return Person::with([
+            'bloodGroup',
+            'maritalStatus',
+            'sex',
+            'family'
+        ])->where('is_alive', false)
+            ->orwhere('village_id', 2)
+            ->filter($filters)
+            ->latest()
+            ->paginate(20);
+    }
+
     public function getPerson($person)
     {
         return Person::with([
@@ -30,25 +44,7 @@ class PersonService
             'mother.motherChildren', 'father.fatherChildren', //
             'maritalStatus', //
             'family.leader', //
-            // 'wifes',
-            // 'husband',
-            // 'familyStatus',
-            // 'family.leader',
-            // 'wifes.wife.maritalStatus',
-            // 'husband.husband.maritalStatus',
-            // 'husband.kbService',
-            // 'kepalaKeluarga.keluargaSejahtera',
-            // 'kepalaKeluarga.people' => function ($query) {
-            //     $query->orderBy('family_status_id', 'ASC');
-            // },
-            // 'kepalaKeluarga.people.sex',
-            // 'kepalaKeluarga.people.bloodGroup',
-            // 'kepalaKeluarga.people.education',
-            // 'keluargaBerencana' => function ($query) {
-            //     $query->where('year_periode', Carbon::now()->year);
-            // },
-            // 'keluargaBerencana.kbStatus',
-            // 'pregnancies',
+            'pregnancies',
         ])->find($person->id);
     }
 

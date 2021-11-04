@@ -72,22 +72,21 @@
                             <a class="w-full" href="/people">Penduduk Kedungpuji</a>
                         </li>
                         <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
-                            <a class="w-full" href="/people/create">Tambah Pendatang</a>
+                            <a class="w-full" href="/people/create">Tambah Penduduk</a>
                         </li>
                         <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
-                            <a class="w-full" href="/people/childbirth/create">Tambah Kelahiran</a>
+                            <a class="w-full" href="/childbirths">Tambah Kelahiran</a>
                         </li>
                         <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
-                            <a class="w-full" href="{{ route('people.index.hidden') }}">Pindah atau Mati</a>
+                            <a class="w-full" href="{{ route('people.dead') }}">Pindah atau Mati</a>
                         </li>
                     </ul>
                 </template>
             </li>
 
-            <li class="relative px-6 py-3">
-                <button
+            <li x-data="{isKbMenuOpen : {{ request()->routeIs('kb.*') ? 'true' : 'false' }} }" class="relative px-6 py-3">
+                <button x-on:click="isKbMenuOpen = ! isKbMenuOpen"
                     class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                    @click="toggleKeluargaMenu"
                     aria-haspopup="true" >
                     <span class="inline-flex items-center">
                         <svg
@@ -118,7 +117,7 @@
                         </path>
                     </svg>
                 </button>
-                <template x-if="isKeluargaMenuOpen">
+                <template x-if="isKbMenuOpen">
                     <ul
                         x-transition:enter="transition-all ease-in-out duration-300"
                         x-transition:enter-start="opacity-25 max-h-0"
@@ -147,10 +146,9 @@
                 </template>
             </li>
 
-            <li class="relative px-6 py-3">
-                <button
+            <li x-data="{isKesehatanIbuMenuOpen : {{ request()->routeIs('pregnancies.*') ? 'true' : 'false' }} }" class="relative px-6 py-3">
+                <button x-on:click="isKesehatanIbuMenuOpen = ! isKesehatanIbuMenuOpen"
                     class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                    @click="toggleKesehatanIbuMenu"
                     aria-haspopup="true" >
                     <span class="inline-flex items-center">
                         <svg
@@ -192,29 +190,24 @@
                         class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
                         aria-label="submenu">
                         <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
-                            <a class="w-full" href="/pregnancies">Ibu Hamil</a>
+                            <a class="w-full" href="/ibu-hamil">Ibu Hamil</a>
+                        </li>
+                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                            <a class="w-full" href="/ibu-nifas">Ibu Nifas</a>
+                        </li>
+                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                            <a class="w-full" href="/pregnancies">Semua Kehamilan</a>
                         </li>
                         <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/pregnancies/create">Tambah Kehamilan</a>
-                        </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
-                            <a class="w-full" href="#">Laporan Ibu Hamil</a>
-                        </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
-                            <a class="w-full" href="#">Ibu Nifas</a>
-                        </li>
-                        
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
-                            <a class="w-full" href="#">Laporan Ibu Nifas</a>
                         </li>
                     </ul>
                 </template>
             </li>
 
-            <li class="relative px-6 py-3">
-                <button
+            <li x-data="{isKesehatanAnakMenuOpen : {{ request()->routeIs('posyandu.*') ? 'true' : 'false' }} }" class="relative px-6 py-3">
+                <button x-on:click="isKesehatanAnakMenuOpen = ! isKesehatanAnakMenuOpen"
                     class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                    @click="toggleKesehatanAnakMenu"
                     aria-haspopup="true" >
                     <span class="inline-flex items-center">
                         <svg
@@ -256,14 +249,14 @@
                         class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
                         aria-label="submenu">
                         <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
-                            <a class="w-full" href="/posyandu">Balita Posyandu</a>
+                            <a class="w-full" href="/posyandu">Balita</a>
                         </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        {{-- <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/posyandu/create">Tambah Posyandu</a>
                         </li>
                         <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="#">Kelahiran</a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </template>
             </li>
@@ -284,7 +277,7 @@
                         d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
                     ></path>
                     </svg>
-                    <span class="ml-4">Forms</span>
+                    <span class="ml-4">Laporan</span>
                 </a>
             </li>
             

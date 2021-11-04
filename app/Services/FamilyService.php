@@ -2,19 +2,21 @@
 namespace App\Services;
 
 use App\Models\Family;
-use App\Models\FamilyStatus;
-use App\Models\KeluargaSejahtera;
 use App\Models\Person;
-use Illuminate\Database\Eloquent\Builder;
 
 class FamilyService
 {
-    public function getAllFamilies()
+    public function getAllFamilies($filters)
     {
         return Family::with([
-            'leader',
+            'leader' => function ($query) {
+                $query->where('is_alive', true)
+                    ->where('village_id', 1);
+            },
             'keluargaSejahtera',
-        ])->withCount('people')->get();
+        ])->filter($filters)
+            ->latest()
+            ->paginate(20);
     }
     
     /**

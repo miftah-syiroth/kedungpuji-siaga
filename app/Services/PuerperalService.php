@@ -1,6 +1,8 @@
 <?php
 namespace App\Services;
 
+use App\Models\Puerperal;
+use Illuminate\Database\Eloquent\Builder;
 
 class PuerperalService
 {    

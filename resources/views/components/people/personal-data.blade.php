@@ -1,4 +1,4 @@
-<div x-data="{ open: true }" class="px-4 py-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6">
+<div x-data="{ open: true }" class="px-4 py-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-2">
     <dt class="text-sm font-medium text-gray-700 dark:text-gray-200">
         <button x-on:click="open = ! open" class="border-b-2 hover:bg-gray-100 dark:hover:text-gray-700 rounded-lg shadow-md w-full">Personal</button>
     </dt>
@@ -86,15 +86,13 @@
                 <div class="col-span-2 flex flex-row">
                     <span class="mr-1">:</span>
                     <ul>
-                        @forelse ($descendants as $person)
+                        @foreach ($descendants as $person)
                             <li>
                                 <a href="/people/{{ $person->id }}" class="text-blue-500 hover:text-blue-700">
                                     {{ $person->name }}
                                 </a>
                             </li>
-                        @empty
-                            <li>belum punya anak</li>
-                        @endforelse
+                        @endforeach
                     </ul>
                     
                 </div>

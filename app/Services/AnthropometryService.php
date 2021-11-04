@@ -22,44 +22,74 @@ class AnthropometryService
      */
     public function store($request, $posyandu, $month)
     {
-        $previousAnthropometry = $posyandu->anthropometries()->where('month_periode', $month-1)->first();
+        // cek input waktu kunjungan
+        $is_allowed = $this->checkVisitDate($request->visited_at, $posyandu, $month);
 
-        $posyandu->anthropometries()->create([
-            'weight' => $request->weight,
-            'height' => $request->height,
-            'head_circumference' => $request->head_circumference,
-            'bmi' => $this->bmi($request->weight, $request->height),
-            'weight_difference' => $this->weightDifference($request, $previousAnthropometry),
-            'height_difference' => $this->heightDifference($request, $previousAnthropometry),
-            'head_circumference_difference' => $this->headCircumferenceDifference($request, $previousAnthropometry),
-            'bmi_for_age_category_id' => $this->bmiForAgeCategory($request, $posyandu->person->sex_id, $month),
-            'height_for_age_category_id' => $this->heightForAgeCategory($request, $posyandu->person->sex_id, $month),
-            'weight_for_age_category_id' => $this->weightForAgeCategory($request, $posyandu->person->sex_id, $month),
-            'weight_for_height_category_id' => $this->weightForHeightCategory($request, $posyandu),
-            'visited_at' => $request->visited_at,
-            'month_periode' => $month,
-            'year_periode' => intval($month/12),
-        ]);
+        if ($is_allowed == true) {
+            $previousAnthropometry = $posyandu->anthropometries()->where('month_periode', $month-1)->first();
+
+            $posyandu->anthropometries()->create([
+                'weight' => $request->weight,
+                'height' => $request->height,
+                'head_circumference' => $request->head_circumference,
+                'bmi' => $this->bmi($request->weight, $request->height),
+                'weight_difference' => $this->weightDifference($request, $previousAnthropometry),
+                'height_difference' => $this->heightDifference($request, $previousAnthropometry),
+                'head_circumference_difference' => $this->headCircumferenceDifference($request, $previousAnthropometry),
+                'bmi_for_age_category_id' => $this->bmiForAgeCategory($request, $posyandu->person->sex_id, $month),
+                'height_for_age_category_id' => $this->heightForAgeCategory($request, $posyandu->person->sex_id, $month),
+                'weight_for_age_category_id' => $this->weightForAgeCategory($request, $posyandu->person->sex_id, $month),
+                'weight_for_height_category_id' => $this->weightForHeightCategory($request, $posyandu),
+                'visited_at' => $request->visited_at,
+                'month_periode' => $month,
+                'year_periode' => intval($month/12),
+            ]);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function update($request, $anthropometry)
     {
-        $previousAnthropometry = $anthropometry->where('month_periode', $anthropometry->month_periode - 1)->first();
+        $is_allowed = $this->checkVisitDate($request->visited_at, $anthropometry->posyandu, $anthropometry->month_periode);
 
-        $anthropometry->update([
-            'weight' => $request->weight,
-            'height' => $request->height,
-            'head_circumference' => $request->head_circumference,
-            'bmi' => $this->bmi($request->weight, $request->height),
-            'weight_difference' => $this->weightDifference($request, $previousAnthropometry),
-            'height_difference' => $this->heightDifference($request, $previousAnthropometry),
-            'head_circumference_difference' => $this->headCircumferenceDifference($request, $previousAnthropometry),
-            'bmi_for_age_category_id' => $this->bmiForAgeCategory($request, $anthropometry->posyandu->person->sex_id, $anthropometry->month_periode),
-            'height_for_age_category_id' => $this->heightForAgeCategory($request, $anthropometry->posyandu->person->sex_id, $anthropometry->month_periode),
-            'weight_for_age_category_id' => $this->weightForAgeCategory($request, $anthropometry->posyandu->person->sex_id, $anthropometry->month_periode),
-            'weight_for_height_category_id' => $this->weightForHeightCategory($request, $anthropometry->posyandu),
-            'visited_at' => $request->visited_at,
-        ]);
+        if ($is_allowed == true) {
+            $previousAnthropometry = $anthropometry->where('month_periode', $anthropometry->month_periode - 1)->first();
+
+            $anthropometry->update([
+                'weight' => $request->weight,
+                'height' => $request->height,
+                'head_circumference' => $request->head_circumference,
+                'bmi' => $this->bmi($request->weight, $request->height),
+                'weight_difference' => $this->weightDifference($request, $previousAnthropometry),
+                'height_difference' => $this->heightDifference($request, $previousAnthropometry),
+                'head_circumference_difference' => $this->headCircumferenceDifference($request, $previousAnthropometry),
+                'bmi_for_age_category_id' => $this->bmiForAgeCategory($request, $anthropometry->posyandu->person->sex_id, $anthropometry->month_periode),
+                'height_for_age_category_id' => $this->heightForAgeCategory($request, $anthropometry->posyandu->person->sex_id, $anthropometry->month_periode),
+                'weight_for_age_category_id' => $this->weightForAgeCategory($request, $anthropometry->posyandu->person->sex_id, $anthropometry->month_periode),
+                'weight_for_height_category_id' => $this->weightForHeightCategory($request, $anthropometry->posyandu),
+                'visited_at' => $request->visited_at,
+            ]);
+
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
+
+    public function checkVisitDate($visited_at, $posyandu, $month)
+    {
+        # jika input waktunya tidak diantara waktu yg telah ditentukan maka gagalkan
+        $waktuAwal = $posyandu->person->date_of_birth->addMonths($month);
+        $waktuAkhir = $posyandu->person->date_of_birth->addMonths($month + 1);
+
+        if ($visited_at >= $waktuAwal && $visited_at <= $waktuAkhir) {
+            return true;
+        } else {
+            return false;
+        }
     }
         
     public function bmiForAgeCategory($request, $sex, $month)
@@ -145,8 +175,6 @@ class AnthropometryService
             $standard = WeightForHeightGirl::where('periode', $periode)->where('height', $height)->first();
         }
         
-        dd($request->all());
-
         // pengecekan kategori
         if ($request->weight < $standard->negative_3sd) {
             return 1; // category_id 1 adalah gizi buruk
@@ -218,6 +246,4 @@ class AnthropometryService
         $penyebut = pow($height, 2) / 10000; 
         return round(($pembilang/$penyebut), 2);
     }
-    
-   
 }

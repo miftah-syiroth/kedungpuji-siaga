@@ -54,7 +54,7 @@ class Anthropometries extends Component
             $this->batasAtasBulan = 47;
         } elseif($this->ageInYear == 4) {
             $this->batasBawahBulan = 48;
-            $this->batasAtasBulan = 59;
+            $this->batasAtasBulan = 60;
         }
     }
     

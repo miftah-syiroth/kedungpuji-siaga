@@ -26,13 +26,13 @@
 
             <div class="flex mt-4">
                 <label class="block text-sm mx-2" for="nik">
-                    <span class="text-gray-700 dark:text-gray-400">Berat Ibu Hamil</span>
-                    <input type="number" name="mother_weight" id="mother_weight" value="{{ old('mother_weight') }}" required class="block w-auto mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    <span class="text-gray-700 dark:text-gray-400">Berat Ibu Hamil (kg)</span>
+                    <input type="number" name="mother_weight" id="mother_weight" step="any" min="10" value="{{ old('mother_weight') }}" required class="block w-auto mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
                 </label>
 
                 <label class="block text-sm mx-2" for="nik">
-                    <span class="text-gray-700 dark:text-gray-400">Tinggi Ibu Hamil</span>
-                    <input type="number" name="mother_height" id="mother_height" value="{{ old('mother_height') }}" required class="block w-auto mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    <span class="text-gray-700 dark:text-gray-400">Tinggi Ibu Hamil (cm)</span>
+                    <input type="number" name="mother_height" id="mother_height" min="100" value="{{ old('mother_height') }}" required class="block w-auto mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
                 </label>
             </div>
             

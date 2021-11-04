@@ -45,7 +45,8 @@
                             </button>
                         </div>
                         
-        
+                        {{-- jgn tampilkan form untuk bulan masa depan --}}
+                        @unless ($year_periode >= now()->year && $month->id > now()->month)
                         <div x-show="showForm" class="flex flex-col">
                             <form action="/couples/{{ $couple->id }}/keluarga-berencana" method="post" class="flex flex-col items-center">
                                 @csrf
@@ -62,8 +63,9 @@
                             <div class="text-right">
                                 <button x-on:click=" showForm=false, editButton=true " class="text-sm text-blue-800 px-2 rounded-md dark:text-gray-200 border hover:underline">cancel </button>
                             </div>
-                            
                         </div>
+                        @endunless
+                        
                         
                     </div>
                 </div>

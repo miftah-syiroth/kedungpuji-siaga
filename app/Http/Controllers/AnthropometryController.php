@@ -43,11 +43,19 @@ class AnthropometryController extends Controller
      */
     public function create(Posyandu $posyandu, $month)
     {
-        return view('posyandu.anthropometries.create', [
-            'posyandu' => $posyandu,
-            'month' => $month,
-            'current_time' => now(),
-        ]);
+        // batasi kalau posyandu antropometri dgn periode bulan tsb sudah ada, maka batalkan
+        $row = $posyandu->anthropometries()->where('month_periode', $month)->first();
+
+        if (empty($row)) {
+            return view('posyandu.anthropometries.create', [
+                'posyandu' => $posyandu,
+                'month' => $month,
+                'waktu_awal' => $posyandu->person->date_of_birth->addMonths($month),
+                'waktu_akhir' => $posyandu->person->date_of_birth->addMonths($month+1),
+            ]);
+        } else {
+            return redirect('/posyandu/' . $posyandu->id);
+        }
     }
 
     /**
@@ -58,8 +66,13 @@ class AnthropometryController extends Controller
      */
     public function store(StoreAnthropometryRequest $request, Posyandu $posyandu, $month)
     {
-        $this->anthropometryService->store($request, $posyandu, $month);
-        return redirect('/posyandu/' . $posyandu->id . '/anthropometries');
+        $is_success = $this->anthropometryService->store($request, $posyandu, $month);
+
+        if ($is_success == true) {
+            return redirect('/posyandu/' . $posyandu->id);
+        } else {
+            return redirect()->back()->with('message', 'masukkan waktu kunjungan yg sesuai dengan batasan');
+        }
     }
 
     /**
@@ -82,7 +95,9 @@ class AnthropometryController extends Controller
     public function edit(Anthropometry $anthropometry)
     {
         return view('posyandu.anthropometries.edit', [
-            'anthropometry' => $anthropometry
+            'anthropometry' => $anthropometry,
+            'waktu_awal' => $anthropometry->posyandu->person->date_of_birth->addMonths($anthropometry->month_periode),
+            'waktu_akhir' => $anthropometry->posyandu->person->date_of_birth->addMonths($anthropometry->month_periode + 1),
         ]);
     }
 
@@ -95,8 +110,14 @@ class AnthropometryController extends Controller
      */
     public function update(UpdateAnthropometryRequest $request, Anthropometry $anthropometry, AnthropometryService $service)
     {
-        $service->update($request, $anthropometry);
-        return redirect('/posyandu/' . $anthropometry->posyandu->id . '/anthropometries');
+        $is_success = $service->update($request, $anthropometry);
+
+        if ($is_success == true) {
+            return redirect('/posyandu/' . $anthropometry->posyandu->id);
+        } else {
+            return redirect()->back()->with('message', 'gagal');
+        }
+        
     }
 
     /**

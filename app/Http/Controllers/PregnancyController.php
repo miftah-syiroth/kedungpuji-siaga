@@ -27,9 +27,10 @@ class PregnancyController extends Controller
      */
     public function index()
     {
-        // dd($pregnancyService->getAllPregnancies());
+        $filters = request()->all();
         return view('pregnancies.index', [
-            'pregnancies' => $this->pregnancyService->getAllPregnancies(),
+            'pregnancies' => $this->pregnancyService->getAllPregnancies($filters),
+            'sexes' => Sex::all(),
         ]);
     }
 

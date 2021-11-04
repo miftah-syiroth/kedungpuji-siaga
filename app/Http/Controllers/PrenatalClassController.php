@@ -35,17 +35,27 @@ class PrenatalClassController extends Controller
     public function create(Pregnancy $pregnancy, $month)
     {
         // cek disini apakah tgl persalinan udh diisi atau udh hamil, maka cegah input laporan baru
-        if ($pregnancy->childbirth_date != null) {
+        // if ($pregnancy->childbirth_date != null) {
+        //     return redirect('/pregnancies/' . $pregnancy->id);
+        // } 
+
+        // tidak boleh input untuk masa depan
+        if ($month > $pregnancy->hpht->diffInMonths(now()) + 1) {
             return redirect('/pregnancies/' . $pregnancy->id);
-        } elseif ($pregnancy->childbirth_date == null) {
-            return view('prenatal-classes.create', [
-                'pregnancy' => $pregnancy,
-                'month' => $month,
-                'waktu_awal' => $this->service->getWaktuAwal($pregnancy->hpht, $month),
-                'waktu_akhir' => $this->service->getWaktuAkhir($pregnancy->hpht, $month),
-            ]);
         }
-        
+
+        // cek barangkali data pd bulan tsb sudah diinputkan, maka cegah
+        $dataInThisMonth = $pregnancy->prenatalClasses()->where('month_periode', $month)->first();
+        if (isset($dataInThisMonth)) {
+            return redirect('/pregnancies/' . $pregnancy->id);
+        }
+
+        return view('prenatal-classes.create', [
+            'pregnancy' => $pregnancy,
+            'month' => $month,
+            'waktu_awal' => $this->service->getWaktuAwal($pregnancy->hpht, $month),
+            'waktu_akhir' => $this->service->getWaktuAkhir($pregnancy->hpht, $month),
+        ]);
     }
 
     /**

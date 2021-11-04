@@ -1,13 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Penduduk Kedungpuji') }}
+        {{ __('Penduduk Pindah Atau Mati') }}
     </x-slot>
 
     <div class="px-4 py-2 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
 
         {{-- form filtering --}}
         <div class="flex flex-wrap justify-between items-center border rounded-md border-gray-300">
-            <form action="/people" method="GET">
+            <form action="/people/move-or-die" method="GET">
                 <div class="flex flex-row flex-wrap items-end">
                     <label class="block mx-2 my-2 text-sm">
                         <span class="text-gray-700 dark:text-gray-400">

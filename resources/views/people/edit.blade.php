@@ -2,8 +2,6 @@
     <x-slot name="header">
         {{ __('Edit Data Penduduk') }}
     </x-slot>
-
-    </div>
     
     <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
@@ -195,8 +193,9 @@
                 </label>
             </div>
             
-            <div>
+            <div class="flex flex-wrap justify-between text-sm">
                 <button type="submit" class="bg-gray-600 dark:bg-gray-400 text-white dark:text-gray-800 py-2 px-3 rounded-md hover:bg-gray-700 dark:hover:bg-gray-300 mx-2 my-4">Ubah Data Penduduk</button>
+                <a href="/people/{{ $person->id }}" type="submit" class=" bg-purple-400 dark:bg-gray-400 text-white dark:text-gray-800 py-2 px-3 rounded-md hover:bg-purple-700 dark:hover:bg-gray-300 mx-2 my-4">Batal Ubah</a>
             </div>
         </form>
     </div>

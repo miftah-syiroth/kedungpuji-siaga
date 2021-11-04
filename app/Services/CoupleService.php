@@ -9,13 +9,36 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
 class CoupleService
-{    
-    public function getPus()
+{        
+    /**
+     * getCouples digunakan pada controller couple method index untuk menampilkan semua couples
+     * karena input is_pus tidak bisa dijadikan sebuah parameter pada scop. saya buat unutk 2 local scope berbeda
+     * @param  mixed $filters
+     * @return void
+     */
+    public function getCouples($filters)
     {
-        return Couple::whereHas('wife', function (Builder $query) {
-            $query->whereDate('date_of_birth', '<=', Carbon::now()->addYears(-15) ) //koreksi lagi
-                ->whereDate('date_of_birth', '>=', Carbon::now()->addYears(-49) );
-        })->with(['kbService', 'husband', 'wife.maritalStatus'])->get();
+        // cek apakah ada input dari is_pus
+        if (isset($filters['is_pus'])) {
+            if ($filters['is_pus'] == true) {
+                $filters['pus'] = true;
+            } else {
+                $filters['non_pus'] = true;
+            }
+        }
+        // dd($filters);
+
+        return Couple::with([
+            'husband', 
+            'wife' => function ($query) {
+                $query->where('is_alive', true)
+                    ->where('village_id', 1);
+            },
+            'kbService',
+            'latestKeluargaBerencana',
+        ])->filter($filters)
+            ->latest()
+            ->paginate(20);
     }
 
     public function getCouple($couple)

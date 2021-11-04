@@ -58,8 +58,9 @@
                 <textarea name="conclusion" id="conclusion" value="{{ old('conclusion') }}" class="block border-2 w-1/2 mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" rows="3">{{ old('conclusion') }}</textarea>
             </label>
             
-            <div class="mx-4">
+            <div class="flex flex-wrap justify-between text-sm">
                 <button type="submit" class="bg-gray-600 dark:bg-gray-400 text-white dark:text-gray-800 py-2 px-3 rounded-md hover:bg-gray-700 dark:hover:bg-gray-300 mx-2 my-4">Edit Ringkasan</button>
+                <a href="/puerperals/{{ $puerperal->id }}" type="submit" class=" bg-purple-400 dark:bg-gray-400 text-white dark:text-gray-800 py-2 px-3 rounded-md hover:bg-purple-700 dark:hover:bg-gray-300 mx-2 my-4">Batal Ubah</a>
             </div>
         </form>
     </div>

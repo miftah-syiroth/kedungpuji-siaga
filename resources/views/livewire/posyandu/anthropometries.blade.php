@@ -1,7 +1,4 @@
-{{-- komponen input data kb --}}
-
-<div x-data="{ isOpen : true }" class="px-4 py-3 mb-8 bg-white shadow-md dark:bg-gray-800"> 
-    <h3>{{ $ageInMonth }}</h3>
+<div x-data="{ isOpen : true }" class="px-4 py-1 mb-8 bg-white shadow-md dark:bg-gray-800"> 
     <div class="px-4 py-2 flex flex-col">
         <h3 class="text-md leading-6 font-medium justify-center text-center">
             <button x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">Anthropometries</button>
@@ -49,6 +46,10 @@
                     @if ($data->month_periode == $i)
                     @php $is_filled = true; @endphp
                     <dl class="text-sm">
+                        <div class="px-2 py-1 flex flex-col">
+                            <h3 class="font-semibold">Waktu Kunjungan :</h3>
+                            <h5 class="ml-4">{{ $data->visited_at->isoFormat('dddd, DD MMMM YYYY') }}</h5>
+                        </div>
                         <div class="px-2 grid grid-cols-6 gap-1 pt-1">
                             <h3 class="font-semibold col-span-2">PB</h3>
                             <h5 class="ml-4 col-span-4">: {{ $data->height }} cm ({{ $data->height_difference }} mm)</h5>
@@ -99,17 +100,19 @@
                     @endif
                     
                     
-                    
                     @break
                     @endif
                     
                     @endforeach
                     
-                    @if ($is_filled == false)
+
+                   {{-- @unless ($is_filled == true || $i > $ageInMonth) --}}
+                    @if ($is_filled == false && $i <= $ageInMonth)
                     <div class="flex justify-center">
                         <a href="/posyandu/{{ $posyandu->id }}/month/{{ $i }}/anthropometries/create" class="text-xs rounded-md px-3 py-1 bg-blue-500 hover:bg-blue-700 text-white">input</a>
                     </div>
                     @endif
+
                 </div>
             </div>
 

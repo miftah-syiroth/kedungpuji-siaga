@@ -39,20 +39,18 @@
                 </label>
             </div>
             
-            <div class="flex flex-row mx-2 my-4">
+            <div class="flex flex-row mx-2 my-4 text-sm">
                 <button type="submit" class="bg-gray-600 dark:bg-gray-400 text-white dark:text-gray-800 py-2 px-3 rounded-md hover:bg-gray-700 dark:hover:bg-gray-300">Edit Keluarga</button>
 
                 <a href="/families/{{ $family->id }}" class="mx-4 bg-blue-600 dark:bg-blue-200 text-white dark:text-gray-800 py-2 px-3 rounded-md hover:bg-blue-800 dark:hover:bg-gray-400">Batal.</a>
             </div>
         </form>
 
-        <div>
+        <div class="my-4">
             <form action="/families/{{ $family->id }}" method="post">
                 @csrf
                 @method('DELETE')
-                <x-button class="bg-red-500 hover:bg-red-700 my-4">
-                    {{ __('Hapus Keluarga') }}
-                </x-button>
+                <button type="submit" class="bg-red-500 text-sm dark:bg-gray-400 text-white dark:text-gray-800 py-2 px-3 rounded-md hover:bg-red-700 dark:hover:bg-gray-300">Hapus Keluarga</button>
             </form>
         </div>
     </div>

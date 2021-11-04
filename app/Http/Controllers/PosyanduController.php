@@ -2,22 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BloodGroup;
 use App\Models\Person;
 use App\Models\Posyandu;
+use App\Models\Sex;
 use App\Services\PosyanduService;
 use Illuminate\Http\Request;
 
 class PosyanduController extends Controller
 {
+    private $posyanduService;
+
+    public function __construct(PosyanduService $service)
+    {
+        $this->posyanduService = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(PosyanduService $service)
+    public function index()
     {
+        $filters = request()->all();
         return view('posyandu.index', [
-            'balita' => $service->getAllBalita(),
+            'people' => $this->posyanduService->getAllBalita($filters),
+            'sexes' => Sex::all(),
         ]);
     }
 
@@ -37,12 +48,11 @@ class PosyanduController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Person $person, PosyanduService $service)
+    public function store(Request $request, Person $person)
     {
-        dd($request->toArray());
         // request belum dicustom
-        $posyandu = $service->store($request, $person);
-        return redirect('/posyandu/' . $posyandu);
+        $posyandu = $this->posyanduService->store($request, $person);
+        return redirect('/posyandu/' . $posyandu->id);
     }
 
     /**
@@ -67,7 +77,9 @@ class PosyanduController extends Controller
      */
     public function edit(Posyandu $posyandu)
     {
-        //
+        return view('posyandu.edit', [
+            'posyandu' => $posyandu,
+        ]);
     }
 
     /**
@@ -79,7 +91,8 @@ class PosyanduController extends Controller
      */
     public function update(Request $request, Posyandu $posyandu)
     {
-        //
+        $posyandu->update($request->all());
+        return redirect('/posyandu/' . $posyandu->id);
     }
 
     /**

@@ -58,20 +58,5 @@ function data() {
       this.isModalOpen = false
       this.trapCleanup()
     },
-
-
-    // alpine refactory
-    isKeluargaMenuOpen: false,
-    toggleKeluargaMenu() {
-      this.isKeluargaMenuOpen = !this.isKeluargaMenuOpen
-    },
-    isKesehatanIbuMenuOpen: false,
-    toggleKesehatanIbuMenu() {
-      this.isKesehatanIbuMenuOpen = !this.isKesehatanIbuMenuOpen
-    },
-    isKesehatanAnakMenuOpen: false,
-    toggleKesehatanAnakMenu() {
-      this.isKesehatanAnakMenuOpen = !this.isKesehatanAnakMenuOpen
-    },
   }
 }

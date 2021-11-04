@@ -77,7 +77,13 @@
             @endif
 
             <div x-show="isOpen">
-                <h3 class="text-sm font-medium">Nifas hari ke : {{ $puerperal_day_to }}</h3>
+                @if ($puerperal->conclusion)
+                <h3 class="text-sm font-medium">Selesai</h3>
+                @elseif ($puerperal_day_to > 42)
+                <h3 class="text-sm font-medium">Lebih dari 42 hari ({{ $puerperal_day_to }})</h3>
+                @else
+                <h3 class="text-sm font-medium">Nifas hari ke {{ $puerperal_day_to }}</h3>
+                @endif
             </div>
         </div>
         

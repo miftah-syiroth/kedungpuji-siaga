@@ -25,7 +25,12 @@ class FamilyController extends Controller
      */
     public function index()
     {
-        return view('families.index');
+        $filters = request()->all();
+
+        return view('families.index', [
+            'families' => $this->familyService->getAllFamilies($filters),
+            'keluarga_sejahtera' => KeluargaSejahtera::all(),
+        ]);
     }
 
     /**

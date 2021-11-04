@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreKbRequest;
 use App\Models\Couple;
+use App\Models\KbService;
 use App\Models\KeluargaBerencana;
 use App\Models\Month;
 use App\Services\CoupleService;
@@ -27,7 +28,13 @@ class KeluargaBerencanaController extends Controller
      */
     public function index()
     {
-        return view('keluarga-berencana.index');
+        $filters = request()->all();
+
+        return view('keluarga-berencana.index', [
+            'couples' => $this->service->getCouples($filters),
+            'months' => Month::all(),
+            'kb_services' => KbService::all(),
+        ]);
     }
 
     /**

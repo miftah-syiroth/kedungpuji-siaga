@@ -38,8 +38,26 @@ class Person extends Model
             return $query->where('name', 'like', '%' .  $name . '%');
         });
 
+        $query->when($filters['mother_name'] ?? false, fn($query, $mother_name) => 
+            $query->whereHas('mother', fn($query) => 
+                $query->where('name', 'like', '%' .  $mother_name . '%')
+            )
+        );
+
+        $query->when($filters['year_of_birth'] ?? false, function($query, $year_of_birth) {
+            return $query->whereYear('date_of_birth', $year_of_birth);
+        });
+
         $query->when($filters['marital_status_id'] ?? false, function($query, $marital_status_id) {
             return $query->where('marital_status_id', $marital_status_id);
+        });
+
+        $query->when($filters['posyandu'] ?? false, function($query) {
+            return $query->has('posyandu');
+        });
+
+        $query->when($filters['non_posyandu'] ?? false, function($query) {
+            return $query->doesntHave('posyandu');
         });
     }
     
@@ -141,11 +159,11 @@ class Person extends Model
     
     /**
      * couples method untuk relasi one to many laki2 terhadap pasasngan. setiap laki2 dapat memiliki banyak istri
-     * husband_id pada table couple mengacu pada person yang menjadi suami dari pasangan tersebut
+     * husband_id pada table couple mengacu pada person yang menjadi suami dari pasangan tersebut.
      * @param  mixed $var
      * @return void
      */
-    public function wifes()
+    public function wifes() // couples
     {
         return $this->hasMany(Couple::class, 'husband_id');
     }
@@ -156,7 +174,7 @@ class Person extends Model
      * @param  mixed $var
      * @return void
      */
-    public function husband()
+    public function husband() // couple
     {
         return $this->hasOne(Couple::class, 'wife_id');
     }
@@ -214,4 +232,22 @@ class Person extends Model
     {
         return $this->hasOne(Posyandu::class, 'person_id');
     }
+
+    
+    /**
+     * puerperal, has one through antara person (ibu) one to one pergnancy one to one puerperal
+     *
+     * @return void
+     */
+    // public function puerperal()
+    // {
+    //     return $this->hasOneThrough(
+    //         Puerperal::class, 
+    //         Pregnancy::class,
+    //         'mother_id',
+    //         'pregnancy_id',
+    //         'id',
+    //         'id',
+    //     );
+    // }
 }

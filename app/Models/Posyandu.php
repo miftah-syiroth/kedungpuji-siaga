@@ -21,9 +21,24 @@ class Posyandu extends Model
     {
         return $this->hasMany(Neonatus::class, 'posyandu_id');
     }
-
+    
+    /**
+     * anthropometries, fungsi untuk relasi one to many dengan kunjungan anthropometri
+     *
+     * @return void
+     */
     public function anthropometries()
     {
         return $this->hasMany(Anthropometry::class, 'posyandu_id');
+    }
+    
+    /**
+     * latestAnthropometry, ambil data kunjungan posyandu paling akhir
+     *
+     * @return void
+     */
+    public function latestAnthropometry()
+    {
+        return $this->hasOne(Anthropometry::class, 'posyandu_id')->latestOfMany();
     }
 }

@@ -24,7 +24,6 @@ class PersonalData extends Component
         } else { // perempuan
             $this->descendants = $person->motherChildren()->orderBy('date_of_birth', 'asc')->get();
         }
-        
     }
 
     /**

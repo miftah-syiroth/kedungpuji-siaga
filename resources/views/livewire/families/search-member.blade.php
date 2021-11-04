@@ -9,7 +9,7 @@
     </div>
 
     @unless ($person_search_term == null)
-    <div class="flex flex-col justify-between">
+    <div class="flex flex-col text-sm self-end">
         @foreach ($people as $person)
         <div>
             <label class="inline-flex items-center mx-2">

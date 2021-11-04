@@ -3,16 +3,43 @@ namespace App\Services;
 
 use App\Models\Person;
 use App\Models\Pregnancy;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+
 
 class PregnancyService
 {
-    public function getAllPregnancies()
+    public function getAllPregnancies($filters)
     {
-        return Pregnancy::with([
-            'mother',
-        ])->get();
+        return Pregnancy::whereHas('mother', function(Builder $query) {
+            $query->where('is_alive', true)
+                ->where('village_id', 1);
+        })->filter($filters)
+            ->latest()
+            ->paginate(20);
+    }
+
+    public function getIbuHamil($filters)
+    {
+        return Pregnancy::whereHas('mother', function(Builder $query) {
+            $query->where('is_alive', true)
+                ->where('village_id', 1);
+        })->whereNull('childbirth_date')
+            ->filter($filters)
+            ->latest()
+            ->paginate(20);
+    }
+
+    public function getIbuNifas($filters)
+    {
+        return Pregnancy::whereHas('mother', function(Builder $query) {
+            $query->where('is_alive', true)
+                ->where('village_id', 1);
+        })->whereHas('puerperal', function (Builder $query) {
+            $query->whereNull('conclusion');
+        })->whereNotNull('childbirth_date')
+            ->filter($filters)
+            ->latest()
+            ->paginate(20);
     }
 
     public function store($request)

@@ -5,7 +5,7 @@
     </x-slot>
 
     <div x-data="{ isOpen : true }" class="px-4 py-3 mb-8 bg-white shadow-md dark:bg-gray-800"> 
-        <div class="px-4 py-2">
+        <div class="px-2 py-2">
             <h3 class="text-md leading-6 font-medium justify-center text-center">
                 <button x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">Ringkasan</button>
             </h3>
@@ -16,7 +16,7 @@
                 @endif
             </div>
         </div>
-        <div x-show="isOpen" class="border-t border-gray-200 flex flex-row">
+        <div x-show="isOpen" class="border-t border-gray-200 flex flex-row flex-wrap">
             <dl class="w-1/2">
                 <div class="px-4 py-1 grid grid-cols-5 gap-2">
                     <dt class="text-sm font-medium text-gray-500 col-span-2">
@@ -72,7 +72,7 @@
                         Umur Kehamilan
                     </dt>
                     <dd class="mt-1 text-sm sm:mt-0 col-span-3">
-                        : {{ $pregnancy->gestational_age ?? '-' }}
+                        : {{ $pregnancy->gestational_age ?? $pregnancy->hpht->diffInWeeks(now()) . ' minggu sedang mengandung' }}
                     </dd>
                 </div>
 
@@ -193,7 +193,6 @@
     </div>
  
 
-    {{-- komponen input data kb --}}
     <div x-data="{ isOpen : true }" class="px-4 py-3 mb-8 bg-white shadow-md dark:bg-gray-800">
         <div class="px-4 py-2 flex flex-col">
             <h3 class="text-md leading-6 font-medium justify-center text-center">
@@ -209,100 +208,110 @@
                         <p class="mb-2 text-sm font-medium text-dark text-center" >
                             Bulan ke {{ $i }}
                         </p>
-                        
-                        {{-- variabel ini akan digunakan untuk menampilkan tombol create pada bulan yg sesuai dgn umur kehamilan dan belum ada isinya --}}
-                        @php $is_filled = false; @endphp
 
-                        @foreach ($pregnancy->prenatalClasses as $data)
+                        @if ($i <= $pregnancy->hpht->diffInMonths(now()) + 1)
+                        <div>
+                            {{-- variabel ini akan digunakan untuk menampilkan tombol create pada bulan yg sesuai dgn umur kehamilan dan belum ada isinya --}}
+                            @php $is_filled = false; @endphp
 
-                        @if ($data->month_periode == $i)
-                        @php $is_filled = true; @endphp
-                        <dl>
-                            <div class="px-2 py-1 flex flex-col text-sm">
-                                <dt class="font-semibold">
-                                    Waktu Kunjungan :
-                                </dt>
-                                <dd class="mt-1 ml-4">
-                                    {{ $data->visited_at->isoFormat('dddd, DD MMMM YYYY') }}
-                                </dd>
+                            @foreach ($pregnancy->prenatalClasses as $data)
+
+                            @if ($data->month_periode == $i)
+                            @php $is_filled = true; @endphp
+                            <dl>
+                                <div class="px-2 py-1 flex flex-col text-sm">
+                                    <dt class="font-semibold">
+                                        Waktu Kunjungan :
+                                    </dt>
+                                    <dd class="mt-1 ml-4">
+                                        {{ $data->visited_at->isoFormat('dddd, DD MMMM YYYY') }}
+                                    </dd>
+                                </div>
+                                <div class="px-2 py-1 grid grid-cols-2 gap-2 text-sm">
+                                    <dt class="font-semibold">
+                                        Berat Badan
+                                    </dt>
+                                    <dd class="mt-1 sm:mt-0">
+                                        : {{ $data->mother_weight }}kg
+                                    </dd>
+                                </div>
+                                <div class="px-2 py-1 grid grid-cols-2 gap-2 text-sm">
+                                    <dt class="font-semibold">
+                                        LiLa
+                                    </dt>
+                                    <dd class="mt-1 sm:mt-0">
+                                        :  {{ $data->arm_circumference }} cm
+                                    </dd>
+                                </div>
+                                <div class="px-2 py-1 grid grid-cols-2 gap-2 text-sm">
+                                    <dt class="font-semibold">
+                                        Tekanan Darah
+                                    </dt>
+                                    <dd class="mt-1 sm:mt-0">
+                                        :  {{ $data->systolic }}/{{ $data->diastolic }}
+                                    </dd>
+                                </div>
+                                <div class="px-2 py-1 grid grid-cols-2 gap-2 text-sm">
+                                    <dt class="font-semibold">
+                                        Tinggi Rahim
+                                    </dt>
+                                    <dd class="mt-1 sm:mt-0">
+                                        :  {{ $data->uterine_height }} cm
+                                    </dd>
+                                </div>
+                                <div class="px-2 py-1 grid grid-cols-2 gap-2 text-sm">
+                                    <dt class="font-semibold">
+                                        Denyut Jantung Bayi
+                                    </dt>
+                                    <dd class="mt-1 sm:mt-0">
+                                        :  {{ $data->baby_heart_rate }} /menit
+                                    </dd>
+                                </div>
+                                <div class="px-2 py-1 grid grid-cols-2 gap-2 text-sm">
+                                    <dt class="font-semibold">
+                                        HB
+                                    </dt>
+                                    <dd class="mt-1 sm:mt-0">
+                                        :  {{ $data->hemoglobin }}
+                                    </dd>
+                                </div>
+                                <div class="px-2 py-1 grid grid-cols-2 gap-2 text-sm">
+                                    <dt class="font-semibold">
+                                        Protein Urine
+                                    </dt>
+                                    <dd class="mt-1 sm:mt-0">
+                                        :  {{ $data->urine_protein }}
+                                    </dd>
+                                </div>
+                                <div class="px-2 py-1 grid grid-cols-2 gap-2 text-sm">
+                                    <dt class="font-semibold">
+                                        Gula Darah
+                                    </dt>
+                                    <dd class="mt-1 sm:mt-0">
+                                        :  {{ $data->blood_sugar }}
+                                    </dd>
+                                </div>
+                            </dl>
+                            
+                            <div class="text-center my-2">
+                                <a href="/prenatal-classes/{{ $data->id }}/edit" class="text-sm text-center rounded-md px-3 py-1 bg-green-500 hover:bg-green-700 text-white">edit</a>
                             </div>
-                            <div class="px-2 py-1 grid grid-cols-2 gap-2 text-sm">
-                                <dt class="font-semibold">
-                                    Berat Badan
-                                </dt>
-                                <dd class="mt-1 sm:mt-0">
-                                    : {{ $data->mother_weight }}kg
-                                </dd>
+                            
+                            @break
+                            @endif
+                            
+                            @endforeach
+                            
+                            @unless ($is_filled)
+                            <div class="text-center my-2">
+                                <a href="/pregnancies/{{ $pregnancy->id }}/month/{{ $i }}/prenatal-classes/create" class="text-sm rounded-md px-3 py-1 bg-blue-500 hover:bg-blue-700 text-white">input</a>
                             </div>
-                            <div class="px-2 py-1 grid grid-cols-2 gap-2 text-sm">
-                                <dt class="font-semibold">
-                                    LiLa
-                                </dt>
-                                <dd class="mt-1 sm:mt-0">
-                                    :  {{ $data->arm_circumference }} cm
-                                </dd>
-                            </div>
-                            <div class="px-2 py-1 grid grid-cols-2 gap-2 text-sm">
-                                <dt class="font-semibold">
-                                    Tekanan Darah
-                                </dt>
-                                <dd class="mt-1 sm:mt-0">
-                                    :  {{ $data->systolic }}/{{ $data->diastolic }}
-                                </dd>
-                            </div>
-                            <div class="px-2 py-1 grid grid-cols-2 gap-2 text-sm">
-                                <dt class="font-semibold">
-                                    Tinggi Rahim
-                                </dt>
-                                <dd class="mt-1 sm:mt-0">
-                                    :  {{ $data->uterine_height }} cm
-                                </dd>
-                            </div>
-                            <div class="px-2 py-1 grid grid-cols-2 gap-2 text-sm">
-                                <dt class="font-semibold">
-                                    Denyut Jantung Bayi
-                                </dt>
-                                <dd class="mt-1 sm:mt-0">
-                                    :  {{ $data->baby_heart_rate }} /menit
-                                </dd>
-                            </div>
-                            <div class="px-2 py-1 grid grid-cols-2 gap-2 text-sm">
-                                <dt class="font-semibold">
-                                    HB
-                                </dt>
-                                <dd class="mt-1 sm:mt-0">
-                                    :  {{ $data->hemoglobin }}
-                                </dd>
-                            </div>
-                            <div class="px-2 py-1 grid grid-cols-2 gap-2 text-sm">
-                                <dt class="font-semibold">
-                                    Protein Urine
-                                </dt>
-                                <dd class="mt-1 sm:mt-0">
-                                    :  {{ $data->urine_protein }}
-                                </dd>
-                            </div>
-                            <div class="px-2 py-1 grid grid-cols-2 gap-2 text-sm">
-                                <dt class="font-semibold">
-                                    Gula Darah
-                                </dt>
-                                <dd class="mt-1 sm:mt-0">
-                                    :  {{ $data->blood_sugar }}
-                                </dd>
-                            </div>
-                        </dl>
-                        <a href="/prenatal-classes/{{ $data->id }}/edit" class="text-xs text-center rounded-md py-1 bg-green-500 hover:bg-green-700 text-white m-1">edit</a>
-                        
-                        @break
-                        @endif
-                        
-                        @endforeach
-                        
-                        @if ($is_filled == false && $pregnancy->childbirth_date == null)
-                        <div class="flex justify-center">
-                            <a href="/pregnancies/{{ $pregnancy->id }}/month/{{ $i }}/prenatal-classes/create" class="text-sm rounded-md px-3 py-1 bg-blue-500 hover:bg-blue-700 text-white">input</a>
+                            @endunless
                         </div>
+                          
                         @endif
+
+                        
                     </div>
                 </div>
                 @endfor

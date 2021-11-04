@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,10 +21,43 @@ class Pregnancy extends Model
 
     protected $with = ['mother', 'prenatalClasses', 'sex'];
 
-    public function getHphtAttribute($value)
+    public function scopeFilter($query, array $filters)
     {
-        return Carbon::parse($this->attributes['hpht']);
+        $query->when($filters['mother_name'] ?? false, fn($query, $mother_name) => 
+            $query->whereHas('mother', fn($query) => 
+                $query->where('name', 'like', '%' .  $mother_name . '%')
+            )
+        );
+
+        $query->when($filters['rt'] ?? false, fn($query, $rt) => 
+            $query->whereHas('mother', fn($query) => 
+                $query->where('rt', $rt)
+            )
+        );
+
+        $query->when($filters['rw'] ?? false, fn($query, $rw) => 
+            $query->whereHas('mother', fn($query) => 
+                $query->where('rw', $rw)
+            )
+        );
+
+        $query->when($filters['sex_id'] ?? false, function($query, $sex_id) {
+            return $query->where('sex_id', $sex_id);
+        });
+
+        $query->when($filters['hpht'] ?? false, function($query, $hpht) {
+            return $query->whereYear('hpht', $hpht);
+        });
+
+        $query->when($filters['childbirth_date'] ?? false, function($query, $childbirth_date) {
+            return $query->orWhereYear('childbirth_date', $childbirth_date);
+        });
     }
+
+    // public function getHphtAttribute($value)
+    // {
+    //     return Carbon::parse($this->attributes['hpht']);
+    // }
 
     public function babyCondition()
     {

@@ -25,7 +25,7 @@ class UpdateAnthropometryRequest extends FormRequest
     {
         return [
             'weight' => ['required',],
-            'height' => ['required',],
+            'height' => ['required', ],
             'head_circumference' => ['required',],
             'visited_at' => ['required',],
         ];

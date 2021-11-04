@@ -35,6 +35,12 @@ class PuerperalClassController extends Controller
      */
     public function create(Puerperal $puerperal, $periode)
     {
+        // jangan sampai input create pdhl sudah ada
+        $dataInThisMonth = $puerperal->puerperalClasses()->where('periode', $periode)->first();
+        if (isset($dataInThisMonth)) {
+            return redirect('/puerperals/' . $puerperal->id);
+        }
+
         return view('puerperal-classes.create', [
             'puerperal' => $puerperal,
             'periode' => $periode,

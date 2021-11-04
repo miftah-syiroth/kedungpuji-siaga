@@ -1,11 +1,10 @@
-<div x-data="{ open: false }" class="px-4 py-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6">
+<div x-data="{ open: true }" class="px-4 py-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-2">
     <dt class="text-sm font-medium text-gray-700 dark:text-gray-200">
         <button x-on:click="open = ! open" class="border-b-2 hover:bg-gray-100 dark:hover:text-gray-700 rounded-lg shadow-md w-full">Pasangan dan KB</button>
     </dt>
     <dd x-show="open" class="py-2 text-sm text-gray-900 border border-gray-200 rounded-md dark:text-gray-200 sm:mt-0 sm:col-span-3">
 
-        @if (isset($wifes))
-
+        @if (!empty($wifes))
         @foreach ($wifes as $wife)
         <ul role="list" class="mb-4">
             <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
@@ -32,8 +31,9 @@
             </li>
         </ul>
         @endforeach
+        @endif
 
-        @elseif(isset($husband))
+        @if(!empty($husband))
 
         <ul role="list">
             <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">
@@ -60,12 +60,15 @@
             </li>
         </ul>
 
-        @else
-
-        <ul role="list">
-            <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">belum ada pasangan</li>
-        </ul>
-
         @endif
+
+        @if (empty($wifes) && empty($husband))
+        <ul role="list">
+            <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 text-red-500">belum ada pasangan :p !!</li>
+        </ul>
+        @endif
+
+        
+
     </dd>
 </div>
