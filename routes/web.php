@@ -5,26 +5,25 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\ChildbirthController;
 use App\Http\Controllers\CoupleController;
+use App\Http\Controllers\Deleted\DeleteCoupleController;
+use App\Http\Controllers\Deleted\DeleteFamilyController;
+use App\Http\Controllers\Deleted\DeletePersonController;
+use App\Http\Controllers\Deleted\DeletePosyanduController;
+use App\Http\Controllers\Deleted\DeletePregnancyController;
+use App\Http\Controllers\Deleted\DeletePuerperalController;
 use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\Invokables\DiedMovedPeople;
 use App\Http\Controllers\Invokables\IbuHamil;
 use App\Http\Controllers\Invokables\IbuNifas;
-use App\Http\Controllers\Invokeables\DeadPerson;
-use App\Http\Controllers\Invokeables\FamilyMemberDelete;
-use App\Http\Controllers\Invokeables\FamilyMemberStore;
-use App\Http\Controllers\Invokeables\PasanganUsiaSubur;
-use App\Http\Controllers\KeluargaBerencana\MonthlyReport;
 use App\Http\Controllers\KeluargaBerencanaController;
 use App\Http\Controllers\NeonatusController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\PersonFamilyController;
 use App\Http\Controllers\PosyanduController;
-use App\Http\Controllers\PosyanduServiceController;
 use App\Http\Controllers\PregnancyController;
 use App\Http\Controllers\PrenatalClassController;
 use App\Http\Controllers\PuerperalClassController;
 use App\Http\Controllers\PuerperalController;
-use App\Http\Controllers\ToddlerMeasurementController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,7 +33,7 @@ Route::view('/dashboard-template', 'template.index');
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 Route::get('/dashboard', function () {
@@ -61,6 +60,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/people/{person}/edit', [PersonController::class, 'edit'])->name('people.edit');
     # Route update data penduduk
     Route::put('/people/{person}', [PersonController::class, 'update'])->name('people.update');
+    #route hapus person secara soft
+    Route::delete('/people/{person}', [PersonController::class, 'destroy'])->name('people.destroy');
 
 
     // childbirth ini kmrn aku passing ke view utk menambah penduduk berdasarkan kelahiran
@@ -132,12 +133,16 @@ Route::middleware('auth')->group(function () {
     
     // Route untuk menampilkan list ibu nifas
     Route::get('/puerperals', [PuerperalController::class, 'index'])->name('pregnancies.puerperals.index');
+    // rounte untuk simpan pembuatan objek nifas
+    Route::post('/pregnancies/{pregnancy}/puerperals', [PuerperalController::class, 'store']);
     // route untuk melihat data pelayanan nifas
     Route::get('/puerperals/{puerperal}', [PuerperalController::class, 'show'])->name('pregnancies.puerperals.show');
     // Route untuk menuju halaman input kesimpulan ibu nifas
     Route::get('/puerperals/{puerperal}/edit', [PuerperalController::class, 'edit'])->name('pregnancies.puerperals.edit');
     // route untuk update kesimpulan puerperals
     Route::put('/puerperals/{puerperal}', [PuerperalController::class, 'update']);
+    // route unutk soft delete puerperal
+    Route::delete('/puerperals/{puerperal}', [PuerperalController::class, 'destroy']);
 
 
     // route untuk menuju halaman input baru laporan kunjungan ibu nifas
@@ -160,6 +165,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/posyandu/{posyandu}/edit', [PosyanduController::class, 'edit'])->name('posyandu.edit');
     // update ringkasan posyand
     Route::put('/posyandu/{posyandu}', [PosyanduController::class, 'update'])->name('posyandu.update');
+    // hapus posyandu di halaman edit posyandu
+    Route::delete('/posyandu/{posyandu}', [PosyanduController::class, 'destroy'])->name('posyandu.destroy');
 
 
     // Route untuk menuju halaman form simpan data pelayanan neonatus
@@ -182,32 +189,40 @@ Route::middleware('auth')->group(function () {
     Route::put('/anthropometries/{anthropometry}', [AnthropometryController::class, 'update']);
 
 
-    Route::resource('users', UserController::class);    
+    Route::resource('users', UserController::class);
+    
+    
+    #DELETE MODELS
+    // menampilkan tabel posyandu yang terhapus
+    Route::get('/deleted/posyandu', [DeletePosyanduController::class, 'index'])->name('deleted.posyandu.index');
+    Route::patch('/deleted/posyandu/{posyandu}/restore', [DeletePosyanduController::class, 'restore']);
+    Route::delete('/deleted/posyandu/{posyandu}', [DeletePosyanduController::class, 'destroy']);
+
+
+    Route::get('/deleted/puerperals', [DeletePuerperalController::class, 'index'])->name('deleted.puerperals.index');
+    Route::patch('/deleted/puerperals/{puerperal}/restore', [DeletePuerperalController::class, 'restore']);
+    Route::delete('/deleted/puerperals/{puerperal}', [DeletePuerperalController::class, 'destroy']);
+
+    Route::get('/deleted/pregnancies', [DeletePregnancyController::class, 'index'])->name('deleted.pregnancies.index');
+    Route::patch('/deleted/pregnancies/{pregnancy}/restore', [DeletePregnancyController::class, 'restore']);
+    Route::delete('/deleted/pregnancies/{pregnancy}', [DeletePregnancyController::class, 'destroy']);
+
+
+    Route::get('/deleted/couples', [DeleteCoupleController::class, 'index'])->name('deleted.couples.index');
+    Route::patch('/deleted/couples/{couple}/restore', [DeleteCoupleController::class, 'restore']);
+    Route::delete('/deleted/couples/{couple}', [DeleteCoupleController::class, 'destroy']);
+
+
+    Route::get('/deleted/families', [DeleteFamilyController::class, 'index'])->name('deleted.families.index');
+    Route::patch('/deleted/families/{family}/restore', [DeleteFamilyController::class, 'restore']);
+    Route::delete('/deleted/families/{family}', [DeleteFamilyController::class, 'destroy']);
+
+
+    Route::get('/deleted/people', [DeletePersonController::class, 'index'])->name('deleted.people.index');
+    Route::patch('/deleted/people/{person}/restore', [DeletePersonController::class, 'restore']);
+    Route::delete('/deleted/people/{person}', [DeletePersonController::class, 'destroy']);
 
     // END REFACTORING
-
-
-
-        // route untuk menyimpan atau mengupdate laporan bulanan sebuah pasangan
-
-    // route untuk menuju halaman buat data kehamilan baru seorang individu ibu yang punya pasangan
-    // Route::get('people/{person}/pregnancies/create', [PregnancyController::class, 'create']);
-    // route untuk store data kehamilan baru
-    Route::post('/people/{person}/pregnancies', [PregnancyController::class, 'store']);
-    // untuk menampilkan detil data kehamilan dan kelahiran
-    // Route::get('/pregnancies/{pregnancy}', [PregnancyController::class, 'show']);
-
-    // route untuk membuat atau merubah data laporan kelas ibu hamil seorang ibu
-    // Route::post('/pregnancies/{pregnancy}/prenatal-class', [PrenatalClassController::class, 'store']);
-
-    // Route::patch('pregnancies/{pregnancy}', [PregnancyController::class, 'update']);
-
-    // controller untuk menyimpan laporan kb bulanan
-    Route::post('/kb-report/{couple}', MonthlyReport::class);
-    // controller untuk menyimpan data pemeriksaan kehamilan baru
-    // Route::patch('/new-pregnancy/{pregnancy?}', StoreNewPregnancy::class); // pakai patch karena hanya sebagian
-    // controller untuk menyimpan ringkasan kelahiran baru
-    // Route::patch('/new-birth/{pregnancy}', StoreNewBirth::class); // pakai patch karena hanya sebagian
 });
 
 // Route::view('/imports', 'imports');

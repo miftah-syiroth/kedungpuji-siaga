@@ -61,6 +61,7 @@
                     <th class="px-2 py-3">L/P</th>
                     <th class="px-2 py-3">Umur</th>
                     <th class="px-2 py-3">Goldar</th>
+                    <th class="px-2 py-3 text-left">Ibu Kandung</th>
                     <th class="px-2 py-3 text-left">Status Kawin</th>
                     <th class="px-2 py-3 text-center">Keluarga</th>
                     <th class="px-2 py-3 text-left">Status Keluarga</th>
@@ -91,6 +92,13 @@
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
                         {{ $person->bloodGroup->group }}
+                    </td>
+                    <td class="px-2 py-1 text-sm">
+                        @isset($person->mother)
+                        <a href="/people/{{ $person->mother->id }}" class="font-normal capitalize text-blue-500 hover:text-blue-400 hover:underline">{{ $person->mother->name }}</a>
+                        @else
+                        -
+                        @endisset
                     </td>
                     <td class="px-2 py-1 text-sm">
                         {{ $person->maritalStatus->status }}

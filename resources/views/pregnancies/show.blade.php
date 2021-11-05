@@ -10,10 +10,25 @@
                 <button x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">Ringkasan</button>
             </h3>
             <div x-show="isOpen" class="flex justify-between">
-                <a href="/pregnancies/{{ $pregnancy->id }}/edit" class="bg-blue-500 px-4 py-1 rounded-md text-white text-sm text-center mt-2 hover:bg-blue-700">edit</a>
-                @if ($pregnancy->puerperal)
-                <a href="/puerperals/{{ $pregnancy->puerperal->id }}" class=" bg-green-500 px-4 py-1 rounded-md text-white text-sm text-center mt-2 hover:bg-green-700">lihat data nifas</a>
-                @endif
+                <div>
+                    <a href="/pregnancies/{{ $pregnancy->id }}/edit" class="bg-blue-500 px-4 py-1 rounded-md text-white text-sm text-center mt-2 hover:bg-blue-700">edit</a>
+                </div>
+                <div>
+                    {{-- kalau ada value waktu kelahiran --}}
+                    @isset($pregnancy->childbirth_date)
+
+                    @isset($pregnancy->puerperal)
+                        <a href="/puerperals/{{ $pregnancy->puerperal->id }}" class=" bg-green-500 px-4 py-1 rounded-md text-white text-sm text-center mt-2 hover:bg-green-700">lihat data nifas</a>
+                    @else
+                        <form action="/pregnancies/{{ $pregnancy->id }}/puerperals" method="post">
+                            @csrf
+                            <button type="submit" class="bg-red-500 px-4 py-1 rounded-md text-white text-sm text-center mt-2 hover:bg-red-700">buat data nifas</button>
+                        </form>
+                    @endisset
+
+                    @endisset
+                </div>
+
             </div>
         </div>
         <div x-show="isOpen" class="border-t border-gray-200 flex flex-row flex-wrap">

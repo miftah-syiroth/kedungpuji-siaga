@@ -2,10 +2,17 @@
 namespace App\Services;
 
 use App\Models\Puerperal;
-use Illuminate\Database\Eloquent\Builder;
 
 class PuerperalService
 {    
+    public function getDeletedPuerperals()
+    {
+        return Puerperal::onlyTrashed()
+            ->with(['pregnancy' => function ($query) {
+                $query->withTrashed();
+            }, ])->get();
+    }
+
     public function update($request, $puerperal)
     {
         $puerperal->update([
@@ -15,6 +22,50 @@ class PuerperalService
         $puerperal->motherConditions()->sync($request->mother_condition_id);
         $puerperal->complications()->sync($request->puerperal_complication_id);
         $puerperal->babyConditions()->sync($request->baby_condition_id);
+    }
+
+    public function destroy($puerperal)
+    {
+        // hapus neonatus
+        if (isset($puerperal->puerperalClasses)) {
+            $puerperal->puerperalClasses()->delete();
+        }
+        $puerperal->delete();
+    }
+
+    public function deletePermanently($puerperal)
+    {
+        $puerperal = Puerperal::withTrashed()->find($puerperal);
+
+        // hapus table intermediate untuk kondisi ibu dan anak selama nifas
+        $puerperal->babyConditions()->detach();
+        $puerperal->motherConditions()->detach();
+        $puerperal->complications()->detach();
+
+        // hapus permanen dgn relasinya
+        if (isset($puerperal->puerperalClasses)) {
+            $puerperal->puerperalClasses()->forceDelete();
+        }
+        
+        $puerperal->forceDelete();
+    }
+
+    public function restore($puerperal)
+    {
+        $puerperal = Puerperal::withTrashed()->find($puerperal);
+
+        
+        $pregnancy = $puerperal->pregnancy;
+        //cek apakah parent kehamilan sudah ada relasi dgn nifas lainnya, relasinya one to one
+        if (isset($pregnancy->puerperal)) { // jika sudah berelasi dgn nifas lainnya, batalkan
+            return false;
+        } else {
+            if (isset($puerperal->puerperalClasses)) {
+                $puerperal->puerperalClasses()->restore();
+            }
+            $puerperal->restore();
+            return true;
+        }
     }
 
     public function getPeriode()

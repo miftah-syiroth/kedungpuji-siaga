@@ -39,6 +39,11 @@ class FamilyService
             'keluargaSejahtera',
         ])->withCount('people')->find($family->id);
     }
+
+    public function getDeletedFamilies()
+    {
+        return Family::onlyTrashed()->get();
+    }
     
     /**
      * SUCCESS
@@ -102,5 +107,25 @@ class FamilyService
     {
         $family->people()->detach(); // hapus semua row di tabel intermediate
         $family->delete();
+    }
+
+    public function forceDelete($family)
+    {
+        $family = Family::withTrashed()->find($family);
+        $family->forceDelete();
+    }
+
+    public function restore($family)
+    {
+        $family = Family::withTrashed()->find($family);
+        
+        $leader = $family->leader;
+        // kalau kepala keluarga sebelumnya sudah berkeluarga maka batalkan
+        if (isset($leader->ledFamily) || $leader->family()->exists()) {
+            return false;
+        } else {
+            $family->restore();
+            return true;
+        }
     }
 }

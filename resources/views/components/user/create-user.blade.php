@@ -1,45 +1,43 @@
-<div class="px-6 py-6 bg-white rounded-lg shadow-lg text-sm">
+<div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
     <x-auth-validation-errors class="mb-4" :errors="$errors" />
     <form method="POST" action="{{ route('users.store') }}">
         @csrf
 
-        <!-- Name -->
-        <div>
-            <x-label for="name" :value="__('Nama Lengkap')" />
-            <x-input id="name" class="block mt-1 w-72" type="text" name="name" :value="old('name')" required autofocus />
+        <div class="flex flex-wrap">
+            <!-- Name -->
+            <label class="block text-sm mr-2" for="name">
+                <span class="text-gray-700 dark:text-gray-400">Nama Lengkap</span>
+                <input type="text" name="name" id="name" value="{{ old('name') }}" required class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Nama Lengkap"/>
+            </label>
         </div>
 
-        <div class="flex flex-row mt-4">
+        <div class="flex flex-wrap mt-4">
             
             <!-- Phone Number -->
-            <div>
-                <x-label for="phone" :value="__('Phone Number')" />
-
-                <x-input id="phone" class="block mt-1 w-48" type="tel"  name="phone" :value="old('phone')" required placeholder="Whatsapp"/>
-            </div>
+            <label class="block text-sm mr-2" for="phone">
+                <span class="text-gray-700 dark:text-gray-400">Phone Number</span>
+                <input type="tel" name="phone" id="phone" placeholder="whatsapp" value="{{ old('phone') }}" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+            </label>
 
                 <!-- Email Address -->
-            <div class="ml-4">
-                <x-label for="email" :value="__('Email')" />
-
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" placeholder="kosongkan jika tidak punya" />
-            </div>
+            <label class="block text-sm mr-2" for="email">
+                <span class="text-gray-700 dark:text-gray-400">Alamat Email</span>
+                <input type="email" name="email" id="email" value="{{ old('email') }}" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="kosongkan jika tidak punya">
+            </label>
         </div>
         
         <div class="flex flex-row mt-4">
             <!-- Password -->
-            <div>
-                <x-label for="password" :value="__('Password')" />
-
-                <x-input id="password" class="block mt-1 w-48" type="password" name="password" required autocomplete="new-password" />
-            </div>
+            <label class="block text-sm mr-2" for="password">
+                <x-label for="password" :value="__('Password')" class="text-gray-700 dark:text-gray-400" />
+                <x-input id="password" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" type="password" name="password" required autocomplete="new-password" />
+            </label>
 
             <!-- Confirm Password -->
-            <div class="ml-4">
-                <x-label for="password_confirmation" :value="__('Confirm Password')" />
-
-                <x-input id="password_confirmation" class="block mt-1 w-48" type="password" name="password_confirmation" required />
-            </div>
+            <label class="block text-sm mr-2" for="password_confirmation">
+                <x-label for="password_confirmation" :value="__('Confirm Password')" class="text-gray-700 dark:text-gray-400" />
+                <x-input id="password_confirmation" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" type="password" name="password_confirmation" required />
+            </label>
         </div>
         
         <div class="flex items-center justify-between mt-4">
@@ -56,9 +54,9 @@
 
                 @endrole
             </div>
-            <x-button class="ml-4">
-                {{ __('Tambah Akun') }}
-            </x-button>
+            <div>
+                <button type="submit" class="bg-gray-600 dark:bg-gray-400 text-white dark:text-gray-800 py-2 px-3 rounded-md hover:bg-gray-700 dark:hover:bg-gray-300 mx-2 my-4">Tambah Akun</button>
+            </div>
         </div>
     </form>
 </div>

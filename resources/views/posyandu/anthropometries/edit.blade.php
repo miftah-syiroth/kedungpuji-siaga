@@ -26,7 +26,7 @@
                     <!-- panjang badan -->
                     <label class="block text-sm mx-2" for="height">
                         <span class="text-gray-700 dark:text-gray-400">Panjang Badan (cm)</span>
-                        <input type="number" name="height" id="height" value="{{ $anthropometry->height }}" step="any" min="20" required class="block w-24 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                        <input type="number" name="height" id="height" value="{{ $anthropometry->height }}" step="any" min="45" max="120" required class="block w-24 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
                     </label>
 
                     <!-- lingkar kepala -->

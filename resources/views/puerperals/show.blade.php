@@ -11,7 +11,7 @@
                 <button x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">Ringkasan</button>
             </h3>
             <div x-show="isOpen" class="flex justify-between">
-                <a href="/puerperals/{{ $puerperal->id }}/edit" class="bg-blue-500 px-4 py-1 rounded-md text-white text-sm text-center mt-2 hover:bg-blue-700">edit kesimpulan</a>
+                <a href="/puerperals/{{ $puerperal->id }}/edit" class="bg-blue-500 px-4 py-1 rounded-md text-white text-sm text-center mt-2 hover:bg-blue-700">edit nifas</a>
                 <a href="/pregnancies/{{ $puerperal->pregnancy->id }}" class=" bg-green-500 px-4 py-1 rounded-md text-white text-sm text-center mt-2 hover:bg-green-700">lihat data kehamilan</a>
             </div>
         </div>

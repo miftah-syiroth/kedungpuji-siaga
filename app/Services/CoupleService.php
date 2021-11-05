@@ -74,22 +74,64 @@ class CoupleService
 
         $couple->update($attributes);
     }
+
+    public function getDeletedCouples()
+    {
+        return Couple::onlyTrashed()->get();
+    }
     
     /**
      * delete couple dengan softdelete
      *
      * @return void
      */
-    public function delete($request, $couple)
+    public function softDelete($request, $couple)
     {
         // ubah status kawin istri menjadi cerai
         $istri = $couple->wife;
+        $suami = $couple->husband;
         $istri->update(['marital_status_id' => $request->marital_status_id]);
+        $suami->update(['marital_status_id' => $request->marital_status_id]);
 
         # hapus dulu KB datanya
-        $couple->keluargaBerencana()->delete();
-        # hapus couplenya
+        if (isset($couple->keluargaBerencana)) {
+            $couple->keluargaBerencana()->delete();
+        }
+
         $couple->delete();
+    }
+
+    public function forceDelete($couple)
+    {
+        $couple = Couple::withTrashed()->find($couple);
+
+        # hapus dulu KB datanya
+        if (isset($couple->keluargaBerencana)) {
+            $couple->keluargaBerencana()->forceDelete();
+        }
+
+        $couple->forceDelete();
+    }
+
+    public function restore($couple)
+    {
+        $couple = Couple::withTrashed()->find($couple);
+        
+        $wife = $couple->wife;
+        // cek apakah istri sudah punya suami lagi, krn satu istri hanya boleh satu suami
+        if (isset($wife->husband)) {
+            return false;
+        } else {
+            if (isset($couple->keluargaBerencana)) {
+                $couple->keluargaBerencana()->restore();
+            }
+    
+            $couple->restore();
+            $couple->wife->update(['marital_status_id' => 2]);
+            $couple->husband->update(['marital_status_id' => 2]);
+
+            return true;
+        }
     }
     
     /**

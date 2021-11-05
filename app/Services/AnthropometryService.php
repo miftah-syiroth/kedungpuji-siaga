@@ -246,4 +246,15 @@ class AnthropometryService
         $penyebut = pow($height, 2) / 10000; 
         return round(($pembilang/$penyebut), 2);
     }
+
+
+    public function checkPbMinimum($childbirth_date)
+    {
+        return $childbirth_date->age < 2 ? 45 : 65; // cek lebih dari 2 th atau belum
+    }
+
+    public function checkPbMaximum($childbirth_date)
+    {
+        return $childbirth_date->age < 2 ? 110 : 120; // cek lebih dari 2 th atau belum
+    }
 }

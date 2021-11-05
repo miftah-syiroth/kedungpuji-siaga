@@ -52,6 +52,8 @@ class AnthropometryController extends Controller
                 'month' => $month,
                 'waktu_awal' => $posyandu->person->date_of_birth->addMonths($month),
                 'waktu_akhir' => $posyandu->person->date_of_birth->addMonths($month+1),
+                'pb_minimum' => $this->anthropometryService->checkPbMinimum($posyandu->person->date_of_birth),
+                'pb_maximum' => $this->anthropometryService->checkPbMaximum($posyandu->person->date_of_birth),
             ]);
         } else {
             return redirect('/posyandu/' . $posyandu->id);

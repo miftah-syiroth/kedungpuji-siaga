@@ -71,9 +71,6 @@ class PregnancyController extends Controller
     {
         return view('pregnancies.show', [
             'pregnancy' => $pregnancy,
-            // 'age_in_months' => $pregnancy->hpht->diffInMonths(now()) + 1,
-            // 'age_in_weeks' => $pregnancy->hpht->diffInWeeks(now()),
-            // 'age_in_days' => $pregnancy->hpht->diffInDays(now()),
         ]);
     }
 
@@ -109,8 +106,7 @@ class PregnancyController extends Controller
             return redirect('/pregnancies/' . $pregnancy->id);
         } else {
             return redirect()->back()->with('message', 'masukkan batas waktu persalinan dengan benar!');
-        }
-        
+        }        
     }
 
     /**
@@ -119,8 +115,9 @@ class PregnancyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Pregnancy $pregnancy)
     {
-        //
+        $this->pregnancyService->destroy($pregnancy);
+        return redirect('/pregnancies');
     }
 }

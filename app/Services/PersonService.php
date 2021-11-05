@@ -107,4 +107,164 @@ class PersonService
             'family_id' => $family->id,
         ]);
     }
+
+    public function getDeletedPeople()
+    {
+        return Person::onlyTrashed()->get();
+    }
+
+    public function softDelete($person)
+    {
+        // jika dia kepala keluarga, hapus semua anggota pada pivot table, lalu hapus keluarganya
+        if (isset($person->ledFamily)) {
+            $person->ledFamily->people()->detach();
+            $person->ledFamily()->delete();
+        }
+
+        // jika anggot sebuah keluarga, keluarkan dia dari keanggotaan
+        if ($person->family()->exists()) {
+            $family = $person->family()->first();
+            $family->people()->detach($person->id);
+        }
+
+        // jika dia seorang istri (punya pasangan suami)
+        if (isset($person->husband)) {
+            if (isset($person->husband->keluargaBerencana)) {
+                $person->husband->keluargaBerencana()->delete();
+            }
+            $person->husband()->delete();
+        }
+
+        if (isset($person->wifes)) {
+            if (isset($person->wifes->keluargaBerencana)) {
+                $person->wifes->keluargaBerencana()->delete();
+            }
+            
+            $person->wifes()->delete();
+        }
+
+        // jika memiliki kehamilan, hapus semua child relation dibawah kehamilan berupa kelas nifas, nifas, dan kelas ibu hamil
+        if (isset($person->pregnancies)) {
+
+            if (isset($person->pregnancies->puerperal)) {
+
+                if (isset($person->pregnancies->puerperal->puerperalClasses)) {
+                    $person->pregnancies->puerperal->puerperalClasses()->delete();
+                }
+
+                $person->pregnancies->puerperal()->delete();
+            }
+            if (isset( $person->pregnancies->prenatalClasses)) {
+                $person->pregnancies->prenatalClasses()->delete();
+            }
+
+            $person->pregnancies()->delete();
+        }
+
+        if (isset($person->posyandu)) {
+            if (isset($person->posyandu->neonatuses)) {
+                $person->posyandu->neonatuses()->delete();
+            }
+            if (isset($person->posyandu->anthropometries)) {
+                $person->posyandu->anthropometries()->delete();
+            }
+            $person->posyandu()->delete();
+        }
+
+        $person->delete();
+    }
+
+    public function forceDelete($person)
+    {
+        $person = Person::withTrashed()->find($person);
+
+        // jika dia kepala keluarga, hapus semua anggota pada pivot table, lalu hapus keluarganya
+        if (isset($person->ledFamily)) {
+            $person->ledFamily()->forceDelete();
+        }
+
+        // jika dia seorang istri (punya pasangan suami)
+        if (isset($person->husband)) {
+            if (isset($person->husband->keluargaBerencana)) {
+                $person->husband->keluargaBerencana()->forceDelete();
+            }
+            $person->husband()->forceDelete();
+        }
+
+        if (isset($person->wifes)) {
+            if (isset($person->wifes->keluargaBerencana)) {
+                $person->wifes->keluargaBerencana()->forceDelete();
+            }
+            
+            $person->wifes()->forceDelete();
+        }
+
+        // jika memiliki kehamilan, hapus semua child relation dibawah kehamilan berupa kelas nifas, nifas, dan kelas ibu hamil
+        if (isset($person->pregnancies)) {
+
+            if (isset($person->pregnancies->puerperal)) {
+
+                if (isset($person->pregnancies->puerperal->puerperalClasses)) {
+                    $person->pregnancies->puerperal->puerperalClasses()->forceDelete();
+                }
+
+                $person->pregnancies->puerperal()->forceDelete();
+            }
+            if (isset( $person->pregnancies->prenatalClasses)) {
+                $person->pregnancies->prenatalClasses()->forceDelete();
+            }
+
+            $person->pregnancies()->forceDelete();
+        }
+
+        if (isset($person->posyandu)) {
+            if (isset($person->posyandu->neonatuses)) {
+                $person->posyandu->neonatuses()->forceDelete();
+            }
+            if (isset($person->posyandu->anthropometries)) {
+                $person->posyandu->anthropometries()->forceDelete();
+            }
+            $person->posyandu()->forceDelete();
+        }
+
+        $person->forceDelete();
+    }
+
+    public function restore($person)
+    {
+        $person = Person::withTrashed()->find($person);
+
+        // jika dia kepala keluarga, cek dulu 
+        if (isset($person->ledFamily)) {
+            $person->ledFamily()->restore();
+        }
+
+        // jika dia seorang istri (punya pasangan suami)
+        if (isset($person->husband)) {
+            if (isset($person->husband->keluargaBerencana)) {
+                $person->husband->keluargaBerencana()->restore();
+            }
+            $person->husband()->restore();
+        }
+
+        // jika memiliki kehamilan, hapus semua child relation dibawah kehamilan berupa kelas nifas, nifas, dan kelas ibu hamil
+        if (isset($person->pregnancies)) {
+
+            if (isset($person->pregnancies->puerperal)) {
+
+                if (isset($person->pregnancies->puerperal->puerperalClasses)) {
+                    $person->pregnancies->puerperal->puerperalClasses()->restore();
+                }
+
+                $person->pregnancies->puerperal()->restore();
+            }
+            if (isset( $person->pregnancies->prenatalClasses)) {
+                $person->pregnancies->prenatalClasses()->restore();
+            }
+
+            $person->pregnancies()->restore();
+        }
+
+        $person->restore();
+    }
 }

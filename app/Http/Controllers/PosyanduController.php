@@ -103,6 +103,7 @@ class PosyanduController extends Controller
      */
     public function destroy(Posyandu $posyandu)
     {
-        //
+        $this->posyanduService->destroy($posyandu);
+        return redirect('/posyandu');
     }
 }

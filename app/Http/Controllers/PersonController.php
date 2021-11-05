@@ -123,7 +123,7 @@ class PersonController extends Controller
      */
     public function destroy(Person $person)
     {
-        $person->delete();
+        $this->personService->softDelete($person);
         return redirect('/people');
     }
 }

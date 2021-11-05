@@ -30,7 +30,7 @@ class KeluargaBerencanaService
                 ->whereDate('date_of_birth', '<=', Carbon::now()->addYears(-15) )
                 ->whereDate('date_of_birth', '>=', Carbon::now()->addYears(-49) );
             })->with(['kbService', 'keluargaBerencana.kbStatus', ])
-            ->filter($filters)
+            ->keluargaBerencana($filters)
             ->latest()
             ->paginate(20);
     }

@@ -7,10 +7,7 @@ use App\Http\Requests\StoreCoupleRequest;
 use App\Http\Requests\UpdateCoupleRequest;
 use App\Models\Couple;
 use App\Models\KbService;
-use App\Models\KbStatus;
-use App\Models\Month;
 use App\Services\CoupleService;
-use Carbon\Carbon;
 
 class CoupleController extends Controller
 {
@@ -108,7 +105,7 @@ class CoupleController extends Controller
      */
     public function destroy(DeleteCoupleRequest $request, Couple $couple)
     {
-        $this->coupleService->delete($request, $couple);
+        $this->coupleService->softDelete($request, $couple);
         return redirect('/couples');
     }
 }

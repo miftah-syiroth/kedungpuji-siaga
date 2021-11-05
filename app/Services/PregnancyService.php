@@ -42,6 +42,11 @@ class PregnancyService
             ->paginate(20);
     }
 
+    public function getDeletedPregnancies()
+    {
+        return Pregnancy::onlyTrashed()->get();
+    }
+
     public function store($request)
     {
         // simpan kehamilan beru diperbolehkan bagi wanita yg
@@ -152,6 +157,61 @@ class PregnancyService
                 $pregnancy->puerperal()->create();
             }
         }
+    }
+
+    public function destroy($pregnancy)
+    {
+        // baby condition akan pakai force
+        if (isset($pregnancy->puerperal->puerperalClasses)) {
+            $pregnancy->puerperal->puerperalClasses()->delete();
+        }
+        if (isset($pregnancy->puerperal)) {
+            $pregnancy->puerperal()->delete();
+        }
+        if (isset( $pregnancy->prenatalClasses)) {
+            $pregnancy->prenatalClasses()->delete();
+        }
+        $pregnancy->delete();
+    }
+
+    public function deletePermanently($pregnancy)
+    {
+        $pregnancy = Pregnancy::withTrashed()->find($pregnancy);
+
+        // hapus permanen dgn relasinya
+        if (isset($pregnancy->pregnancyClasses)) {
+            $pregnancy->pregnancyClasses()->forceDelete();
+        }
+
+        if (isset($pregnancy->puerperal->puerperalClasses)) {
+            $pregnancy->puerperal->puerperalClasses()->forceDelete();
+        }
+
+        // hapus table intermediate untuk kondisi ibu dan anak selama nifas
+        if (isset($pregnancy->puerperal)) {
+            $pregnancy->puerperal()->babyConditions()->detach();
+            $pregnancy->puerperal()->motherConditions()->detach();
+            $pregnancy->puerperal()->complications()->detach();
+            $pregnancy->puerperal()->forceDelete();
+        }
+        $pregnancy->babyConditions()->detach(); // tabel kondisi bayi pasca dilahirkan
+        $pregnancy->forceDelete();
+    }
+
+    public function restore($pregnancy)
+    {
+        $pregnancy = Pregnancy::withTrashed()->find($pregnancy);
+        
+        if (isset($pregnancy->puerperal->puerperalClasses)) {
+            $pregnancy->puerperal->puerperalClasses()->restore();
+        }
+        if (isset($pregnancy->puerperal)) {
+            $pregnancy->puerperal()->restore();
+        }
+        if (isset( $pregnancy->prenatalClasses)) {
+            $pregnancy->prenatalClasses()->restore();
+        }
+        $pregnancy->restore();
     }
 
     public function calculateGestationalAge($childbirth_date, $pregnancy)

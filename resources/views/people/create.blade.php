@@ -118,14 +118,14 @@
                     </select>
                 </label>
 
-                <label class="block text-sm mx-2" for="rw">
-                    <span class="text-gray-700 dark:text-gray-400">RW</span>
-                    <input type="number" name="rw" id="rw" value="{{ old('rw') }}" required class="block w-16 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
-                </label>
-
                 <label class="block text-sm mx-2" for="rt">
                     <span class="text-gray-700 dark:text-gray-400">RT</span>
                     <input type="number" name="rt" id="rt" value="{{ old('rt') }}" required class="block w-16 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                </label>
+
+                <label class="block text-sm mx-2" for="rw">
+                    <span class="text-gray-700 dark:text-gray-400">RW</span>
+                    <input type="number" name="rw" id="rw" value="{{ old('rw') }}" required class="block w-16 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
                 </label>
 
                 <label class="block mx-2 text-sm">

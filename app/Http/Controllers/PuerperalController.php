@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdatePuerperalRequest;
 use App\Models\BabyCondition;
 use App\Models\MotherCondition;
+use App\Models\Pregnancy;
 use App\Models\Puerperal;
 use App\Models\PuerperalComplication;
 use App\Services\PuerperalService;
@@ -45,9 +46,10 @@ class PuerperalController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Pregnancy $pregnancy)
     {
-        //
+        $pregnancy->puerperal()->create();
+        return redirect('/pregnancies/' . $pregnancy->id);
     }
 
     /**
@@ -102,6 +104,7 @@ class PuerperalController extends Controller
      */
     public function destroy(Puerperal $puerperal)
     {
-        //
+        $this->puerperalService->destroy($puerperal);
+        return redirect('/pregnancies');
     }
 }
