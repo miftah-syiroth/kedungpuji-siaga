@@ -29,7 +29,7 @@ class DeleteCoupleController extends Controller
         if ($is_success == true) {
             return redirect('/deleted/couples')->with('message', 'Berhasil dikembalikan');
         } else {
-            return redirect('/deleted/couples')->with('message', 'Istri sudah memiliki suami lainnya!');
+            return redirect('/deleted/couples')->with('message', 'Istri/suami tidak terhapus atau istri sudah memiliki suami lainnya!');
         }
         
     }

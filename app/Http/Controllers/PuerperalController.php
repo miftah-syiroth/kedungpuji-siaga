@@ -104,7 +104,7 @@ class PuerperalController extends Controller
      */
     public function destroy(Puerperal $puerperal)
     {
-        $this->puerperalService->destroy($puerperal);
+        $this->puerperalService->softDelete($puerperal);
         return redirect('/pregnancies');
     }
 }

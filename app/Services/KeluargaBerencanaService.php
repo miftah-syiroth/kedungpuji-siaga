@@ -24,13 +24,18 @@ class KeluargaBerencanaService
 
     public function getCouples($filters)
     {
+        if (empty($filters['year_periode'])) {
+            $filters['year_periode'] = now()->year;
+        }
+
         return Couple::whereHas('wife', function (Builder $query) {
             $query->where('is_alive', true)
                 ->where('village_id', 1)
                 ->whereDate('date_of_birth', '<=', Carbon::now()->addYears(-15) )
                 ->whereDate('date_of_birth', '>=', Carbon::now()->addYears(-49) );
-            })->with(['kbService', 'keluargaBerencana.kbStatus', ])
-            ->keluargaBerencana($filters)
+            })->with(['keluargaBerencana' => function($query) use ($filters){
+                $query->where('year_periode', $filters['year_periode']);
+            }])->keluargaBerencana($filters)
             ->latest()
             ->paginate(20);
     }

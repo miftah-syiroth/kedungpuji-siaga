@@ -14,18 +14,6 @@
                 <div class="mt-2">
                     <a href="/couples/{{ $couple->id }}/edit" class="bg-blue-500 px-4 py-1 rounded-md text-white text-sm text-center hover:bg-blue-700">edit</a>
                 </div>
-                <form action="/couples/{{ $couple->id }}" method="post">
-                    @csrf
-                    @method('DELETE')
-                    <select name="marital_status_id" id="marital_status_id" required class="w-auto mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
-                        <option hidden>pilih status!</option>
-                        @foreach ($cerai_statuses as $status)
-                        <option value="{{ $status->id }}">{{ $status->status }}</option>
-                        @endforeach
-                    </select>
-                    
-                    <button type="submit" class="bg-red-500 px-4 py-1 rounded-md text-white text-sm text-center mt-2 hover:bg-red-700">cerai/hapus</button>
-                </form>
             </div>
         </div>
         <div x-show="isOpen" class="border-t border-gray-200">

@@ -25,7 +25,7 @@ class FamilyService
      * @param  mixed $family
      * @return void
      */
-    public function getFamily($family)
+    public function getFamily($family_id)
     {
         return Family::with([
             'people' => function($query) {
@@ -33,18 +33,10 @@ class FamilyService
             },
             'people.sex',
             'people.bloodGroup',
-            'people.education',
-            'people.disability',
-            'people.maritalStatus',
             'keluargaSejahtera',
-        ])->withCount('people')->find($family->id);
+        ])->withCount('people')->find($family_id);
     }
 
-    public function getDeletedFamilies()
-    {
-        return Family::onlyTrashed()->get();
-    }
-    
     /**
      * SUCCESS
      *
@@ -103,6 +95,22 @@ class FamilyService
         $family->people()->detach($person->id);
     }
 
+    
+    /**
+     * getDeletedFamilies, ambil keluarga yang terhapus
+     *
+     * @return void
+     */
+    public function getDeletedFamilies()
+    {
+        return Family::onlyTrashed()
+            ->with(['leader' => function($query) {
+                $query->withTrashed();
+            }, 'people' => function($query) {
+                $query->withTrashed();
+            }])->orderBy('deleted_at', 'desc')->get();
+    }
+
     public function destroy($family)
     {
         $family->people()->detach(); // hapus semua row di tabel intermediate
@@ -111,7 +119,12 @@ class FamilyService
 
     public function forceDelete($family)
     {
-        $family = Family::withTrashed()->find($family);
+        $family = Family::withTrashed()
+            ->with(['people' => function($query) {
+                $query->withTrashed();
+            }])->find($family);
+
+        $family->people()->detach(); // hapus semua row di tabel intermediate
         $family->forceDelete();
     }
 
@@ -120,10 +133,17 @@ class FamilyService
         $family = Family::withTrashed()->find($family);
         
         $leader = $family->leader;
-        // kalau kepala keluarga sebelumnya sudah berkeluarga maka batalkan
-        if (isset($leader->ledFamily) || $leader->family()->exists()) {
+        // kalau kepala keluarga sebelumnya null artinya dia sudah terhapus  maka batalkan
+        // kalau ga null, cek apakah sudah jd anggota keluarga lain, jika iya batalkan,
+        // kepala keluarga ga bisa buat baris keluarga baru karena leader_id harus unique
+        if ($family->leader == null || $leader->family->isNotEmpty()) {
             return false;
         } else {
+            // karena pada softDel dilakukan detach all, maka tambahkan lagi leader sbg kepala keluarga
+            $leader->family()->sync([
+                $family->id => ['family_status_id' => 1], // satu adlh status kepala keluarga
+            ]);
+
             $family->restore();
             return true;
         }

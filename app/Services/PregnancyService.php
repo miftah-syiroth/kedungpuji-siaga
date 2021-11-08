@@ -42,10 +42,7 @@ class PregnancyService
             ->paginate(20);
     }
 
-    public function getDeletedPregnancies()
-    {
-        return Pregnancy::onlyTrashed()->get();
-    }
+    
 
     public function store($request)
     {
@@ -159,39 +156,60 @@ class PregnancyService
         }
     }
 
-    public function destroy($pregnancy)
+    public function getDeletedPregnancies()
     {
-        // baby condition akan pakai force
-        if (isset($pregnancy->puerperal->puerperalClasses)) {
-            $pregnancy->puerperal->puerperalClasses()->delete();
-        }
-        if (isset($pregnancy->puerperal)) {
+        return Pregnancy::onlyTrashed()
+            ->with(['mother' => function($query) {
+                $query->withTrashed();
+            }])->orderBy('deleted_at', 'desc')->get();
+    }
+    
+    /**
+     * destroy
+     *
+     * @param  mixed $pregnancy
+     * @return void
+     */
+    public function softDelete($pregnancy)
+    {
+        if ($pregnancy->puerperal !== null) {
+            if ($pregnancy->puerperal->puerperalClasses->isNotEmpty()) {
+                $pregnancy->puerperal->puerperalClasses()->delete();
+            }
             $pregnancy->puerperal()->delete();
         }
-        if (isset( $pregnancy->prenatalClasses)) {
+        if ($pregnancy->prenatalClasses->isNotEmpty()) {
             $pregnancy->prenatalClasses()->delete();
         }
         $pregnancy->delete();
     }
 
-    public function deletePermanently($pregnancy)
+    public function forceDelete($pregnancy)
     {
-        $pregnancy = Pregnancy::withTrashed()->find($pregnancy);
+        $pregnancy = Pregnancy::withTrashed()
+            ->with(['puerperal' => function($query) {
+                $query->withTrashed();
+            }, 'puerperal.puerperalClasses' => function($query) {
+                $query->withTrashed();
+            }, 'prenatalClasses' => function($query) {
+                $query->withTrashed();
+            }, ])->find($pregnancy);
+        
 
         // hapus permanen dgn relasinya
-        if (isset($pregnancy->pregnancyClasses)) {
-            $pregnancy->pregnancyClasses()->forceDelete();
+        if ($pregnancy->prenatalClasses->isNotEmpty()) {
+            $pregnancy->prenatalClasses()->forceDelete();
         }
 
-        if (isset($pregnancy->puerperal->puerperalClasses)) {
-            $pregnancy->puerperal->puerperalClasses()->forceDelete();
-        }
+        if ($pregnancy->puerperal !== null) {
+            if ($pregnancy->puerperal->puerperalClasses->isNotEmpty()) {
+                $pregnancy->puerperal->puerperalClasses()->forceDelete();
+            }
+            // hapus berbagai kondisi ibu dan bayi pasca nifas pd tabel pivot
+            $pregnancy->puerperal->babyConditions()->detach();
+            $pregnancy->puerperal->motherConditions()->detach();
+            $pregnancy->puerperal->complications()->detach();
 
-        // hapus table intermediate untuk kondisi ibu dan anak selama nifas
-        if (isset($pregnancy->puerperal)) {
-            $pregnancy->puerperal()->babyConditions()->detach();
-            $pregnancy->puerperal()->motherConditions()->detach();
-            $pregnancy->puerperal()->complications()->detach();
             $pregnancy->puerperal()->forceDelete();
         }
         $pregnancy->babyConditions()->detach(); // tabel kondisi bayi pasca dilahirkan
@@ -200,18 +218,34 @@ class PregnancyService
 
     public function restore($pregnancy)
     {
-        $pregnancy = Pregnancy::withTrashed()->find($pregnancy);
+        $pregnancy = Pregnancy::withTrashed()
+            ->with(['puerperal' => function($query) {
+                $query->withTrashed();
+            }, 'puerperal.puerperalClasses' => function($query) {
+                $query->withTrashed();
+            }, 'prenatalClasses' => function($query) {
+                $query->withTrashed();
+            }, ])->find($pregnancy);
         
-        if (isset($pregnancy->puerperal->puerperalClasses)) {
-            $pregnancy->puerperal->puerperalClasses()->restore();
+        // batalkan jika ibu sudah tidak ada/null, bisa jd ibu sudah dihapus
+        if ($pregnancy->mother == null) {
+            return false;
+        } else {
+
+            if ($pregnancy->prenatalClasses->isNotEmpty()) {
+                $pregnancy->prenatalClasses()->restore();
+            }
+
+            if ($pregnancy->puerperal !== null) {
+                if ($pregnancy->puerperal->puerperalClasses->isNotEmpty()) {
+                    $pregnancy->puerperal->puerperalClasses()->restore();
+                }
+                
+                $pregnancy->puerperal()->restore();
+            }
+            $pregnancy->restore();
+            return true;
         }
-        if (isset($pregnancy->puerperal)) {
-            $pregnancy->puerperal()->restore();
-        }
-        if (isset( $pregnancy->prenatalClasses)) {
-            $pregnancy->prenatalClasses()->restore();
-        }
-        $pregnancy->restore();
     }
 
     public function calculateGestationalAge($childbirth_date, $pregnancy)

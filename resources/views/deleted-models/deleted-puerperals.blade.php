@@ -17,6 +17,7 @@
                     <th class="pl-4 py-3">HPHT</th>
                     <th class="pl-4 py-3">Waktu Lahir</th>
                     <th class="pl-4 py-3">Umur Kehamilan</th>
+                    <th class="px-2 py-3">Waktu dihapus</th>
                     <th class="px-2 py-3">Kembalikan</th>
                     <th class="px-2 py-3">Hapus Permanen</th>
                 </tr>
@@ -45,6 +46,9 @@
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
                         {{ $puerperal->pregnancy->gestational_age }}
+                    </td>
+                    <td class="px-2 py-1 text-sm text-center">
+                        {{ $puerperal->deleted_at->isoFormat('DD MMM YYYY HH:mm:ss') }}
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
                         <form action="/deleted/puerperals/{{ $puerperal->id }}/restore" method="post">

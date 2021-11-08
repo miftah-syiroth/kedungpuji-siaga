@@ -28,14 +28,14 @@ class DeletePuerperalController extends Controller
         if ($is_success == true) {
             return redirect('/deleted/puerperals')->with('message', 'Berhasil dikembalikan');
         } else {
-            return redirect('/deleted/puerperals')->with('message', 'Kehamilan sudah memiliki data nifas lainnya!');
+            return redirect('/deleted/puerperals')->with('message', 'Kehamilan sudah dihapus atau memiliki data nifas lainnya!');
         }
         
     }
 
     public function destroy($puerperal)
     {
-        $this->puerperalService->deletePermanently($puerperal);
+        $this->puerperalService->forceDelete($puerperal);
         return redirect('/deleted/puerperals')->with('message', 'Berhasil dihapus permanen');
     }
 }

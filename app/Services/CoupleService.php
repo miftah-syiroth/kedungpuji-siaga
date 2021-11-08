@@ -62,22 +62,31 @@ class CoupleService
 
     public function update($request, $couple)
     {
-        $attributes = $request->all();
+        // $attributes = $request->all();
 
-        if ($request->has('suami_id')) {
-            $attributes['suami_id'] = $request->suami_id;
-        }
+        // if ($request->has('suami_id')) {
+        //     $attributes['suami_id'] = $request->suami_id;
+        // }
 
-        if ($request->has('istri_id')) {
-            $attributes['istri_id'] = $request->istri_id;
-        }
+        // if ($request->has('istri_id')) {
+        //     $attributes['istri_id'] = $request->istri_id;
+        // }
 
-        $couple->update($attributes);
+        $couple->update($request->all());
     }
 
     public function getDeletedCouples()
     {
-        return Couple::onlyTrashed()->get();
+        return Couple::onlyTrashed()
+            ->with(['husband' => function($query) {
+                $query->withTrashed();
+            }, 'wife' => function($query) {
+                $query->withTrashed();
+            }, 'keluargaBerencana' => function($query) {
+                $query->withTrashed();
+            }, 'latestKeluargaBerencana' => function($query) {
+                $query->withTrashed();
+            }])->orderBy('deleted_at', 'desc')->get();
     }
     
     /**
@@ -90,23 +99,28 @@ class CoupleService
         // ubah status kawin istri menjadi cerai
         $istri = $couple->wife;
         $suami = $couple->husband;
+
         $istri->update(['marital_status_id' => $request->marital_status_id]);
         $suami->update(['marital_status_id' => $request->marital_status_id]);
 
+        // dd(isset($couple->keluargaBerencana));
         # hapus dulu KB datanya
-        if (isset($couple->keluargaBerencana)) {
+        if ($couple->keluargaBerencana->isNotEmpty()) {
             $couple->keluargaBerencana()->delete();
         }
-
         $couple->delete();
     }
 
     public function forceDelete($couple)
     {
-        $couple = Couple::withTrashed()->find($couple);
+        $couple = Couple::withTrashed()
+            ->with(['keluargaBerencana' => function($query) {
+                $query->withTrashed();
+            }])->find($couple);
 
+        // dd($couple->keluargaBerencana);
         # hapus dulu KB datanya
-        if (isset($couple->keluargaBerencana)) {
+        if ($couple->keluargaBerencana->isNotEmpty()) {
             $couple->keluargaBerencana()->forceDelete();
         }
 
@@ -115,14 +129,19 @@ class CoupleService
 
     public function restore($couple)
     {
-        $couple = Couple::withTrashed()->find($couple);
+        $couple = Couple::withTrashed()
+            ->with(['keluargaBerencana' => function($query) {
+                $query->withTrashed();
+            }])->find($couple);
         
+        $husband = $couple->husband;
         $wife = $couple->wife;
+        // cancel jika salah satu pasangan null krn artinya terhapus
         // cek apakah istri sudah punya suami lagi, krn satu istri hanya boleh satu suami
-        if (isset($wife->husband)) {
+        if ($wife->husband !== null || $wife == null || $husband == null) {
             return false;
         } else {
-            if (isset($couple->keluargaBerencana)) {
+            if ($couple->keluargaBerencana->isNotEmpty()) {
                 $couple->keluargaBerencana()->restore();
             }
     

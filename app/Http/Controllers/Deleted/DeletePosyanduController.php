@@ -36,7 +36,7 @@ class DeletePosyanduController extends Controller
 
     public function destroy($posyandu)
     {
-        $this->posyanduService->deletePermanently($posyandu);
+        $this->posyanduService->forceDelete($posyandu);
         return redirect('/deleted/posyandu')->with('message', 'Berhasil dihapus permanen');
     }
 }

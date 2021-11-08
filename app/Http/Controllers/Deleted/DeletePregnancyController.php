@@ -30,7 +30,7 @@ class DeletePregnancyController extends Controller
 
     public function destroy($pregnancy)
     {
-        $this->pregnancyService->deletePermanently($pregnancy);
+        $this->pregnancyService->forceDelete($pregnancy);
         return redirect('/deleted/pregnancies')->with('message', 'Berhasil dihapus permanen');
     }
 }

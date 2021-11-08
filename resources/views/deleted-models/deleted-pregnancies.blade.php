@@ -17,6 +17,7 @@
                     <th class="px-2 py-3">Umur Ibu</th>
                     <th class="px-2 py-3">hpht</th>
                     <th class="px-2 py-3">umur kandungan</th>
+                    <th class="px-2 py-3">waktu dihapus</th>
                     <th class="px-2 py-3">Kembalikan</th>
                     <th class="px-2 py-3">Hapus Permanen</th>
                 </tr>
@@ -47,12 +48,14 @@
                         {{ $pregnancy->hpht->diffInWeeks(now()) }} minggu
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
+                        {{ $pregnancy->deleted_at->isoFormat('DD MMM YYYY HH:mm:ss') }}
+                    </td>
+                    <td class="px-2 py-1 text-sm text-center">
                         <form action="/deleted/pregnancies/{{ $pregnancy->id }}/restore" method="post">
                             @csrf
                             @method('PATCH')
                             <button type="submit" class="text-sm text-white rounded-md bg-blue-500 hover:bg-blue-700 px-2 py-1">Kembalikan</button>
                         </form>
-                        {{-- <a href="/deleted/pregnancies/{{ $pregnancies->id }}/restore">restore</a> --}}
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
                         <form action="/deleted/pregnancies/{{ $pregnancy->id }}" method="post">

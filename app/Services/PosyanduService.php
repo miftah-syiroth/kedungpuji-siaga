@@ -28,58 +28,71 @@ class PosyanduService
             ->paginate(20);
     }
 
-    public function getDeletedPosyandu()
-    {
-        return Posyandu::onlyTrashed()->get();
-    }
-    
     public function store($request, $person)
     {
         return $person->posyandu()->create($request->all());
     }
 
-    public function destroy($posyandu)
+    public function getDeletedPosyandu()
+    {
+        return Posyandu::onlyTrashed()
+            ->with(['person' => function($query) {
+                $query->withTrashed();
+            },])->get();
+    }
+
+    public function softDelete($posyandu)
     {
         // hapus neonatus
-        if (isset($posyandu->neonatuses)) {
+        if ($posyandu->neonatuses->isNotEmpty()) {
             $posyandu->neonatuses()->delete();
         }
-        if (isset($posyandu->anthropometries)) {
+        if ($posyandu->anthropometries->isNotEmpty()) {
             $posyandu->anthropometries()->delete();
         }
         $posyandu->delete();
     }
 
-    public function deletePermanently($posyandu)
+    public function forceDelete($posyandu)
     {
-        $posyandu = Posyandu::withTrashed()->find($posyandu);
+        $posyandu = Posyandu::withTrashed()
+            ->with(['neonatuses' => function($query) {
+                $query->withTrashed();
+            }, 'anthropometries' => function($query) {
+                $query->withTrashed();
+            },])->find($posyandu);
+
         // hapus permanen
-        if (isset($posyandu->neonatuses)) {
+        if ($posyandu->neonatuses->isNotEmpty()) {
             $posyandu->neonatuses()->forceDelete();
         }
-        if (isset($posyandu->anthropometries)) {
+        if ($posyandu->anthropometries->isNotEmpty()) {
             $posyandu->anthropometries()->forceDelete();
         }
-
         $posyandu->forceDelete();
     }
 
     public function restore($posyandu)
     {
-        $posyandu = Posyandu::withTrashed()->find($posyandu);
-        // cek apakah personnya sudah ada relasi dgn posyandu lainnya
+        $posyandu = Posyandu::withTrashed()
+            ->with(['neonatuses' => function($query) {
+                $query->withTrashed();
+            }, 'anthropometries' => function($query) {
+                $query->withTrashed();
+            },])->find($posyandu);
+
+        // batalkan jika person bernilai null (terhapus) atau sudah punya data posyandu lain. relasi one to one sehingga tdk boleh ada 2 posyandu pada 1 person
         $person = $posyandu->person;
         
-        if (isset($person->posyandu)) { // jika sudah berelasi dgn posyandu lainnya, batalkan
+        if ($person == null || $person->posyandu !== null) {
             return false;
         } else {
-            if (isset($posyandu->neonatuses)) {
+            if ($posyandu->neonatuses->isNotEmpty()) {
                 $posyandu->neonatuses()->restore();
             }
-            if (isset($posyandu->anthropometries)) {
+            if ($posyandu->anthropometries->isNotEmpty()) {
                 $posyandu->anthropometries()->restore();
             }
-            
             $posyandu->restore();
             return true;
         }

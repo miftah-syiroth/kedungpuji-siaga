@@ -18,6 +18,7 @@
                     <th class="px-2 py-3">Anggota KB</th>
                     <th class="px-2 py-3">Status</th>
                     <th class="px-2 py-3 text-left">Nama Suami</th>
+                    <th class="px-2 py-3">Waktu Dihapus</th>
                     <th class="px-2 py-3">Kembalikan</th>
                     <th class="px-2 py-3">Hapus Permanen</th>
                 </tr>
@@ -53,6 +54,9 @@
                         <a href="/people/{{ $couple->husband->id }}" class="font-normal capitalize text-blue-500 hover:text-blue-400 hover:underline">
                             {{ $couple->husband->name }}
                         </a>
+                    </td>
+                    <td class="px-2 py-1 text-sm text-center">
+                        {{ $couple->deleted_at->isoFormat('DD MMM YYYY HH:mm:ss') }}
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
                         <form action="/deleted/couples/{{ $couple->id }}/restore" method="post">

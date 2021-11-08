@@ -55,10 +55,10 @@ class Couple extends Model
         );
     }
 
-    public function scopeKeluargaBerencana($query, array $filters)
+    public function scopeKeluargaBerencana(Builder $query, array $filters)
     {
-        $query->when($filters['wife_name'] ?? false, function(Builder $query, $wife_name) {
-            return $query->whereHas('wife', function (Builder $query) use ($wife_name) {
+        $query->when($filters['wife_name'] ?? false, function($query, $wife_name) {
+            return $query->whereHas('wife', function ($query) use ($wife_name) {
                 $query->where('name', 'like', '%' .  $wife_name . '%');
             });
         });
@@ -69,8 +69,8 @@ class Couple extends Model
             )
         );
 
-        $query->when($filters['rw'] ?? false, function(Builder $query, $rw) {
-            return $query->whereHas('wife', function (Builder $query) use ($rw) {
+        $query->when($filters['rw'] ?? false, function($query, $rw) {
+            return $query->whereHas('wife', function ($query) use ($rw) {
                 $query->where('rw', $rw);
             });
         });
@@ -83,28 +83,24 @@ class Couple extends Model
             return $query->where('kb_service_id', $kb_service_id);
         });
 
-        $query->when($filters['year_periode'] ?? false, function(Builder $query, $year_periode) {
-            return $query->whereHas('keluargaBerencana', function (Builder $query) use ($year_periode) {
-                $query->where('year_periode', $year_periode);
-            });
-        }, function($query) {
-            return $query->whereHas('keluargaBerencana', function (Builder $query) {
-                $query->where('year_periode', Carbon::now()->year);
-            });
-        });
+        // $query->when($filters['year_periode'] ?? false, function($query, $year_periode) {
+        //     return $query->whereHas('keluargaBerencana', function ($query) use ($year_periode) {
+        //         $query->where('year_periode', $year_periode);
+        //     });
+        // });
     }
     
     // protected $with = ['kbService', 'wife', 'husband'];
     
-    public function monthlyReport($year, $month)
-    {
-        return $this->keluargaBerencana()->where('year_periode', $year)->where('month_periode', $month)->first();
-    }
+    // public function monthlyReport($year, $month)
+    // {
+    //     return $this->keluargaBerencana()->where('year_periode', $year)->where('month_periode', $month)->first();
+    // }
 
-    public function anualReport($year)
-    {
-        return $this->keluargaBerencana()->where('year_periode', $year)->get();
-    }
+    // public function anualReport($year)
+    // {
+    //     return $this->keluargaBerencana()->where('year_periode', $year)->get();
+    // }
 
     // START RELASI
 

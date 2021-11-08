@@ -29,7 +29,7 @@ class DeleteFamilyController extends Controller
         if ($is_success == true) {
             return redirect('/deleted/families')->with('message', 'Berhasil dikembalikan');
         } else {
-            return redirect('/deleted/families')->with('message', 'Kepala Keluarga memiliki keluarga lainnya');
+            return redirect('/deleted/families')->with('message', 'Kepala Keluarga sudah menjadi anggota sebuah keluarga atau sudah terhapus');
         }
     }
 

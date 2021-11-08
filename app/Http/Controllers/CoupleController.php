@@ -80,6 +80,7 @@ class CoupleController extends Controller
     {
         return view('couples.edit', [
             'couple' => $couple,
+            'cerai_statuses' => $this->coupleService->getCeraiStatuses(),
             'kb_services' => KbService::all(),
         ]);
     }

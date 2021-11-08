@@ -117,7 +117,7 @@ class PregnancyController extends Controller
      */
     public function destroy(Pregnancy $pregnancy)
     {
-        $this->pregnancyService->destroy($pregnancy);
+        $this->pregnancyService->softDelete($pregnancy);
         return redirect('/pregnancies');
     }
 }

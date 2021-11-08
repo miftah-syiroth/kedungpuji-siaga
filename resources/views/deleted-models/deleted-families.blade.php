@@ -17,6 +17,7 @@
                     <th class="px-2 py-3">RT/RW</th>
                     <th class="px-2 py-3">Nomor KK</th>
                     <th class="px-2 py-3">Jumlah Anggota</th>
+                    <th class="px-2 py-3">Waktu Dihapus</th>
                     <th class="px-2 py-3">Kembalikan</th>
                     <th class="px-2 py-3">Hapus Permanen</th>
                 </tr>
@@ -45,6 +46,9 @@
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
                         {{ $family->people->count() }}
+                    </td>
+                    <td class="px-2 py-1 text-sm text-center">
+                        {{ $family->deleted_at->isoFormat('DD MMM YYYY HH:mm:ss') }}
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
                         <form action="/deleted/families/{{ $family->id }}/restore" method="post">

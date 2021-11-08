@@ -66,7 +66,7 @@ class FamilyController extends Controller
     public function show(Family $family)
     {
         return view('families.show', [
-            'family' => $family,
+            'family' => $this->familyService->getFamily($family->id),
             'family_statuses' => FamilyStatus::whereNotIn('id', [1])->get(),
         ]);
     }

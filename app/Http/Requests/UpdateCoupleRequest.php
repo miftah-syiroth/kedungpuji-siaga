@@ -24,8 +24,8 @@ class UpdateCoupleRequest extends FormRequest
     public function rules()
     {
         return [
-            'suami_id' => ['sometimes'],
-            'istri_id' => ['sometimes'],
+            // 'suami_id' => ['sometimes'],
+            // 'istri_id' => ['sometimes'],
             'is_kb' => ['required', 'boolean'],
             'kb_service_id' => ['exclude_unless:is_kb,true', 'required', 'integer'],
         ];

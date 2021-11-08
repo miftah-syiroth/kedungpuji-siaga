@@ -110,62 +110,60 @@ class PersonService
 
     public function getDeletedPeople()
     {
-        return Person::onlyTrashed()->get();
+        return Person::onlyTrashed()
+            ->with(['mother' => function($query) {
+                $query->withTrashed();
+            }])->orderBy('deleted_at', 'desc')->get();
     }
 
     public function softDelete($person)
     {
-        // jika dia kepala keluarga, hapus semua anggota pada pivot table, lalu hapus keluarganya
-        if (isset($person->ledFamily)) {
-            $person->ledFamily->people()->detach();
+        if ($person->ledFamily !== null) {
+            $person->ledFamily->people()->detach(); // hapus semua row di tabel intermediate
             $person->ledFamily()->delete();
         }
 
-        // jika anggot sebuah keluarga, keluarkan dia dari keanggotaan
-        if ($person->family()->exists()) {
-            $family = $person->family()->first();
-            $family->people()->detach($person->id);
-        }
-
         // jika dia seorang istri (punya pasangan suami)
-        if (isset($person->husband)) {
-            if (isset($person->husband->keluargaBerencana)) {
+        if ($person->husband !== null) {
+            if ($person->husband->keluargaBerencana->isNotEmpty()) {
                 $person->husband->keluargaBerencana()->delete();
             }
             $person->husband()->delete();
         }
 
-        if (isset($person->wifes)) {
-            if (isset($person->wifes->keluargaBerencana)) {
-                $person->wifes->keluargaBerencana()->delete();
-            }
+        // jika dia suami
+        if ($person->wifes->isNotEmpty()) {
             
+            foreach ($person->wifes as $key => $wife) {
+                if ($wife->keluargaBerencana->isNotEmpty()) {
+                    $wife->keluargaBerencana()->delete();
+                }
+            }
             $person->wifes()->delete();
         }
 
         // jika memiliki kehamilan, hapus semua child relation dibawah kehamilan berupa kelas nifas, nifas, dan kelas ibu hamil
-        if (isset($person->pregnancies)) {
-
-            if (isset($person->pregnancies->puerperal)) {
-
-                if (isset($person->pregnancies->puerperal->puerperalClasses)) {
-                    $person->pregnancies->puerperal->puerperalClasses()->delete();
+        if ($person->pregnancies->isNotEmpty()) {
+            foreach ($person->pregnancies as $key => $pregnancy) {
+                if ($pregnancy->puerperal !== null) {
+                    if ($pregnancy->puerperal->puerperalClasses->isNotEmpty()) {
+                        $pregnancy->puerperal->puerperalClasses()->delete();
+                    }
+                    $pregnancy->puerperal()->delete();
                 }
 
-                $person->pregnancies->puerperal()->delete();
+                if ($pregnancy->prenatalClasses->isNotEmpty()) {
+                    $pregnancy->prenatalClasses()->delete();
+                }
             }
-            if (isset( $person->pregnancies->prenatalClasses)) {
-                $person->pregnancies->prenatalClasses()->delete();
-            }
-
             $person->pregnancies()->delete();
         }
 
-        if (isset($person->posyandu)) {
-            if (isset($person->posyandu->neonatuses)) {
+        if ($person->posyandu !== null) {
+            if ($person->posyandu->neonatuses->isNotEmpty()) {
                 $person->posyandu->neonatuses()->delete();
             }
-            if (isset($person->posyandu->anthropometries)) {
+            if ($person->posyandu->anthropometries->isNotEmpty()) {
                 $person->posyandu->anthropometries()->delete();
             }
             $person->posyandu()->delete();
@@ -173,55 +171,107 @@ class PersonService
 
         $person->delete();
     }
-
+    
+    /**
+     * forceDelete akan menghapus data individu dan semua relasi terkait secara permanen
+     *
+     * @param  mixed $person
+     * @return void
+     */
     public function forceDelete($person)
     {
-        $person = Person::withTrashed()->find($person);
+        $person = Person::withTrashed()
+            ->with(['ledFamily' => function($query) {
+                $query->withTrashed();
+            }, 'family' => function($query) {
+                $query->withTrashed();
+            }, 'husband'  => function($query) {
+                $query->withTrashed();
+            }, 'husband.keluargaBerencana' => function($query) {
+                $query->withTrashed();
+            }, 'wifes' => function($query) {
+                $query->withTrashed();
+            }, 'wifes.keluargaBerencana' => function($query) {
+                $query->withTrashed();
+            }, 'pregnancies' => function($query) {
+                $query->withTrashed();
+            }, 'pregnancies.prenatalClasses' => function($query) {
+                $query->withTrashed();
+            }, 'pregnancies.puerperal' => function($query) {
+                $query->withTrashed();
+            }, 'pregnancies.puerperal.puerperalClasses' => function($query) {
+                $query->withTrashed();
+            }, 'posyandu' => function($query) {
+                $query->withTrashed();
+            }, 'posyandu.neonatus' => function($query) {
+                $query->withTrashed();
+            }, 'posyandu.anthropometries' => function($query) {
+                $query->withTrashed();
+            }])->find($person);
+
+        // foreach ($person->pregnancies as $key => $pregnancy) {
+        //     dd($pregnancy->puerperal->babyConditions);
+        // }
+        // jika anggota sebuah keluarga, keluarkan dia dari keanggotaan
+        if ($person->family->isNotEmpty()) {
+            $family = $person->family->first();
+            $family->people()->detach($person->id);
+        }
 
         // jika dia kepala keluarga, hapus semua anggota pada pivot table, lalu hapus keluarganya
-        if (isset($person->ledFamily)) {
+        if ($person->ledFamily !== null) {
+            $person->ledFamily->people()->detach(); // hapus semua row di tabel intermediate
             $person->ledFamily()->forceDelete();
         }
 
         // jika dia seorang istri (punya pasangan suami)
-        if (isset($person->husband)) {
-            if (isset($person->husband->keluargaBerencana)) {
+        if ($person->husband !== null) {
+            if ($person->husband->keluargaBerencana->isNotEmpty()) {
                 $person->husband->keluargaBerencana()->forceDelete();
             }
             $person->husband()->forceDelete();
         }
 
-        if (isset($person->wifes)) {
-            if (isset($person->wifes->keluargaBerencana)) {
-                $person->wifes->keluargaBerencana()->forceDelete();
+        if ($person->wifes->isNotEmpty()) {
+            foreach ($person->wifes as $key => $wife) {
+                if ($wife->keluargaBerencana->isNotEmpty()) {
+                    $wife->keluargaBerencana()->forceDelete();
+                }
             }
-            
             $person->wifes()->forceDelete();
         }
 
         // jika memiliki kehamilan, hapus semua child relation dibawah kehamilan berupa kelas nifas, nifas, dan kelas ibu hamil
-        if (isset($person->pregnancies)) {
+        if ($person->pregnancies->isNotEmpty()) {
 
-            if (isset($person->pregnancies->puerperal)) {
+            foreach ($person->pregnancies as $key => $pregnancy) {
+                if ($pregnancy->puerperal !== null) {
 
-                if (isset($person->pregnancies->puerperal->puerperalClasses)) {
-                    $person->pregnancies->puerperal->puerperalClasses()->forceDelete();
+                    if ($pregnancy->puerperal->puerperalClasses->isNotEmpty()) {
+                        $pregnancy->puerperal->puerperalClasses()->forceDelete();
+                    }
+                    // hapus berbagai kondisi ibu dan bayi pasca nifas pd tabel pivot
+                    $pregnancy->puerperal->babyConditions()->detach();
+                    $pregnancy->puerperal->motherConditions()->detach();
+                    $pregnancy->puerperal->complications()->detach();
+
+                    $pregnancy->puerperal()->forceDelete();
                 }
 
-                $person->pregnancies->puerperal()->forceDelete();
-            }
-            if (isset( $person->pregnancies->prenatalClasses)) {
-                $person->pregnancies->prenatalClasses()->forceDelete();
-            }
+                if ($pregnancy->prenatalClasses->isNotEmpty()) {
+                    $pregnancy->prenatalClasses()->forceDelete();
+                }
 
+                $pregnancy->babyConditions()->detach();
+            }
             $person->pregnancies()->forceDelete();
         }
 
-        if (isset($person->posyandu)) {
-            if (isset($person->posyandu->neonatuses)) {
+        if ($person->posyandu !== null) {
+            if ($person->posyandu->neonatuses->isNotEmpty()) {
                 $person->posyandu->neonatuses()->forceDelete();
             }
-            if (isset($person->posyandu->anthropometries)) {
+            if ($person->posyandu->anthropometries->isNotEmpty()) {
                 $person->posyandu->anthropometries()->forceDelete();
             }
             $person->posyandu()->forceDelete();
@@ -229,41 +279,64 @@ class PersonService
 
         $person->forceDelete();
     }
-
+    
+    /**
+     * restore hanya akan merestore data penduduk saja, relasi dibawahnya tidak ikut serta restore. restore satu persatu
+     *
+     * @param  mixed $person
+     * @return void
+     */
     public function restore($person)
     {
         $person = Person::withTrashed()->find($person);
+        // $person = Person::withTrashed()
+        //     ->with([
+        //         'ledFamily' => function($query) {
+        //             $query->withTrashed();
+        //         }, 'husband.keluargaBerencana' => function($query) {
+        //             $query->withTrashed();
+        //         }, 'wifes.keluargaBerencana' => function($query) {
+        //             $query->withTrashed();
+        //         }, 'pregnancies.puerperal.puerperalClasses' => function($query) {
+        //             $query->withTrashed();
+        //         }, 'pregnancies.prenatalClasses' => function($query) {
+        //             $query->withTrashed();
+        //         },
+        //     ])->find($person);
 
+        #RELASI DENGAN KELUARGA
         // jika dia kepala keluarga, cek dulu 
-        if (isset($person->ledFamily)) {
-            $person->ledFamily()->restore();
-        }
+        // if (isset($person->ledFamily)) {
+        //     $person->ledFamily()->restore();
+        // }
 
+        # RELASI ISTRI DENGAN PASANGANNYA (SUAMI)
         // jika dia seorang istri (punya pasangan suami)
-        if (isset($person->husband)) {
-            if (isset($person->husband->keluargaBerencana)) {
-                $person->husband->keluargaBerencana()->restore();
-            }
-            $person->husband()->restore();
-        }
+        // if (isset($person->husband)) {
+        //     if (isset($person->husband->keluargaBerencana)) {
+        //         $person->husband()->keluargaBerencana()->restore();
+        //     }
+        //     $person->husband()->restore();
+        // }
 
+        # RELASI SUAMI DENGAN PASANGANNYA (ISTRI-ISTRI)
         // jika memiliki kehamilan, hapus semua child relation dibawah kehamilan berupa kelas nifas, nifas, dan kelas ibu hamil
-        if (isset($person->pregnancies)) {
+        // if (isset($person->pregnancies)) {
 
-            if (isset($person->pregnancies->puerperal)) {
+        //     if (isset($person->pregnancies->puerperal)) {
 
-                if (isset($person->pregnancies->puerperal->puerperalClasses)) {
-                    $person->pregnancies->puerperal->puerperalClasses()->restore();
-                }
+        //         if (isset($person->pregnancies->puerperal->puerperalClasses)) {
+        //             $person->pregnancies->puerperal->puerperalClasses()->restore();
+        //         }
 
-                $person->pregnancies->puerperal()->restore();
-            }
-            if (isset( $person->pregnancies->prenatalClasses)) {
-                $person->pregnancies->prenatalClasses()->restore();
-            }
+        //         $person->pregnancies->puerperal()->restore();
+        //     }
+        //     if (isset( $person->pregnancies->prenatalClasses)) {
+        //         $person->pregnancies->prenatalClasses()->restore();
+        //     }
 
-            $person->pregnancies()->restore();
-        }
+        //     $person->pregnancies()->restore();
+        // }
 
         $person->restore();
     }

@@ -18,6 +18,7 @@
                     <th class="px-2 py-3">L/P</th>
                     <th class="px-2 py-3">Umur</th>
                     <th class="px-2 py-3">Ibu Kandung</th>
+                    <th class="px-2 py-3">Waktu Dihapus</th>
                     <th class="px-2 py-3">Kembalikan</th>
                     <th class="px-2 py-3">Hapus Permanen</th>
                 </tr>
@@ -44,6 +45,9 @@
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
                         {{ $person->date_of_birth->age }}
+                    </td>
+                    <td class="px-2 py-1 text-sm text-center">
+                        {{ $person->deleted_at->isoFormat('DD MMM YYYY HH:mm:ss') }}
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
                         @isset($person->mother)

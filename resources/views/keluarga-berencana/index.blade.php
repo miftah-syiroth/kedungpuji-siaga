@@ -9,7 +9,7 @@
                 <div class="flex flex-row flex-wrap items-end">
                     <label class="block text-sm mx-2 my-2" for="name">
                         <span class="text-gray-700 dark:text-gray-400">Nama Istri</span>
-                        <input type="text" name="wife_name" id="wife_name" value="{{ request('wife_name') }}" class="block w-48 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                        <input type="text" name="wife_name" id="wife_name" value="{{ request('wife_name') ?? '' }}" class="block w-48 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
                     </label>
 
                     <label class="block text-sm mx-2 my-2" for="name">
@@ -25,8 +25,8 @@
                         </span>
                         <select name="is_kb" id="is_kb" class="block w-auto mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
                             <option selected disabled hidden>Pilih!</option>
-                            <option value="true">KB</option>
-                            <option value="false">Tidak KB</option>
+                            <option value="1">KB</option>
+                            <option value="0">Tidak KB</option>
                         </select>
                     </label>
 
@@ -44,7 +44,7 @@
 
                     <label class="block text-sm mx-2 my-2" for="name">
                         <span class="text-gray-700 dark:text-gray-400">Tahun</span>
-                        <input type="number" name="year_periode" id="year_periode" value="{{ request('year_periode') ?? '' }}" min="1" class="block w-24 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                        <input type="number" name="year_periode" id="year_periode" value="{{ request('year_periode') ?? 2021 }}" min="1" class="block w-24 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
                     </label>
 
                     <div class="mx-2 my-2 flex flex-wrap justify-between text-sm">
@@ -86,6 +86,7 @@
                         @foreach ($couple->keluargaBerencana as $kb)
                             @if ($kb->month_periode == $month->id)
                                 {{ $kb->kbStatus->code }}
+                                {{ $kb->year_periode }}
                                 @break
                             @endif
                         @endforeach
