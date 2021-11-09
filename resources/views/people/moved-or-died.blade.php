@@ -29,16 +29,9 @@
                         </div>
                     </label>
 
-                    <label class="block mx-2 my-2 text-sm">
-                        <span class="text-gray-700 dark:text-gray-400">
-                            Status Kawin
-                        </span>
-                        <select name="marital_status_id" id="marital_status_id" class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
-                            <option selected disabled hidden>Pilih!</option>
-                            @foreach ($marital_statuses as $status)
-                            <option value="{{ $status->id }}">{{ $status->status }}</option>
-                            @endforeach
-                        </select>
+                    <label class="block text-sm mx-2 my-2" for="name">
+                        <span class="text-gray-700 dark:text-gray-400">Tahun Mati</span>
+                        <input type="number" name="died_at" id="died_at" value="{{ request('died_at') ?? '' }}" min="1" class="block w-24 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
                     </label>
 
                     <label class="block text-sm mx-2 my-2" for="name">
@@ -48,7 +41,7 @@
 
                     <div class="mx-2 my-2 flex flex-wrap justify-between text-sm">
                         <button type="submit" class="bg-blue-500 dark:bg-gray-400 text-white dark:text-gray-800 py-1 px-3 rounded-md hover:bg-gray-700 dark:hover:bg-gray-300">Filter</button>
-                        <a href="/people" class="px-2 py-1 ml-8 rounded-md bg-gray-400 text-white dark:bg-gray-200 dark:text-gray-700 hover:bg-gray-600">clear</a>
+                        <a href="/people/move-or-die" class="px-2 py-1 ml-8 rounded-md bg-gray-400 text-white dark:bg-gray-200 dark:text-gray-700 hover:bg-gray-600">clear</a>
                     </div>
                 </div>
             </form>

@@ -65,6 +65,21 @@
                     </label>
                 </div>
 
+                <div class="flex flex-wrap">
+                    <!-- Kondisi ibu saat lahir -->
+                    <div class="mx-1 w-auto mt-4 text-sm">
+                        <span class="text-gray-700 dark:text-gray-400">Kondisi Ibu</span>
+                        <div class="grid grid-rows-1 grid-flow-col gap-2 mt-2">
+                            @foreach ($mother_conditions as $condition)
+                            <label class="inline-flex items-center mx-2">
+                                <input class="border" type="radio" name="mother_condition_id" value="{{ $condition->id }}" />
+                                <span class="ml-2 text-sm">{{ $condition->condition }}</span>
+                            </label> 
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Informasi Tambahan -->
                 <label class="block mt-4 text-sm">
                     <span class="text-gray-700 dark:text-gray-400">Keterangan Tambahan</span>
@@ -119,7 +134,7 @@
                     <!-- Kondisi bayi saat lahir -->
                     <div class="mx-1 w-auto mt-4 text-sm">
                         <span class="text-gray-700 dark:text-gray-400">Kondisi Bayi</span>
-                        <div class="grid grid-cols-2 gap-2 mt-2">
+                        <div class="grid grid-rows-3 grid-flow-col gap-2 mt-2">
                             @foreach ($baby_conditions as $condition)
                             <label class="inline-flex items-center mx-2">
                                 <input class="border" type="checkbox" name="baby_condition_id[]" value="{{ $condition->id }}" />

@@ -78,7 +78,7 @@ class PuerperalController extends Controller
         return view('puerperals.edit', [
             'puerperal' => $puerperal,
             'mother_conditions' => MotherCondition::all(),
-            'baby_conditions' => BabyCondition::all(),
+            'baby_conditions' => BabyCondition::whereIn('id', [7, 8, 9, 10])->get(),
             'complications' => PuerperalComplication::all(),
         ]);
     }
@@ -90,9 +90,9 @@ class PuerperalController extends Controller
      * @param  \App\Models\Puerperal  $puerperal
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePuerperalRequest $request, Puerperal $puerperal, PuerperalService $service)
+    public function update(UpdatePuerperalRequest $request, Puerperal $puerperal)
     {
-        $service->update($request, $puerperal);
+        $this->puerperalService->update($request, $puerperal);
         return redirect('/puerperals/' . $puerperal->id);
     }
 

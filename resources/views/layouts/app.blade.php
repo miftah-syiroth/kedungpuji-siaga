@@ -13,6 +13,10 @@
         <script src="{{ asset('windmill/public/assets/js/charts-lines.js') }}" defer></script>
         <script src="{{ asset('windmill/public/assets/js/charts-pie.js') }}" defer></script>
 
+        {{-- select2 jquery library --}}
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
         @livewireStyles
     </head>
     <body>

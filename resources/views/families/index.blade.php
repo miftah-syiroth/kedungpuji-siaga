@@ -1,13 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Semua Keluarga di Kedungpuji') }}
+        {{ __('Semua Keluarga') }}
     </x-slot>
 
     <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
         {{-- form pencarian --}}
         <div class="flex flex-wrap justify-between items-center border rounded-md border-gray-300">
             <form action="/families" method="GET">
-                <div class="flex flex-row flex-wrap items-end">
+                <div class="flex flex-row items-end">
                     <label class="block mx-2 my-2 text-sm">
                         <span class="text-gray-700 dark:text-gray-400">
                             Keluarga Sejahtera
@@ -22,7 +22,7 @@
 
                     <label class="block text-sm mx-2 my-2" for="name">
                         <span class="text-gray-700 dark:text-gray-400">RT/RW</span>
-                        <div class="flex flex-row flex-wrap">
+                        <div class="flex flex-row">
                             <input type="number" name="rt" id="rt" min="1" max="7" class="block w-16 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
                             <input type="number" name="rw" id="rw" min="1" max="3" class="block w-16 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
                         </div>
@@ -38,7 +38,7 @@
                         <input type="text" name="nomor_kk" id="nomor_kk" value="{{ request('nomor_kk') }}" class="block w-48 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
                     </label>
 
-                    <div class="mx-2 my-2 flex flex-wrap justify-between text-sm">
+                    <div class="mx-2 my-2 flex justify-between text-sm">
                         <button type="submit" class="bg-blue-500 dark:bg-gray-400 text-white dark:text-gray-800 py-1 px-3 rounded-md hover:bg-gray-700 dark:hover:bg-gray-300">Filter</button>
                         <a href="/families" class="px-2 py-1 ml-8 rounded-md bg-gray-400 text-white dark:bg-gray-200 dark:text-gray-700 hover:bg-gray-600">clear</a>
                     </div>

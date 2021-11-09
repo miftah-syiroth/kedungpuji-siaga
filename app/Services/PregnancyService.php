@@ -100,6 +100,7 @@ class PregnancyService
                 'childbirth_attendant' => $request->childbirth_attendant,
                 'childbirth_method' => $request->childbirth_method,
                 'post_partum_condition' => $request->post_partum_condition,
+                'mother_condition_id' => $request->mother_condition_id,
                 'mother_additional_information' => $request->mother_additional_information,
                 'childbirth_order' => $request->childbirth_order,
                 'baby_weight' => $request->baby_weight,
@@ -108,7 +109,7 @@ class PregnancyService
                 'sex_id' => $request->sex_id,
                 'baby_additional_information' => $request->baby_additional_information,
             ]);
-    
+
             if ($request->has('baby_condition_id')) {
                 $pregnancy->babyConditions()->sync($request->baby_condition_id);
             }

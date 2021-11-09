@@ -42,16 +42,20 @@ class Pregnancy extends Model
             )
         );
 
-        $query->when($filters['sex_id'] ?? false, function($query, $sex_id) {
-            return $query->where('sex_id', $sex_id);
+        $query->when($filters['month_hpht'] ?? false, function($query, $month_hpht) {
+            return $query->whereMonth('hpht', $month_hpht);
         });
 
-        $query->when($filters['hpht'] ?? false, function($query, $hpht) {
-            return $query->whereYear('hpht', $hpht);
+        $query->when($filters['year_hpht'] ?? false, function($query, $year_hpht) {
+            return $query->whereYear('hpht', $year_hpht);
         });
 
-        $query->when($filters['childbirth_date'] ?? false, function($query, $childbirth_date) {
-            return $query->orWhereYear('childbirth_date', $childbirth_date);
+        $query->when($filters['month_childbirth'] ?? false, function($query, $month_childbirth) {
+            return $query->whereMonth('childbirth_date', $month_childbirth);
+        });
+
+        $query->when($filters['year_childbirth'] ?? false, function($query, $year_childbirth) {
+            return $query->whereyear('childbirth_date', $year_childbirth);
         });
     }
 
@@ -100,6 +104,12 @@ class Pregnancy extends Model
     public function babyConditions()
     {
         return $this->belongsToMany(BabyCondition::class, 'pregnancy_has_baby_conditions', 'pregnancy_id', 'baby_condition_id');
+    }
+
+    // relasi many to many
+    public function motherCondition()
+    {
+        return $this->belongsTo(MotherCondition::class, 'mother_condition_id');
     }
 
     // one to one dengan nifas

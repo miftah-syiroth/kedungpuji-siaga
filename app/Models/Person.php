@@ -49,6 +49,10 @@ class Person extends Model
             return $query->whereYear('date_of_birth', $year_of_birth);
         });
 
+        $query->when($filters['died_at'] ?? false, function($query, $died_at) {
+            return $query->whereYear('died_at', $died_at);
+        });
+
         $query->when($filters['marital_status_id'] ?? false, function($query, $marital_status_id) {
             return $query->where('marital_status_id', $marital_status_id);
         });

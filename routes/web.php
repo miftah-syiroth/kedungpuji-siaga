@@ -49,7 +49,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/people', [PersonController::class, 'index'])->name('people.index');
     # untuk menampilkan warga yang pindah atau mati INVOKEABLES
     Route::get('/people/move-or-die', DiedMovedPeople::class)->name('people.dead');
-    // Route::view('/people/move-or-die', 'people.hidden-people-table')->name('people.index.hidden'); 
     # rount untuk menampilkan halaman input warga baru
     Route::get('/people/create', [PersonController::class, 'create'])->name('people.create');
     # Route untuk menyimpan request input ke database

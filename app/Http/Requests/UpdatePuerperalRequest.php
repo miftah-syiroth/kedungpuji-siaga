@@ -24,7 +24,7 @@ class UpdatePuerperalRequest extends FormRequest
     public function rules()
     {
         return [
-            'mother_condition_id' => ['required', 'array'],
+            'mother_condition_id' => ['required'],
             'puerperal_complication_id' => ['sometimes', 'array'],
             'baby_condition_id' => ['required', 'array'],
             'conclusion' => ['required', 'string'],

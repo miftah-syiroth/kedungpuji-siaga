@@ -18,7 +18,7 @@
                     <div class="grid grid-cols-1 gap-2 mt-4">
                         @foreach ($mother_conditions as $condition)
                         <label class="inline-flex items-center mx-2">
-                            <input class="borderx" type="checkbox" name="mother_condition_id[]" value="{{ $condition->id }}" />
+                            <input class="borderx" type="radio" name="mother_condition_id" value="{{ $condition->id }}" />
                             <span class="ml-2 text-sm">{{ $condition->condition }}</span>
                         </label> 
                         @endforeach
@@ -41,7 +41,7 @@
                 {{-- KOndisi Bayi --}}
                 <div class="mx-4 w-auto mt-4 text-sm">
                     <span class="text-gray-700 dark:text-gray-400 font-semibold">Kondisi Bayi :</span>
-                    <div class="grid grid-cols-2 gap-2 mt-4">
+                    <div class="grid gap-2 mt-4">
                         @foreach ($baby_conditions as $condition)
                         <label class="inline-flex items-center mx-2">
                             <input class="border" type="checkbox" name="baby_condition_id[]" value="{{ $condition->id }}" />

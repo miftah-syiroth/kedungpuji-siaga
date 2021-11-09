@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('List Kelahiran') }}
+        {{ __('Daftar Kelahiran') }}
     </x-slot>
 
     <div class="px-4 py-2 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">

@@ -13,7 +13,7 @@
             <!-- Name -->
             <label class="block text-sm mr-2 w-1/3" for="name">
                 <span class="text-gray-700 dark:text-gray-400">Nama Lengkap</span>
-                <input type="text" name="name" id="name" value="{{ $user->name }}" required class="block border-2 border-gray-400 w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Nama Lengkap"/>
+                <input type="text" name="name" id="name" value="{{ $user->name }}" class="block border-2 border-gray-400 w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Nama Lengkap"/>
             </label>
 
             <div class="flex flex-wrap mt-4">
@@ -27,7 +27,7 @@
                 <!-- Email Address -->
                 <label class="block text-sm mr-2" for="email">
                     <span class="text-gray-700 dark:text-gray-400">email Number</span>
-                    <input type="email" name="email" id="email" value="{{ $user->email }}" required class="block border-2 border-gray-400 w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Nama Lengkap"/>
+                    <input type="email" name="email" id="email" value="{{ $user->email }}" class="block border-2 border-gray-400 w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Nama Lengkap"/>
                 </label>
             </div>
             

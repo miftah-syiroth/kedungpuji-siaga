@@ -9,9 +9,9 @@ class PuerperalService
     {
         $puerperal->update([
             'conclusion' => $request->conclusion,
+            'mother_condition_id' => $request->mother_condition_id,
         ]);
 
-        $puerperal->motherConditions()->sync($request->mother_condition_id);
         $puerperal->complications()->sync($request->puerperal_complication_id);
         $puerperal->babyConditions()->sync($request->baby_condition_id);
     }

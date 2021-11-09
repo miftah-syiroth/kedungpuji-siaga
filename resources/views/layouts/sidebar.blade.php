@@ -68,16 +68,16 @@
                         x-transition:leave-end="opacity-0 max-h-0"
                         class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
                         aria-label="submenu">
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('people.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/people">Penduduk Kedungpuji</a>
                         </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('people.create') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/people/create">Tambah Penduduk</a>
                         </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('people.childbirths.*') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/childbirths">Tambah Kelahiran</a>
                         </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('people.dead') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="{{ route('people.dead') }}">Pindah atau Mati</a>
                         </li>
                     </ul>
@@ -127,19 +127,19 @@
                         x-transition:leave-end="opacity-0 max-h-0"
                         class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
                         aria-label="submenu">
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('kb.families.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/families">Semua Keluarga</a>
                         </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('kb.couples.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/couples">Semua Pasangan</a>
                         </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('kb.families.create') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/families/create">Tambah Keluarga</a>
                         </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('kb.couples.create') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/couples/create">Tambah Pasangan</a>
                         </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('kb.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/keluarga-berencana">Tabel KB</a>
                         </li>
                     </ul>
@@ -189,16 +189,16 @@
                         x-transition:leave-end="opacity-0 max-h-0"
                         class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
                         aria-label="submenu">
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('pregnancies.ibu-hamil') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/ibu-hamil">Ibu Hamil</a>
                         </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('pregnancies.ibu-nifas') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/ibu-nifas">Ibu Nifas</a>
                         </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('pregnancies.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/pregnancies">Semua Kehamilan</a>
                         </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('pregnancies.create') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/pregnancies/create">Tambah Kehamilan</a>
                         </li>
                     </ul>
@@ -248,7 +248,7 @@
                         x-transition:leave-end="opacity-0 max-h-0"
                         class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
                         aria-label="submenu">
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('posyandu.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/posyandu">Balita</a>
                         </li>
                     </ul>
@@ -318,22 +318,22 @@
                         x-transition:leave-end="opacity-0 max-h-0"
                         class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
                         aria-label="submenu">
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('deleted.people.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/deleted/people">Penduduk</a>
                         </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('deleted.families.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/deleted/families">Keluarga</a>
                         </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('deleted.couples.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/deleted/couples">Pasangan</a>
                         </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('deleted.pregnancies.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/deleted/pregnancies">Kehamilan</a>
                         </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('deleted.puerperals.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/deleted/puerperals">Data Nifas</a>
                         </li>
-                        <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                        <li class="{{ request()->routeIs('deleted.puerperals.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/deleted/posyandu">Posyandu Balita</a>
                         </li>
                     </ul>

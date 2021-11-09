@@ -12,6 +12,23 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <style>
+            .svg-icon {
+                width: 1em;
+                height: 1em;
+            }
+
+            .svg-icon path,
+            .svg-icon polygon,
+            .svg-icon rect {
+                fill: #4691f6;
+            }
+
+            .svg-icon circle {
+                stroke: #4691f6;
+                stroke-width: 1;
+            }
+        </style>
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>

@@ -12,9 +12,15 @@ class MotherCondition extends Model
     protected $table = 'mother_conditions';
     protected $guarded = [];
 
+    // many to many
+    public function pregnancies()
+    {
+        return $this->hasMany(Pregnancy::class, 'mother_condition_id');
+    }
+
     // many to many puerperal
     public function puerperals()
     {
-        return $this->belongsToMany(Puerperal::class, 'puerperal_has_mother_conditions', 'mother_condition_id', 'puerperal_id');
+        return $this->hasMany(Puerperal::class, 'mother_condition_id');
     }
 }

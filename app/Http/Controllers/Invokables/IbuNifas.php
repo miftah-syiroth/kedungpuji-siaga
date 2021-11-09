@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Invokables;
 
 use App\Http\Controllers\Controller;
+use App\Models\Month;
 use App\Models\Sex;
 use App\Services\PregnancyService;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class IbuNifas extends Controller
         $filters = request()->all();
         return view('pregnancies.ibu-nifas', [
             'pregnancies' => $this->pregnancyService->getIbuNifas($filters),
-            'sexes' => Sex::all(),
+            'months' => Month::all(),
         ]);
     }
 }

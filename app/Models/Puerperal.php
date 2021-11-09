@@ -28,9 +28,9 @@ class Puerperal extends Model
     }
 
     // many to many mother condition
-    public function motherConditions()
+    public function motherCondition()
     {
-        return $this->belongsToMany(MotherCondition::class, 'puerperal_has_mother_conditions', 'puerperal_id', 'mother_condition_id');
+        return $this->belongsTo(MotherCondition::class, 'mother_condition_id');
     }
 
     // many to many komplikasi ibu

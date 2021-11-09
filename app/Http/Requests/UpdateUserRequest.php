@@ -37,7 +37,7 @@ class UpdateUserRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['string', 'nullable', 'email', 'max:255'],
             'phone' => ['required', 'string'],
-            'password' => ['sometimes', Rules\Password::defaults()],
+            'password' => ['sometimes', 'confirmed', Rules\Password::defaults()],
             'role' => [$roleRule, 'string'],
         ];
     }

@@ -6,6 +6,8 @@ use App\Http\Requests\StoreNewPregnancyRequest;
 use App\Http\Requests\StorePregnancyRequest;
 use App\Http\Requests\UpdatePregnancyRequest;
 use App\Models\BabyCondition;
+use App\Models\Month;
+use App\Models\MotherCondition;
 use App\Models\Person;
 use App\Models\Pregnancy;
 use App\Models\Sex;
@@ -29,8 +31,8 @@ class PregnancyController extends Controller
     {
         $filters = request()->all();
         return view('pregnancies.index', [
+            'months' => Month::all(),
             'pregnancies' => $this->pregnancyService->getAllPregnancies($filters),
-            'sexes' => Sex::all(),
         ]);
     }
 
@@ -87,7 +89,8 @@ class PregnancyController extends Controller
         return view('pregnancies.edit', [
             'pregnancy' => $pregnancy,
             'sexes' => Sex::all(),
-            'baby_conditions' => BabyCondition::all(),
+            'mother_conditions' => MotherCondition::all(),
+            'baby_conditions' => BabyCondition::whereNotIn('id', [9, 10])->get(),
         ]);
     }
 

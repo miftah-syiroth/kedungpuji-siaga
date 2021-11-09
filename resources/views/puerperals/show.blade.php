@@ -22,9 +22,7 @@
                         Kondisi Ibu
                     </dt>
                     <dd class="mt-1 text-sm sm:mt-0 col-span-3">
-                        : @foreach ($puerperal->motherConditions as $condition)
-                            {{ $condition->condition }}, 
-                        @endforeach
+                        : {{ $puerperal->motherCondition->condition ?? '-' }}
                     </dd>
                 </div>
 

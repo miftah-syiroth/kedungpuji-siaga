@@ -38,13 +38,14 @@ class UpdatePregnancyRequest extends FormRequest
             'childbirth_attendant' => [$childbirth_rule,],
             'childbirth_method' => [$childbirth_rule,],
             'post_partum_condition' => [$childbirth_rule,],
+            'mother_condition_id' => [$childbirth_rule],
             'mother_additional_information' => ['sometimes'],
             'childbirth_order' => [$childbirth_rule,],
             'baby_weight' => [$childbirth_rule],
             'baby_lenght' => [$childbirth_rule],
             'baby_head_circumference' => [$childbirth_rule],
             'sex_id' => [$childbirth_rule,],
-            'baby_condition_id' => ['sometimes', 'array'],
+            'baby_condition_id' => [$childbirth_rule, 'array'],
             'baby_additional_information' => ['sometimes'],
         ];
     }
