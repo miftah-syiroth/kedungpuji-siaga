@@ -50,9 +50,20 @@ class PersonService
 
     public function store($request)
     {
+        // isi dari father/mother_id pd request adalah nik, supaya ringkas diberi name father_id
         $atttributes = $request->all();
+
+        if ($request->filled('father_id')) {
+            $atttributes['father_id'] = Person::where('nik', $request->father_id)->value('id');
+        }
+
+        if ($request->filled('mother_id')) {
+            $atttributes['mother_id'] = Person::where('nik', $request->mother_id)->value('id');
+        }
+
         $atttributes['village_id'] = 1;
         $atttributes['is_alive'] = true;
+
         return Person::create($atttributes);
     }
 
@@ -64,12 +75,14 @@ class PersonService
             $attributes['died_at'] = null;
         }
 
-        if ($request->has('mother_id')) {
-            $attributes['mother_id'] = $request->mother_id;
+        if ($request->filled('father_id')) {
+            $father = Person::where('nik', $request->father_id)->first();
+            $attributes['father_id'] = $father->id;
         }
 
-        if ($request->has('father_id')) {
-            $attributes['father_id'] = $request->father_id;
+        if ($request->filled('mother_id')) {
+            $mother = Person::where('nik', $request->mother_id)->first();
+            $atttributes['mother_id'] = $mother->id;
         }
 
         $person->update($attributes);
@@ -155,6 +168,10 @@ class PersonService
                 if ($pregnancy->prenatalClasses->isNotEmpty()) {
                     $pregnancy->prenatalClasses()->delete();
                 }
+
+                if ($pregnancy->childbirths->isNotEmpty()) {
+                    $pregnancy->childbirths()->delete();
+                }
             }
             $person->pregnancies()->delete();
         }
@@ -197,13 +214,15 @@ class PersonService
                 $query->withTrashed();
             }, 'pregnancies.prenatalClasses' => function($query) {
                 $query->withTrashed();
+            }, 'pregnancies.childbirths' => function($query) {
+                $query->withTrashed();
             }, 'pregnancies.puerperal' => function($query) {
                 $query->withTrashed();
             }, 'pregnancies.puerperal.puerperalClasses' => function($query) {
                 $query->withTrashed();
             }, 'posyandu' => function($query) {
                 $query->withTrashed();
-            }, 'posyandu.neonatus' => function($query) {
+            }, 'posyandu.neonatuses' => function($query) {
                 $query->withTrashed();
             }, 'posyandu.anthropometries' => function($query) {
                 $query->withTrashed();
@@ -252,7 +271,6 @@ class PersonService
                     }
                     // hapus berbagai kondisi ibu dan bayi pasca nifas pd tabel pivot
                     $pregnancy->puerperal->babyConditions()->detach();
-                    $pregnancy->puerperal->motherConditions()->detach();
                     $pregnancy->puerperal->complications()->detach();
 
                     $pregnancy->puerperal()->forceDelete();
@@ -260,6 +278,13 @@ class PersonService
 
                 if ($pregnancy->prenatalClasses->isNotEmpty()) {
                     $pregnancy->prenatalClasses()->forceDelete();
+                }
+
+                if ($pregnancy->childbirths->isNotEmpty()) {
+                    foreach ($pregnancy->childbirths as $key => $childbirth) {
+                        $childbirth->babyConditions()->detach(); // tabel kondisi bayi pasca dilahirkan
+                    }
+                    $pregnancy->childbirths()->forceDelete();
                 }
 
                 $pregnancy->babyConditions()->detach();

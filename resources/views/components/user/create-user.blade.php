@@ -7,7 +7,7 @@
             <!-- Name -->
             <label class="block text-sm mr-2" for="name">
                 <span class="text-gray-700 dark:text-gray-400">Nama Lengkap</span>
-                <input type="text" name="name" id="name" value="{{ old('name') }}" required class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Nama Lengkap"/>
+                <input type="text" name="name" id="name" value="{{ old('name') }}" required class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input border-2 border-gray-300" placeholder="Nama Lengkap"/>
             </label>
         </div>
 
@@ -16,13 +16,13 @@
             <!-- Phone Number -->
             <label class="block text-sm mr-2" for="phone">
                 <span class="text-gray-700 dark:text-gray-400">Phone Number</span>
-                <input type="tel" name="phone" id="phone" placeholder="whatsapp" value="{{ old('phone') }}" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+                <input type="tel" name="phone" id="phone" placeholder="whatsapp" value="{{ old('phone') }}" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input border-2 border-gray-300">
             </label>
 
                 <!-- Email Address -->
             <label class="block text-sm mr-2" for="email">
                 <span class="text-gray-700 dark:text-gray-400">Alamat Email</span>
-                <input type="email" name="email" id="email" value="{{ old('email') }}" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="kosongkan jika tidak punya">
+                <input type="email" name="email" id="email" value="{{ old('email') }}" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input border-2 border-gray-300" placeholder="kosongkan jika tidak punya">
             </label>
         </div>
         
@@ -30,13 +30,13 @@
             <!-- Password -->
             <label class="block text-sm mr-2" for="password">
                 <x-label for="password" :value="__('Password')" class="text-gray-700 dark:text-gray-400" />
-                <x-input id="password" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" type="password" name="password" required autocomplete="new-password" />
+                <x-input id="password" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input border-2 border-gray-300" type="password" name="password" required autocomplete="new-password" />
             </label>
 
             <!-- Confirm Password -->
             <label class="block text-sm mr-2" for="password_confirmation">
                 <x-label for="password_confirmation" :value="__('Confirm Password')" class="text-gray-700 dark:text-gray-400" />
-                <x-input id="password_confirmation" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" type="password" name="password_confirmation" required />
+                <x-input id="password_confirmation" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input border-2 border-gray-300" type="password" name="password_confirmation" required />
             </label>
         </div>
         

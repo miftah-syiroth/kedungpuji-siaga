@@ -21,6 +21,7 @@ class PersonController extends Controller
     public function __construct(PersonService $service)
     {
         $this->personService = $service;
+        $this->middleware(['permission:hapus penduduk'])->only('destroy');
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatePregnancyRequest;
 use App\Models\BabyCondition;
 use App\Models\Month;
 use App\Models\MotherCondition;
+use App\Models\Parturition;
 use App\Models\Person;
 use App\Models\Pregnancy;
 use App\Models\Sex;
@@ -20,6 +21,7 @@ class PregnancyController extends Controller
     public function __construct(PregnancyService $service)
     {
         $this->pregnancyService = $service;
+        $this->middleware(['permission:hapus kehamilan'])->only('destroy');
     }
 
     /**
@@ -32,7 +34,10 @@ class PregnancyController extends Controller
         $filters = request()->all();
         return view('pregnancies.index', [
             'months' => Month::all(),
+            'mother_conditions' => MotherCondition::all(),
+            'parturitions' => Parturition::all(),
             'pregnancies' => $this->pregnancyService->getAllPregnancies($filters),
+            'filters' => $filters,
         ]);
     }
 
@@ -88,9 +93,7 @@ class PregnancyController extends Controller
     {
         return view('pregnancies.edit', [
             'pregnancy' => $pregnancy,
-            'sexes' => Sex::all(),
             'mother_conditions' => MotherCondition::all(),
-            'baby_conditions' => BabyCondition::whereNotIn('id', [9, 10])->get(),
         ]);
     }
 
@@ -103,13 +106,9 @@ class PregnancyController extends Controller
      */
     public function update(UpdatePregnancyRequest $request, Pregnancy $pregnancy)
     {
-        $is_success = $this->pregnancyService->update($request, $pregnancy);
+        $this->pregnancyService->update($request, $pregnancy);
 
-        if ($is_success == true) {
-            return redirect('/pregnancies/' . $pregnancy->id);
-        } else {
-            return redirect()->back()->with('message', 'masukkan batas waktu persalinan dengan benar!');
-        }        
+        return redirect('/pregnancies/' . $pregnancy->id);
     }
 
     /**

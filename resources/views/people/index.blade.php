@@ -13,7 +13,7 @@
                         <span class="text-gray-700 dark:text-gray-400">
                             Jenis Kelamin
                         </span>
-                        <select name="sex_id" id="sex_id" class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
+                        <select name="sex_id" id="sex_id" class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray border border-gray-400">
                             <option selected disabled hidden>Pilih!</option>
                             @foreach ($sexes as $sex)
                             <option value="{{ $sex->id }}">{{ $sex->sex }}</option>
@@ -24,8 +24,8 @@
                     <label class="block text-sm mx-2 my-2" for="name">
                         <span class="text-gray-700 dark:text-gray-400">RT/RW</span>
                         <div class="flex flex-row flex-wrap">
-                            <input type="number" name="rt" id="rt" min="1" max="7" class="block w-16 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
-                            <input type="number" name="rw" id="rw" min="1" max="3" class="block w-16 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                            <input type="number" name="rt" id="rt" min="1" max="7" class="block w-16 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input border-gray-400"/>
+                            <input type="number" name="rw" id="rw" min="1" max="3" class="block w-16 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input border-gray-400"/>
                         </div>
                     </label>
 
@@ -33,7 +33,7 @@
                         <span class="text-gray-700 dark:text-gray-400">
                             Status Kawin
                         </span>
-                        <select name="marital_status_id" id="marital_status_id" class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
+                        <select name="marital_status_id" id="marital_status_id" class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray border-gray-400">
                             <option selected disabled hidden>Pilih!</option>
                             @foreach ($marital_statuses as $status)
                             <option value="{{ $status->id }}">{{ $status->status }}</option>
@@ -43,7 +43,7 @@
 
                     <label class="block text-sm mx-2 my-2" for="name">
                         <span class="text-gray-700 dark:text-gray-400">Nama Lengkap</span>
-                        <input type="text" name="name" id="name" value="{{ request('name') }}" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Nama Lengkap"/>
+                        <input type="text" name="name" id="name" value="{{ request('name') }}" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input border-gray-400" placeholder="Nama Lengkap"/>
                     </label>
 
                     <div class="mx-2 my-2 flex flex-wrap justify-between text-sm">

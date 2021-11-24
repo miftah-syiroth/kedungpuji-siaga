@@ -37,8 +37,8 @@ class StorePersonRequest extends FormRequest
             'marital_status_id' => ['required', 'integer'],
             'is_cacat' => ['required', 'boolean'], // perhatikan
             'disability_id' => ['exclude_unless:is_cacat,true', 'required', 'integer'],
-            'mother_id' => ['sometimes', 'integer'],
-            'father_id' => ['sometimes', 'integer'],
+            'mother_id' => ['nullable', 'numeric', 'exists:people,nik'],
+            'father_id' => ['nullable', 'numeric', 'exists:people,nik'],
         ];
     }
 }

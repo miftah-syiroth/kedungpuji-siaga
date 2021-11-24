@@ -34,11 +34,6 @@ class PrenatalClassController extends Controller
      */
     public function create(Pregnancy $pregnancy, $month)
     {
-        // cek disini apakah tgl persalinan udh diisi atau udh hamil, maka cegah input laporan baru
-        // if ($pregnancy->childbirth_date != null) {
-        //     return redirect('/pregnancies/' . $pregnancy->id);
-        // } 
-
         // tidak boleh input untuk masa depan
         if ($month > $pregnancy->hpht->diffInMonths(now()) + 1) {
             return redirect('/pregnancies/' . $pregnancy->id);

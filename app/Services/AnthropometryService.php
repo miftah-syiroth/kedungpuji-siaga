@@ -166,7 +166,27 @@ class AnthropometryService
     public function weightForHeightCategory($request, $posyandu)
     {
         $periode = $posyandu->person->date_of_birth->age < 2 ? 1 : 2; // cek lebih dari 2 th atau belum
-        $height = floor($request->height * 2) / 2; // pembulatan ke half integer terdekat
+        $height = floor($request->height * 2) / 2; // pembulatan ke half integer kebawah, jika 46.89 maka jd 46.5
+
+        // setiap periode terdapat batas minimal dan maksimal, jika kurang atau lebih maka nilai standart ga ketemu, jd cukupi saja sampai di kode ini
+        if ($periode == 1) {
+            if ($height < 45) {
+                return 1;
+            }
+
+            if ($height > 110) {
+                return 4;
+            }
+        } elseif ($periode == 2) {
+            if ($height < 65) {
+                return 1;
+            }
+
+            if ($height > 120) {
+                return 4;
+            }
+        }
+        
 
         // jenis kelamin menentukan baris tabel yg akan diambil
         if ($posyandu->person->sex_id == 1) { // laki2

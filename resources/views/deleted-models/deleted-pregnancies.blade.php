@@ -32,14 +32,14 @@
                                 {{ $key + 1 . '.' }}
                             </div>
                             <div>
-                                <a href="/people/{{ $pregnancy->mother->id }}" class="font-normal capitalize text-blue-500 hover:text-blue-400 hover:underline">
-                                    {{ $pregnancy->mother->name }}
+                                <a href="/people/{{ $pregnancy->person->id }}" class="font-normal capitalize text-blue-500 hover:text-blue-400 hover:underline">
+                                    {{ $pregnancy->person->name }}
                                 </a>
                             </div>
                         </div>
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
-                        {{ $pregnancy->mother->date_of_birth->age }} tahun
+                        {{ $pregnancy->person->date_of_birth->age }} tahun
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
                         {{ $pregnancy->hpht->isoFormat('DD MMM YYYY') }}

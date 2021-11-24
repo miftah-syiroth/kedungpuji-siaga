@@ -13,7 +13,7 @@
             <!-- Name -->
             <label class="block text-sm mr-2 w-1/3" for="name">
                 <span class="text-gray-700 dark:text-gray-400">Nama Lengkap</span>
-                <input type="text" name="name" id="name" value="{{ $user->name }}" class="block border-2 border-gray-400 w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Nama Lengkap"/>
+                <input type="text" name="name" id="name" value="{{ $user->name }}" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input border-2 border-gray-300" placeholder="Nama Lengkap"/>
             </label>
 
             <div class="flex flex-wrap mt-4">
@@ -21,13 +21,13 @@
                 <!-- Phone Number -->
                 <label class="block text-sm mr-2" for="phone">
                     <span class="text-gray-700 dark:text-gray-400">Phone Number</span>
-                    <input type="tel" name="phone" id="phone" value="{{ $user->phone }}" required class="block border-2 border-gray-400 w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Nama Lengkap"/>
+                    <input type="tel" name="phone" id="phone" value="{{ $user->phone }}" required class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input border-2 border-gray-300" placeholder="Nama Lengkap"/>
                 </label>
 
                 <!-- Email Address -->
                 <label class="block text-sm mr-2" for="email">
                     <span class="text-gray-700 dark:text-gray-400">email Number</span>
-                    <input type="email" name="email" id="email" value="{{ $user->email }}" class="block border-2 border-gray-400 w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Nama Lengkap"/>
+                    <input type="email" name="email" id="email" value="{{ $user->email }}" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input border-2 border-gray-300" placeholder="Nama Lengkap"/>
                 </label>
             </div>
             
@@ -35,13 +35,13 @@
                 <!-- Password -->
                 <label class="block text-sm mr-2" for="password">
                     <span class="text-gray-700 dark:text-gray-400">Password Baru</span>
-                    <input type="password" name="password" id="password" class="block border-2 border-gray-400 w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Password Baru"/>
+                    <input type="password" name="password" id="password" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input border-2 border-gray-300" placeholder="Password Baru"/>
                 </label>
 
                 <!-- Confirm Password -->
                 <label class="block text-sm mr-2" for="password_confirmation">
                     <span class="text-gray-700 dark:text-gray-400">Confirm Password</span>
-                    <input type="password" name="password_confirmation" id="password_confirmation" class="block border-2 border-gray-400 w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Konfirmasi Password"/>
+                    <input type="password" name="password_confirmation" id="password_confirmation" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input border-2 border-gray-300" placeholder="Konfirmasi Password"/>
                 </label>
             </div>
             

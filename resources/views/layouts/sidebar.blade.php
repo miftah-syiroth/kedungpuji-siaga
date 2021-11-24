@@ -30,18 +30,8 @@
                     class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                     aria-haspopup="true" >
                     <span class="inline-flex items-center">
-                        <svg
-                            class="w-5 h-5"
-                            aria-hidden="true"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path
-                                d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" >
-                            </path>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                     <span class="ml-4">Kependudukan</span>
                     </span>
@@ -68,15 +58,16 @@
                         x-transition:leave-end="opacity-0 max-h-0"
                         class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
                         aria-label="submenu">
-                        <li class="{{ request()->routeIs('people.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
-                            <a class="w-full" href="/people">Penduduk Kedungpuji</a>
-                        </li>
                         <li class="{{ request()->routeIs('people.create') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/people/create">Tambah Penduduk</a>
                         </li>
                         <li class="{{ request()->routeIs('people.childbirths.*') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/childbirths">Tambah Kelahiran</a>
                         </li>
+                        <li class="{{ request()->routeIs('people.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                            <a class="w-full" href="/people">Penduduk Kedungpuji</a>
+                        </li>
+                        
                         <li class="{{ request()->routeIs('people.dead') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="{{ route('people.dead') }}">Pindah atau Mati</a>
                         </li>
@@ -89,18 +80,8 @@
                     class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                     aria-haspopup="true" >
                     <span class="inline-flex items-center">
-                        <svg
-                            class="w-5 h-5"
-                            aria-hidden="true"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path
-                                d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" >
-                            </path>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                     <span class="ml-4">Keluarga Berencana</span>
                     </span>
@@ -127,18 +108,19 @@
                         x-transition:leave-end="opacity-0 max-h-0"
                         class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
                         aria-label="submenu">
-                        <li class="{{ request()->routeIs('kb.families.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
-                            <a class="w-full" href="/families">Semua Keluarga</a>
-                        </li>
-                        <li class="{{ request()->routeIs('kb.couples.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
-                            <a class="w-full" href="/couples">Semua Pasangan</a>
-                        </li>
                         <li class="{{ request()->routeIs('kb.families.create') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/families/create">Tambah Keluarga</a>
                         </li>
                         <li class="{{ request()->routeIs('kb.couples.create') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/couples/create">Tambah Pasangan</a>
                         </li>
+                        <li class="{{ request()->routeIs('kb.families.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                            <a class="w-full" href="/families">Semua Keluarga</a>
+                        </li>
+                        <li class="{{ request()->routeIs('kb.couples.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                            <a class="w-full" href="/couples">Semua Pasangan</a>
+                        </li>
+                        
                         <li class="{{ request()->routeIs('kb.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/keluarga-berencana">Tabel KB</a>
                         </li>
@@ -151,18 +133,8 @@
                     class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                     aria-haspopup="true" >
                     <span class="inline-flex items-center">
-                        <svg
-                            class="w-5 h-5"
-                            aria-hidden="true"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path
-                                d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" >
-                            </path>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     <span class="ml-4">Kesehatan Ibu</span>
                     </span>
@@ -189,6 +161,9 @@
                         x-transition:leave-end="opacity-0 max-h-0"
                         class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
                         aria-label="submenu">
+                        <li class="{{ request()->routeIs('pregnancies.create') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                            <a class="w-full" href="/pregnancies/create">Tambah Kehamilan</a>
+                        </li>
                         <li class="{{ request()->routeIs('pregnancies.ibu-hamil') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/ibu-hamil">Ibu Hamil</a>
                         </li>
@@ -198,9 +173,7 @@
                         <li class="{{ request()->routeIs('pregnancies.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/pregnancies">Semua Kehamilan</a>
                         </li>
-                        <li class="{{ request()->routeIs('pregnancies.create') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
-                            <a class="w-full" href="/pregnancies/create">Tambah Kehamilan</a>
-                        </li>
+                       
                     </ul>
                 </template>
             </li>
@@ -210,18 +183,8 @@
                     class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                     aria-haspopup="true" >
                     <span class="inline-flex items-center">
-                        <svg
-                            class="w-5 h-5"
-                            aria-hidden="true"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path
-                                d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" >
-                            </path>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     <span class="ml-4">Kesehatan Anak</span>
                     </span>
@@ -255,43 +218,35 @@
                 </template>
             </li>
 
+            @can('unduh laporan')
             <li class="relative px-6 py-3">
-                <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="forms.html" >
+                <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="/reports">
                     <svg
-                    class="w-5 h-5"
-                    aria-hidden="true"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    >
-                    <path
-                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
-                    ></path>
-                    </svg>
-                    <span class="ml-4">Laporan</span>
+                        class="w-5 h-5"
+                        aria-hidden="true"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor" >
+                        <path
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+                        ></path>
+                        </svg>
+                    <span class="ml-4">Laporan</span>  
                 </a>
             </li>
-
+            @endcan
+            
+            @can('restore objek')
             <li x-data="{isDeletedMenuOpen : {{ request()->routeIs('deleted.*') ? 'true' : 'false' }} }" class="relative px-6 py-3">
                 <button x-on:click="isDeletedMenuOpen = ! isDeletedMenuOpen"
                     class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                     aria-haspopup="true" >
                     <span class="inline-flex items-center">
-                        <svg
-                            class="w-5 h-5"
-                            aria-hidden="true"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path
-                                d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" >
-                            </path>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
                     <span class="ml-4">Terhapus</span>
                     </span>
@@ -330,6 +285,9 @@
                         <li class="{{ request()->routeIs('deleted.pregnancies.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/deleted/pregnancies">Kehamilan</a>
                         </li>
+                        <li class="{{ request()->routeIs('deleted.childbirths.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
+                            <a class="w-full" href="/deleted/childbirths">Kelahiran</a>
+                        </li>
                         <li class="{{ request()->routeIs('deleted.puerperals.index') ? 'border-b-2 border-t-2 text-gray-800' : '' }} px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" >
                             <a class="w-full" href="/deleted/puerperals">Data Nifas</a>
                         </li>
@@ -339,6 +297,8 @@
                     </ul>
                 </template>
             </li>
+            @endcan
+            
             
         </ul>
         @hasanyrole('admin|bidan desa')
@@ -630,6 +590,7 @@
                 </template>
             </li>
 
+            @can('unduh laporan')
             <li class="relative px-6 py-3">
                 <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="forms.html">
                     <svg
@@ -648,6 +609,8 @@
                     <span class="ml-4">Laporan</span>
                 </a>
             </li>
+            @endcan
+            
 
             <li x-data="{isDeletedMenuOpen : {{ request()->routeIs('deleted.*') ? 'true' : 'false' }} }" class="relative px-6 py-3">
                 <button x-on:click="isDeletedMenuOpen = ! isDeletedMenuOpen"

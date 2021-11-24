@@ -18,14 +18,14 @@
             <div class="flex mt-4">
                 <label class="block text-sm mx-2" for="nik">
                     <span class="text-gray-700 dark:text-gray-400">Nomor KK</span>
-                    <input type="text" name="nomor_kk" id="nomor_kk" value="{{ old('nomor_kk') }}" required class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    <input type="text" name="nomor_kk" id="nomor_kk" value="{{ old('nomor_kk') }}" required class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input border-gray-400"/>
                 </label>
 
                 <label class="block mx-2 text-sm">
                     <span class="text-gray-700 dark:text-gray-400">
                         Tahapan Keluarga Sejahtera
                     </span>
-                    <select name="keluarga_sejahtera_id" id="keluarga_sejahtera_id" required class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
+                    <select name="keluarga_sejahtera_id" id="keluarga_sejahtera_id" required class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray border-gray-400">
                         <option selected disabled hidden>Pilih!</option>
                         @foreach ($keluarga_sejahtera as $key => $tahapan)
                         <option value="{{ $tahapan->id }}">{{ $tahapan->tahapan }}</option>

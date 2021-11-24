@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         {{ __('Edit Laporan Bulanan Ibu Hamil: ') }}
-        <a href="/pregnancies/{{ $prenatal_class->pregnancy->id }}" class="text-blue-400 hover:text-blue-700">{{ $prenatal_class->pregnancy->mother->name }}</a>
+        <a href="/pregnancies/{{ $prenatal_class->pregnancy->id }}" class="text-blue-400 hover:text-blue-700">{{ $prenatal_class->pregnancy->person->name }}</a>
     </x-slot>
     
     @if (session('message'))

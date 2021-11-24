@@ -52,7 +52,6 @@ class PuerperalService
 
         // hapus table intermediate untuk kondisi ibu dan anak selama nifas
         $puerperal->babyConditions()->detach();
-        $puerperal->motherConditions()->detach();
         $puerperal->complications()->detach();
 
         $puerperal->forceDelete();

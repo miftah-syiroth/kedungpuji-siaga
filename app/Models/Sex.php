@@ -22,4 +22,9 @@ class Sex extends Model
     {
         return $this->hasMany(Person::class, 'sex_id');
     }
+
+    public function childbirths()
+    {
+        return $this->hasMany(Childbirth::class, 'sex_id');
+    }
 }

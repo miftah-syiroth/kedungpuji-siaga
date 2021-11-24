@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         {{ __('Ringkasan Pelayanan Nifas: ') }} 
-        <a href="/people/{{ $puerperal->pregnancy->mother->id }}" class="text-blue-400 hover:text-blue-700">{{ $puerperal->pregnancy->mother->name }}</a>
+        <a href="/pregnancies/{{ $puerperal->pregnancy->id }}" class="text-blue-400 hover:text-blue-700">{{ $puerperal->pregnancy->person->name }}</a>
     </x-slot>
 
 

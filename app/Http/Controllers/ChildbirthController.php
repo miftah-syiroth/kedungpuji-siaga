@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreChildbirthRequest;
+use App\Http\Requests\UpdateChildbirthRequest;
+use App\Models\BabyCondition;
 use App\Models\BloodGroup;
+use App\Models\Childbirth;
 use App\Models\Disability;
 use App\Models\Pregnancy;
 use App\Models\Religion;
+use App\Models\Sex;
 use App\Services\ChildbirthService;
 use Illuminate\Http\Request;
 
@@ -20,6 +23,7 @@ class ChildbirthController extends Controller
     public function __construct(ChildbirthService $service)
     {
         $this->childbirthService = $service;
+        $this->middleware(['permission:hapus kelahiran'])->only('destroy');
     }
 
     /**
@@ -41,17 +45,7 @@ class ChildbirthController extends Controller
      */
     public function create(Pregnancy $pregnancy)
     {
-        // kalau pregnancy udh punya relasi dgn person, cegah
-        if (isset($pregnancy->baby)) {
-            return redirect()->back();
-        } else {
-            return view('childbirths.create', [
-                'pregnancy' => $pregnancy,
-                'religions' => Religion::all(),
-                'blood_groups' => BloodGroup::all(),
-                'disabilities' => Disability::all(),
-            ]);
-        }
+        #
     }
 
     /**
@@ -60,10 +54,21 @@ class ChildbirthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreChildbirthRequest $request, Pregnancy $pregnancy)
+    public function store(Request $request, Pregnancy $pregnancy)
     {
-        $person = $this->childbirthService->store($request, $pregnancy);
-        return redirect('/people/' . $person->id);
+        if ($pregnancy->childbirth_date !== null) {
+            $this->childbirthService->store($pregnancy);
+            return redirect('/pregnancies/' . $pregnancy->id);
+        } else {
+            return redirect('/pregnancies/' . $pregnancy->id)->with('message', 'waktu kelahiran belum diisi!');
+        }
+        
+        
+
+        // baris ini adalah untuk menyipman penduduk dari kelahiran
+        // StoreChildbirthRequest
+        // $person = $this->childbirthService->store($request, $pregnancy);
+        // return redirect('/people/' . $person->id);
     }
 
     /**
@@ -83,9 +88,13 @@ class ChildbirthController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Childbirth $childbirth)
     {
-        //
+        return view('childbirths.edit', [
+            'childbirth' => $childbirth,
+            'sexes' => Sex::all(),
+            'baby_conditions' => BabyCondition::whereNotIn('id', [9, 10])->get(),
+        ]);
     }
 
     /**
@@ -95,9 +104,10 @@ class ChildbirthController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateChildbirthRequest $request, Childbirth $childbirth)
     {
-        //
+        $this->childbirthService->update($request, $childbirth);
+        return redirect('/pregnancies/' . $childbirth->pregnancy->id);
     }
 
     /**
@@ -106,8 +116,10 @@ class ChildbirthController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Childbirth $childbirth)
     {
-        //
+        $pregnancy_id = $childbirth->pregnancy->id;
+        $childbirth->delete();
+        return redirect('/pregnancies/' . $pregnancy_id);
     }
 }

@@ -76,7 +76,6 @@
                     <th class="px-2 py-3">hpht</th>
                     <th class="px-2 py-3">kelahiran</th>
                     <th class="px-2 py-3">umur Kehamilan</th>
-                    <th class="px-2 py-3">Jenis Kelamin</th>
                     <th class="px-2 py-3">Masa Nifas</th>
                 </tr>
             </thead>
@@ -91,16 +90,16 @@
                             </div>
                             <div>
                                 <a href="/puerperals/{{ $pregnancy->puerperal->id }}" class="font-normal text-blue-500 hover:text-blue-600 hover:shadow">
-                                    {{ $pregnancy->mother->name }}
+                                    {{ $pregnancy->person->name }}
                                 </a>
                             </div>
                         </div>
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
-                        {{ $pregnancy->mother->rt }}/{{ $pregnancy->mother->rw }}
+                        {{ $pregnancy->person->rt }}/{{ $pregnancy->person->rw }}
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
-                        {{ $pregnancy->mother->date_of_birth->age }}
+                        {{ $pregnancy->person->date_of_birth->age }}
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
                         {{ $pregnancy->hpht->isoFormat('D MMMM YYYY') }}
@@ -110,9 +109,6 @@
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
                         {{ $pregnancy->gestational_age ?? $pregnancy->hpht->diffInWeeks(now()) . ' minggu' }}
-                    </td>
-                    <td class="px-2 py-1 text-sm text-center">
-                        {{ $pregnancy->sex->sex }}
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
                         {{ $pregnancy->hpht->diffInDays(now()) }} hari

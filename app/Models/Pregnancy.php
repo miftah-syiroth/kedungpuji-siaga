@@ -20,24 +20,24 @@ class Pregnancy extends Model
         'childbirth_date' => 'datetime:Y-m-d',
     ];
 
-    protected $with = ['mother', 'prenatalClasses', 'sex'];
+    protected $with = ['person', 'prenatalClasses'];
 
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['mother_name'] ?? false, fn($query, $mother_name) => 
-            $query->whereHas('mother', fn($query) => 
+            $query->whereHas('person', fn($query) => 
                 $query->where('name', 'like', '%' .  $mother_name . '%')
             )
         );
 
         $query->when($filters['rt'] ?? false, fn($query, $rt) => 
-            $query->whereHas('mother', fn($query) => 
+            $query->whereHas('person', fn($query) => 
                 $query->where('rt', $rt)
             )
         );
 
         $query->when($filters['rw'] ?? false, fn($query, $rw) => 
-            $query->whereHas('mother', fn($query) => 
+            $query->whereHas('person', fn($query) => 
                 $query->where('rw', $rw)
             )
         );
@@ -55,18 +55,16 @@ class Pregnancy extends Model
         });
 
         $query->when($filters['year_childbirth'] ?? false, function($query, $year_childbirth) {
-            return $query->whereyear('childbirth_date', $year_childbirth);
+            return $query->whereYear('childbirth_date', $year_childbirth);
         });
-    }
 
-    // public function getHphtAttribute($value)
-    // {
-    //     return Carbon::parse($this->attributes['hpht']);
-    // }
+        $query->when($filters['mother_condition_id'] ?? false, function($query, $mother_condition_id) {
+            return $query->where('mother_condition_id', $mother_condition_id);
+        });
 
-    public function babyCondition()
-    {
-        return $this->belongsTo(BabyCondition::class, 'baby_condition_id');
+        $query->when($filters['parturition_id'] ?? false, function($query, $parturition_id) {
+            return $query->where('parturition_id', $parturition_id);
+        });
     }
     
     /**
@@ -75,35 +73,14 @@ class Pregnancy extends Model
      * @param  mixed $var
      * @return void
      */
-    public function mother()
+    public function person()
     {
-        return $this->belongsTo(Person::class, 'mother_id');
-    }
-    
-    /**
-     * setiap kehamilan menghasilkan satu orang atau satu bayi
-     *
-     * @return void
-     */
-    public function baby()
-    {
-        return $this->belongsTo(Person::class, 'baby_id');
+        return $this->belongsTo(Person::class, 'person_id');
     }
 
     public function prenatalClasses()
     {
         return $this->hasMany(PrenatalClass::class, 'pregnancy_id');
-    }
-
-    public function sex()
-    {
-        return $this->belongsTo(Sex::class, 'sex_id');
-    }
-
-    // relasi many to many
-    public function babyConditions()
-    {
-        return $this->belongsToMany(BabyCondition::class, 'pregnancy_has_baby_conditions', 'pregnancy_id', 'baby_condition_id');
     }
 
     // relasi many to many
@@ -116,5 +93,25 @@ class Pregnancy extends Model
     public function puerperal()
     {
         return $this->hasOne(Puerperal::class, 'pregnancy_id');
+    }
+    
+    /**
+     * kehamilan punyas satu type partus antar abortus, prematurus, atau maturus
+     *
+     * @return void
+     */
+    public function parturition()
+    {
+        return $this->belongsTo(Parturition::class, 'parturition_id');
+    }
+    
+    /**
+     * childbirths, sebuah kehamilan bisa punya 2 kelahiran semisal bayi kembar
+     *
+     * @return void
+     */
+    public function childbirths()
+    {
+        return $this->hasMany(Childbirth::class, 'pregnancy_id');
     }
 }

@@ -16,6 +16,7 @@ class FamilyController extends Controller
     public function __construct(FamilyService $service)
     {
         $this->familyService = $service;
+        $this->middleware(['permission:hapus keluarga'])->only('destroy');
     }
 
     /**

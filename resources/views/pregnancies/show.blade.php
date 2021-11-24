@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         {{ __('Ringkasan Pelayanan Persalinan: ') }} 
-        <a href="/people/{{ $pregnancy->mother->id }}" class="text-blue-400 hover:text-blue-700">{{ $pregnancy->mother->name }}</a>
+        <a href="/people/{{ $pregnancy->person->id }}" class="text-blue-400 hover:text-blue-700">{{ $pregnancy->person->name }}</a>
     </x-slot>
 
     <div x-data="{ isOpen : true }" class="px-4 py-3 mb-8 bg-white shadow-md dark:bg-gray-800"> 
@@ -10,8 +10,16 @@
                 <button x-on:click="isOpen = ! isOpen" class="w-full hover:text-blue-700">Ringkasan</button>
             </h3>
             <div x-show="isOpen" class="flex justify-between">
-                <div>
-                    <a href="/pregnancies/{{ $pregnancy->id }}/edit" class="bg-blue-500 px-4 py-1 rounded-md text-white text-sm text-center mt-2 hover:bg-blue-700">edit</a>
+                <div class="flex">
+                    <a href="/pregnancies/{{ $pregnancy->id }}/edit" class="bg-green-500 px-4 py-1 mr-4 rounded-md text-white text-sm text-center mt-2 hover:bg-green-700">edit</a>
+
+                    @isset($pregnancy->childbirth_date)
+                    <form action="/pregnancies/{{ $pregnancy->id }}/childbirths" method="post">
+                        @csrf
+                        <button type="submit" class="bg-blue-500 px-4 py-1 rounded-md text-white text-sm text-center mt-2 hover:bg-blue-700">tambah data bayi</button>
+                    </form>
+                    @endisset
+                    
                 </div>
                 <div>
                     {{-- kalau ada value waktu kelahiran --}}
@@ -31,179 +39,175 @@
 
             </div>
         </div>
-        <div x-show="isOpen" class="border-t border-gray-200 flex flex-row flex-wrap">
-            <dl class="w-1/2">
-                <div class="px-4 py-1 grid grid-cols-5 gap-2">
-                    <dt class="text-sm font-medium text-gray-500 col-span-2">
-                        Berat Badan Ibu
-                    </dt>
-                    <dd class="mt-1 text-sm sm:mt-0 col-span-3">
-                        : {{ $pregnancy->mother_weight }} kg
-                    </dd>
-                </div>
+        <div x-show="isOpen" class="border-t border-gray-200 flex flex-col">
+            <div class="flex border-b-2">
+                {{-- kolom kiri --}}
+                <dl class="w-1/2">
+                    <div class="px-4 py-1 grid grid-cols-5 gap-2">
+                        <dt class="text-sm font-medium text-gray-500 col-span-2">
+                            Berat Badan Ibu
+                        </dt>
+                        <dd class="mt-1 text-sm sm:mt-0 col-span-3">
+                            : {{ $pregnancy->weight }} kg
+                        </dd>
+                    </div>
 
-                <div class="px-4 py-1 grid grid-cols-5 gap-2">
-                    <dt class="text-sm font-medium text-gray-500 col-span-2">
-                        Tinggi Badan Ibu
-                    </dt>
-                    <dd class="mt-1 text-sm sm:mt-0 col-span-3">
-                        : {{ $pregnancy->mother_height}} cm
-                    </dd>
-                </div>
+                    <div class="px-4 py-1 grid grid-cols-5 gap-2">
+                        <dt class="text-sm font-medium text-gray-500 col-span-2">
+                            Tinggi Badan Ibu
+                        </dt>
+                        <dd class="mt-1 text-sm sm:mt-0 col-span-3">
+                            : {{ $pregnancy->height}} cm
+                        </dd>
+                    </div>
 
-                <div class="px-4 py-1 grid grid-cols-5 gap-2">
-                    <dt class="text-sm font-medium text-gray-500 col-span-2">
-                        BMI Ibu
-                    </dt>
-                    <dd class="mt-1 text-sm sm:mt-0 col-span-3">
-                        : {{ $pregnancy->mother_bmi }}
-                    </dd>
-                </div>
+                    <div class="px-4 py-1 grid grid-cols-5 gap-2">
+                        <dt class="text-sm font-medium text-gray-500 col-span-2">
+                            BMI Ibu
+                        </dt>
+                        <dd class="mt-1 text-sm sm:mt-0 col-span-3">
+                            : {{ $pregnancy->bmi }}
+                        </dd>
+                    </div>
 
-                <div class="px-4 py-1 grid grid-cols-5 gap-2">
-                    <dt class="text-sm font-medium text-gray-500 col-span-2">
-                        HPHT
-                    </dt>
-                    <dd class="mt-1 text-sm sm:mt-0 col-span-3">
-                        : {{ $pregnancy->hpht->isoFormat('dddd, DD MMMM YYYY') }}
-                    </dd>
-                </div>
+                    <div class="px-4 py-1 grid grid-cols-5 gap-2">
+                        <dt class="text-sm font-medium text-gray-500 col-span-2">
+                            HPHT
+                        </dt>
+                        <dd class="mt-1 text-sm sm:mt-0 col-span-3">
+                            : {{ $pregnancy->hpht->isoFormat('dddd, DD MMMM YYYY') }}
+                        </dd>
+                    </div>
 
-                <div class="px-4 py-1 grid grid-cols-5 gap-2">
-                    <dt class="text-sm font-medium text-gray-500 col-span-2">
-                        Tanggal Persalinan
-                    </dt>
-                    <dd class="mt-1 text-sm sm:mt-0 col-span-3">
-                        :
-                        @isset($pregnancy->childbirth_date)
-                            {{ $pregnancy->childbirth_date->isoFormat('dddd, DD MMMM YYYY HH:mm') }}
-                        @endisset
-                        
-                    </dd>
-                </div>
+                    <div class="px-4 py-1 grid grid-cols-5 gap-2">
+                        <dt class="text-sm font-medium text-gray-500 col-span-2">
+                            Tanggal Persalinan
+                        </dt>
+                        <dd class="mt-1 text-sm sm:mt-0 col-span-3">
+                            :
+                            @isset($pregnancy->childbirth_date)
+                                {{ $pregnancy->childbirth_date->isoFormat('dddd, DD MMMM YYYY HH:mm') }}
+                            @endisset
+                        </dd>
+                    </div>
+                </dl>
 
-                <div class="px-4 py-1 grid grid-cols-5 gap-2">
-                    <dt class="text-sm font-medium text-gray-500 col-span-2">
-                        Umur Kehamilan
-                    </dt>
-                    <dd class="mt-1 text-sm sm:mt-0 col-span-3">
-                        : {{ $pregnancy->gestational_age ?? $pregnancy->hpht->diffInWeeks(now()) . ' minggu sedang mengandung' }}
-                    </dd>
-                </div>
+                {{-- kolom kanan --}}
+                <dl class="w-1/2">
 
-                <div class="px-4 py-1 grid grid-cols-5 gap-2">
-                    <dt class="text-sm font-medium text-gray-500 col-span-2">
-                        Penolong Persalinan
-                    </dt>
-                    <dd class="mt-1 text-sm sm:mt-0 col-span-3">
-                        : {{ $pregnancy->childbirth_attendant }}
-                    </dd>
-                </div>
+                    <div class="px-4 py-1 grid grid-cols-5 gap-2">
+                        <dt class="text-sm font-medium text-gray-500 col-span-2">
+                            Umur Kehamilan
+                        </dt>
+                        <dd class="mt-1 text-sm sm:mt-0 col-span-3">
+                            : {{ $pregnancy->gestational_age ?? $pregnancy->hpht->diffInWeeks(now()) . ' minggu sedang mengandung' }}
+                        </dd>
+                    </div>
 
-                <div class="px-4 py-1 grid grid-cols-5 gap-2">
-                    <dt class="text-sm font-medium text-gray-500 col-span-2">
-                        Cara Persalinan
-                    </dt>
-                    <dd class="mt-1 text-sm sm:mt-0 col-span-3">
-                        : {{ $pregnancy->childbirth_method }}
-                    </dd>
-                </div>
+                    <div class="px-4 py-1 grid grid-cols-5 gap-2">
+                        <dt class="text-sm font-medium text-gray-500 col-span-2">
+                            Status Partus
+                        </dt>
+                        <dd class="mt-1 text-sm sm:mt-0 col-span-3 font-semibold">
+                            : @isset($pregnancy->parturition)
+                                {{ $pregnancy->parturition->type }}
+                            @endisset
+                        </dd>
+                    </div>
 
-                <div class="px-4 py-1 grid grid-cols-5 gap-2">
-                    <dt class="text-sm font-medium text-gray-500 col-span-2">
-                        Keadaan Ibu
-                    </dt>
-                    <dd class="mt-1 text-sm sm:mt-0 col-span-3">
-                        : {{ $pregnancy->post_partum_condition}}
-                    </dd>
-                </div>
+                    <div class="px-4 py-1 grid grid-cols-5 gap-2">
+                        <dt class="text-sm font-medium text-gray-500 col-span-2">
+                            Penolong Persalinan
+                        </dt>
+                        <dd class="mt-1 text-sm sm:mt-0 col-span-3">
+                            : {{ $pregnancy->childbirth_attendant }}
+                        </dd>
+                    </div>
 
-                <div class="px-4 py-1 grid grid-cols-5 gap-2">
-                    <dt class="text-sm font-medium text-gray-500 col-span-2">
-                        Keterangan Tambahan
-                    </dt>
-                    <dd class="mt-1 text-sm sm:mt-0 col-span-3">
-                        : {{ $pregnancy->additional_information }}
-                    </dd>
-                </div>
-            </dl>
+                    <div class="px-4 py-1 grid grid-cols-5 gap-2">
+                        <dt class="text-sm font-medium text-gray-500 col-span-2">
+                            Keadaan Ibu
+                        </dt>
+                        <dd class="mt-1 text-sm sm:mt-0 col-span-3">
+                            : @isset($pregnancy->motherCondition)
+                            {{ $pregnancy->motherCondition->condition }}
+                            @endisset
+                        </dd>
+                    </div>
 
-            {{-- komponen bayi --}}
-            <dl class="w-1/2">
-                <div class="px-4 py-1 grid grid-cols-2">
-                    <dt class="text-sm font-medium text-gray-500">
-                        Kelahiran ke: 
-                    </dt>
-                    <dd class="mt-1 text-sm sm:mt-0">
-                        : {{ $pregnancy->childbirth_order }}
-                    </dd>
-                </div>
+                    <div class="px-4 py-1 grid grid-cols-5 gap-2">
+                        <dt class="text-sm font-medium text-gray-500 col-span-2">
+                            Keterangan Tambahan
+                        </dt>
+                        <dd class="mt-1 text-sm sm:mt-0 col-span-3">
+                            : {{ $pregnancy->additional_information }}
+                        </dd>
+                    </div>
+                </dl>
+            </div>
 
-                <div class="px-4 py-1 grid grid-cols-2">
-                    <dt class="text-sm font-medium text-gray-500">
-                        Berat Bayi
-                    </dt>
-                    <dd class="mt-1 text-sm sm:mt-0">
-                        : {{ $pregnancy->baby_weight }} gram
-                    </dd>
-                </div>
-
-                <div class="px-4 py-1 grid grid-cols-2">
-                    <dt class="text-sm font-medium text-gray-500">
-                        Panjang Bayi
-                    </dt>
-                    <dd class="mt-1 text-sm sm:mt-0">
-                        : {{ $pregnancy->baby_lenght }} cm
-                    </dd>
-                </div>
-
-                <div class="px-4 py-1 grid grid-cols-2">
-                    <dt class="text-sm font-medium text-gray-500">
-                        Lingkar Kepala
-                    </dt>
-                    <dd class="mt-1 text-sm sm:mt-0">
-                        : {{ $pregnancy->baby_head_circumference}} cm
-                    </dd>
-                </div>
-
-                <div class="px-4 py-1 grid grid-cols-2">
-                    <dt class="text-sm font-medium text-gray-500">
-                        Jenis Kelamin
-                    </dt>
-                    <dd class="mt-1 text-sm sm:mt-0">
-                        : {{ $pregnancy->sex->sex ?? '-' }}
-                    </dd>
-                </div>
-
-                <div class="px-4 py-1 grid grid-cols-2">
-                    <dt class="text-sm font-medium text-gray-500">
-                        Kondisi Bayi Lahir
-                    </dt>
-                    <dd class="mt-1 text-sm  sm:mt-0">
-                        : @foreach ($pregnancy->babyConditions as $condition)
-                            {{ $condition->condition . ', ' }}
+            @if ($pregnancy->childbirths->isNotEmpty())
+            <div class="flex">
+                <table class="w-full whitespace-no-wrap">
+                    <thead>
+                        <tr class="text-xs font-semibold tracking-wide text-center uppercase border-b dark:border-gray-700">
+                            <th class="px-2 py-3">Anak Ke</th>
+                            <th class="px-2 py-3">BB</th>
+                            <th class="px-2 py-3">PB</th>
+                            <th class="px-2 py-3">LK</th>
+                            <th class="px-2 py-3">SEX</th>
+                            <th class="px-2 py-3">Metode</th>
+                            <th class="px-2 py-3">Kondisi</th>
+                            <th class="px-2 py-3">Keterangan</th>
+                            <th class="px-2 py-3">edit</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y ">
+                            
+                        @foreach ($pregnancy->childbirths as $childbirth)
+                        <tr class="text-gray-700 dark:text-gray-300">
+                            <td class="px-2 py-1 text-sm text-center">
+                                {{ $childbirth->childbirth_order }}
+                            </td>
+                            <td class="px-2 py-1 text-sm text-center">
+                                {{ $childbirth->weight }} gr
+                            </td>
+                            <td class="px-2 py-1 text-sm text-center">
+                                {{ $childbirth->length }} cm
+                            </td>
+                            <td class="px-2 py-1 text-sm text-center">
+                                {{ $childbirth->head_circumference }} cm
+                            </td>
+                            <td class="px-2 py-1 text-sm text-center">
+                                @isset($childbirth->sex)
+                                {{ $childbirth->sex->sex }}
+                                @endisset
+                            </td>
+                            <td class="px-2 py-1 text-sm text-center">
+                                {{ $childbirth->childbirth_method }}
+                            </td>
+                            <td class="px-2 py-1 text-sm text-center">
+                                @foreach ($childbirth->babyConditions as $condition)
+                                    {{ $condition->condition }}, 
+                                @endforeach
+                            </td>
+                            <td class="px-2 py-1 text-sm text-center">
+                                {{ $childbirth->additional_information }}
+                            </td>
+                            <td class="px-2 py-1 text-sm text-center">
+                                <a href="/childbirths/{{ $childbirth->id }}/edit" class="text-blue-500 hover:text-blue-600 hover:underline">edit</a>
+                            </td>
+                        </tr>
                         @endforeach
-                    </dd>
-                </div>
-
-                <div class="px-4 py-1 grid grid-cols-2">
-                    <dt class="text-sm font-medium text-gray-500">
-                        Asuhan Bayi Baru Lahir
-                    </dt>
-                    <dd class="mt-1 text-sm  sm:mt-0">
-                        : {{ $pregnancy->attendant }}
-                    </dd>
-                </div>
-
-                <div class="px-4 py-1 grid grid-cols-2">
-                    <dt class="text-sm font-medium text-gray-500">
-                        Keterangan Tambahan
-                    </dt>
-                    <dd class="mt-1 text-sm  sm:mt-0">
-                        : {{ $pregnancy->baby_additional_information }}
-                    </dd>
-                </div>
-            </dl>
+    
+                        
+                    </tbody>
+                </table>
+            </div> 
+            @endif
+            
+            
+            
         </div>
     </div>
  

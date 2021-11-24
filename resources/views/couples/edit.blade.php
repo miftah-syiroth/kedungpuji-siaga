@@ -60,6 +60,8 @@
                 <a href="/couples/{{ $couple->id }}" class="px-3 py-2 mx-4 bg-green-500 hover:bg-green-700 text-sm text-white rounded-md font-semibold uppercase">kembali</a>
             </div>
         </form>
+
+        @can('hapus pasangan')
         <div class="my-4">
             <form action="/couples/{{ $couple->id }}" method="post">
                 @csrf
@@ -73,6 +75,8 @@
                 
                 <button type="submit" class="bg-red-500 px-4 py-1 rounded-md text-white text-sm text-center mt-2 hover:bg-red-700">cerai/hapus</button>
             </form>
-        </div>
+        </div> 
+        @endcan
+        
     </div>
 </x-app-layout>

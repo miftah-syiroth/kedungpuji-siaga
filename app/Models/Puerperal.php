@@ -13,7 +13,7 @@ class Puerperal extends Model
     protected $table = 'puerperals';
     protected $guarded = [];
 
-    protected $with = ['pregnancy.mother'];
+    // protected $with = ['pregnancy'];
 
     // relasi one to one dengan pregnancy
     public function pregnancy()

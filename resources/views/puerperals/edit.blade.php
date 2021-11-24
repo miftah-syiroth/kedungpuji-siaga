@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         {{ __('Edit Kesimpulan Ibu Nifas') }}
-        <a href="/puerperals/{{ $puerperal->id }}" class="text-blue-400 hover:text-blue-700">{{ $puerperal->pregnancy->mother->name }}</a>
+        <a href="/puerperals/{{ $puerperal->pregnancy->id }}" class="text-blue-400 hover:text-blue-700">{{ $puerperal->pregnancy->person->name }}</a>
     </x-slot>
     
 
@@ -66,6 +66,8 @@
                 
             </div>
         </form>
+
+        @can('hapus nifas')
         <form action="/puerperals/{{ $puerperal->id }}" method="post">
             @csrf
             @method('DELETE')
@@ -73,6 +75,8 @@
                 <button type="submit" class="bg-red-500 dark:bg-red-800 text-white dark:text-gray-200 py-2 px-3 rounded-md hover:bg-red-700 dark:hover:bg-red-900 mx-2 my-4">hapus nifas</button>
             </div>
         </form>
+        @endcan
+        
     </div>
 
 </x-app-layout>

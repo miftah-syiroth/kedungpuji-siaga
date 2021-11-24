@@ -86,7 +86,6 @@
                         @foreach ($couple->keluargaBerencana as $kb)
                             @if ($kb->month_periode == $month->id)
                                 {{ $kb->kbStatus->code }}
-                                {{ $kb->year_periode }}
                                 @break
                             @endif
                         @endforeach

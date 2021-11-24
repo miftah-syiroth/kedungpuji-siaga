@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         {{ __('Edit Data Kunjungan Ibu Nifas ') }}
-        <a href="/puerperals/{{ $puerperal_class->puerperal->id }}" class="text-blue-400 hover:text-blue-700">{{ $puerperal_class->puerperal->pregnancy->mother->name }}</a>
+        <a href="/puerperals/{{ $puerperal_class->puerperal->id }}" class="text-blue-400 hover:text-blue-700">{{ $puerperal_class->puerperal->pregnancy->person->name }}</a>
     </x-slot>
 
     @if (session('message'))
@@ -19,7 +19,7 @@
                 <!-- tanggal kunjungan -->
                 <label class="block text-sm mr-2" for="visited_at">
                     <span class="text-gray-700 dark:text-gray-400">Tanggal Kunjungan</span>
-                    <input type="datetime-local" name="visited_at" id="visited_at" value="{{ $puerperal_class->visited_at->isoFormat('YYYY-MM-DD') }}" required class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    <input type="datetime-local" name="visited_at" id="visited_at" value="{{ $puerperal_class->visited_at->isoFormat('YYYY-MM-DDTHH:mm:ss') }}" required class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
                     <span class="text-sm text-green-800">
                         {{ $waktu_awal->isoFormat('DD MMM YYYY HH:mm') }} - {{ $waktu_akhir->isoFormat('DD MMM YYYY HH:mm') }}
                     </span>

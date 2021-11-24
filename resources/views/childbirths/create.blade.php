@@ -5,22 +5,22 @@
     
     <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
-        <form method="POST" action="/pregnancies/{{ $pregnancy->id }}/childbirths">
+        <form method="POST" action="/people/childbirths/{{ $childbirth->id }}">
             @csrf
             
-            <p class="mx-2 mb-4 text-sm text-green-900 font-semibold">Catatan: Ubah ringkasan pelayanan persalinan jika data statis tidak sesuai</p>
+            <p class="mx-2 mb-4 text-sm text-red-500 font-semibold">Catatan: Ubah ringkasan pelayanan persalinan jika data statis tidak sesuai</p>
 
             <div class="flex flex-row flex-wrap">
                 <!-- Name -->
                 <label class="block text-sm mr-2" for="name">
                     <span class="text-gray-700 dark:text-gray-400">Nama Lengkap</span>
-                    <input type="text" name="name" id="name" value="{{ old('name') }}" required class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Nama Lengkap"/>
+                    <input type="text" name="name" id="name" value="{{ old('name') }}" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Nama Lengkap"/>
                 </label>
 
                 <!-- NIK -->
                 <label class="block text-sm mx-2" for="nik">
                     <span class="text-gray-700 dark:text-gray-400">NIK</span>
-                    <input type="text" name="nik" id="nik" value="{{ old('nik') }}" required class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="NIK"/>
+                    <input type="text" name="nik" id="nik" value="{{ old('nik') }}" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="NIK"/>
                 </label>
 
                 <!-- jenis kelamin -->
@@ -29,7 +29,7 @@
                         Jenis Kelamin
                     </span>
                     <select class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
-                        <option selected disabled hidden>{{ $pregnancy->sex->sex }}</option>
+                        <option selected disabled hidden>{{ $childbirth->sex->sex }}</option>
                     </select>
                 </label>
             </div>
@@ -38,13 +38,13 @@
                 <!-- tempat lahir -->
                 <label class="block text-sm mr-2" for="name">
                     <span class="text-gray-700 dark:text-gray-400">Tempat Lahir</span>
-                    <input type="text" name="place_of_birth" id="place_of_birth" value="Kebumen" required class="block w-32 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    <input type="text" name="place_of_birth" id="place_of_birth" value="Kebumen" class="block w-32 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
                 </label>
 
                 <!-- tanggal lahir -->
                 <label class="block text-sm mx-2" for="name">
                     <span class="text-gray-700 dark:text-gray-400">Tanggal Lahir</span>
-                    <input type="date" value="{{ $pregnancy->childbirth_date->isoFormat('YYYY-MM-DD') }}" disabled required class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    <input type="date" value="{{ $childbirth->pregnancy->childbirth_date->isoFormat('YYYY-MM-DD') }}" disabled class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
                 </label>
 
                 <!-- Agama -->
@@ -52,7 +52,7 @@
                     <span class="text-gray-700 dark:text-gray-400">
                         Agama
                     </span>
-                    <select name="religion_id" id="religion_id" value="{{ old('religion_id') }}" required class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
+                    <select name="religion_id" id="religion_id" value="{{ old('religion_id') }}" class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
                         <option selected disabled hidden>Pilih!</option>
                         @foreach ($religions as $religion)
                         <option value="{{ $religion->id }}">{{ $religion->religion }}</option>
@@ -65,7 +65,7 @@
                     <span class="text-gray-700 dark:text-gray-400">
                         Gol. Darah
                     </span>
-                    <select name="blood_group_id" id="blood_group_id" value="{{ old('blood_group_id') }}" required class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
+                    <select name="blood_group_id" id="blood_group_id" value="{{ old('blood_group_id') }}" class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
                         <option selected disabled hidden>Pilih!</option>
                         @foreach ($blood_groups as $group)
                         <option value="{{ $group->id }}">{{ $group->group }}</option>
@@ -93,7 +93,7 @@
                     <span class="text-gray-700 dark:text-gray-400">
                         Jenis
                     </span>
-                    <select name="disability_id" id="disability_id" required class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
+                    <select name="disability_id" id="disability_id" class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
                         <option selected disabled hidden>Pilih!</option>
                         @foreach ($disabilities as $disability)
                         <option value="{{ $disability->id }}">{{ $disability->disability }}</option>
@@ -108,7 +108,7 @@
                     <span class="text-gray-700 dark:text-gray-400">
                         Pendidikan
                     </span>
-                    <select disabled required class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
+                    <select disabled class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
                         <option selected disabled hidden>Tidak/Belum Sekolah</option>
                     </select>
                 </label>
@@ -116,12 +116,12 @@
                 <!-- RW -->
                 <label class="block text-sm mx-2" for="rw">
                     <span class="text-gray-700 dark:text-gray-400">RW</span>
-                    <input type="number" name="rw" id="rw" value="{{ $pregnancy->mother->rw }}" required class="block w-16 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    <input type="number" name="rw" id="rw" value="{{ $childbirth->pregnancy->person->rw }}" class="block w-16 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
                 </label>
 
                 <label class="block text-sm mx-2" for="rt">
                     <span class="text-gray-700 dark:text-gray-400">RT</span>
-                    <input type="number" name="rt" id="rt" value="{{ $pregnancy->mother->rt }}" required class="block w-16 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    <input type="number" name="rt" id="rt" value="{{ $childbirth->pregnancy->person->rt }}" class="block w-16 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
                 </label>
 
                 <!-- status kawin -->
@@ -129,7 +129,7 @@
                     <span class="text-gray-700 dark:text-gray-400">
                         Status Kawin
                     </span>
-                    <select required class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
+                    <select class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
                         <option selected disabled hidden>Belum Kawin!</option>
                     </select>
                 </label>
@@ -139,7 +139,7 @@
                 <!-- Ibu Kandung -->
                 <label class="block text-sm mr-2" for="name">
                     <span class="text-gray-700 dark:text-gray-400">Ibu Kandung</span>
-                    <input type="text"  value="{{ $pregnancy->mother->name }}" disabled class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" />
+                    <input type="text"  value="{{ $childbirth->pregnancy->person->name }}" disabled class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" />
                 </label>
                 {{-- form pencarian ayah kandung --}}
                 @livewire('people.father-search-form')

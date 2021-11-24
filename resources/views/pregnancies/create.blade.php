@@ -20,19 +20,19 @@
 
                 <label class="block text-sm mx-2" for="name">
                     <span class="text-gray-700 dark:text-gray-400">HPHT</span>
-                    <input type="date" name="hpht" id="hpht" value="{{ old('hpht') }}" required class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    <input type="date" name="hpht" id="hpht" value="{{ old('hpht') }}" required class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input border-gray-400"/>
                 </label>
             </div>
 
             <div class="flex mt-4">
                 <label class="block text-sm mx-2" for="nik">
                     <span class="text-gray-700 dark:text-gray-400">Berat Ibu Hamil (kg)</span>
-                    <input type="number" name="mother_weight" id="mother_weight" step="any" min="10" value="{{ old('mother_weight') }}" required class="block w-auto mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    <input type="number" name="weight" id="weight" step="any" min="10" value="{{ old('weight') }}" required class="block w-auto mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input border-gray-400"/>
                 </label>
 
                 <label class="block text-sm mx-2" for="nik">
                     <span class="text-gray-700 dark:text-gray-400">Tinggi Ibu Hamil (cm)</span>
-                    <input type="number" name="mother_height" id="mother_height" min="100" value="{{ old('mother_height') }}" required class="block w-auto mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    <input type="number" name="height" id="height" min="100" value="{{ old('height') }}" required class="block w-auto mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input border-gray-400"/>
                 </label>
             </div>
             

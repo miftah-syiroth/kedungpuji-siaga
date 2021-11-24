@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\ChildbirthController;
 use App\Http\Controllers\CoupleController;
+use App\Http\Controllers\Deleted\DeleteChildbirthController;
 use App\Http\Controllers\Deleted\DeleteCoupleController;
 use App\Http\Controllers\Deleted\DeleteFamilyController;
 use App\Http\Controllers\Deleted\DeletePersonController;
@@ -12,9 +13,15 @@ use App\Http\Controllers\Deleted\DeletePosyanduController;
 use App\Http\Controllers\Deleted\DeletePregnancyController;
 use App\Http\Controllers\Deleted\DeletePuerperalController;
 use App\Http\Controllers\FamilyController;
+use App\Http\Controllers\Invokables\ChildbirthAnnualReport;
+use App\Http\Controllers\Invokables\CreatePersonNewBirth;
 use App\Http\Controllers\Invokables\DiedMovedPeople;
+use App\Http\Controllers\Invokables\ExportPregnancyIndex;
 use App\Http\Controllers\Invokables\IbuHamil;
 use App\Http\Controllers\Invokables\IbuNifas;
+use App\Http\Controllers\Invokables\KbMonthlyReport;
+use App\Http\Controllers\Invokables\PregnanciesAnnualReport;
+use App\Http\Controllers\Invokables\StorePersonNewBirth;
 use App\Http\Controllers\KeluargaBerencanaController;
 use App\Http\Controllers\NeonatusController;
 use App\Http\Controllers\PersonController;
@@ -25,6 +32,7 @@ use App\Http\Controllers\PrenatalClassController;
 use App\Http\Controllers\PuerperalClassController;
 use App\Http\Controllers\PuerperalController;
 use App\Http\Controllers\UserController;
+use App\Models\Month;
 use Illuminate\Support\Facades\Route;
 
 
@@ -49,6 +57,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/people', [PersonController::class, 'index'])->name('people.index');
     # untuk menampilkan warga yang pindah atau mati INVOKEABLES
     Route::get('/people/move-or-die', DiedMovedPeople::class)->name('people.dead');
+    # rounte tampilkan form tambah penduduk berdasarkan kehamilan
+    Route::get('/people/childbirths/{childbirth}/create', CreatePersonNewBirth::class);
+    # route untuk menyimpan data input tambah penduduk berdasarkan kelahiran baru
+    Route::post('/people/childbirths/{childbirth}', StorePersonNewBirth::class);
     # rount untuk menampilkan halaman input warga baru
     Route::get('/people/create', [PersonController::class, 'create'])->name('people.create');
     # Route untuk menyimpan request input ke database
@@ -63,10 +75,22 @@ Route::middleware('auth')->group(function () {
     Route::delete('/people/{person}', [PersonController::class, 'destroy'])->name('people.destroy');
 
 
-    // childbirth ini kmrn aku passing ke view utk menambah penduduk berdasarkan kelahiran
+    // controller untuk menampilkan seluruh kehamilan untuk ditambahkan sebagai penduduk
     Route::get('/childbirths', [ChildbirthController::class, 'index'])->name('people.childbirths.index');
-    Route::get('/pregnancies/{pregnancy}/childbirths/create', [ChildbirthController::class, 'create'])->name('people.childbirths.create');
-    Route::post('/pregnancies/{pregnancy}/childbirths', [ChildbirthController::class, 'store'])->name('people.childbirths.store');
+    //tambah kelahiran dari kehamilan
+    Route::post('/pregnancies/{pregnancy}/childbirths', [ChildbirthController::class, 'store']);
+    // menuju halaman input data kehamilan
+    Route::get('/childbirths/{childbirth}/edit', [ChildbirthController::class, 'edit']);
+    // update data kelahiran seorang anak
+    Route::put('/childbirths/{childbirth}', [ChildbirthController::class, 'update']);
+    // route untuk hapus data kelahiran
+    Route::delete('/childbirths/{childbirth}', [ChildbirthController::class, 'destroy']);
+
+
+    // childbirth ini kmrn aku passing ke view utk menambah penduduk berdasarkan kelahiran
+    // Route::get('/childbirths', [ChildbirthController::class, 'index'])->name('people.childbirths.index');
+    // Route::get('/pregnancies/{pregnancy}/childbirths/create', [ChildbirthController::class, 'create'])->name('people.childbirths.create');
+    // Route::post('/pregnancies/{pregnancy}/childbirths', [ChildbirthController::class, 'store'])->name('people.childbirths.store');
 
 
     // Route untuk menampilkan semua keluarga di desa kedungpuji
@@ -189,37 +213,60 @@ Route::middleware('auth')->group(function () {
 
 
     Route::resource('users', UserController::class);
+
+
+    # Halaman untuk cetak laporan excel kehamilan dan kelahiran
+    Route::middleware(['permission:unduh laporan'])->group(function () {
+        Route::get('/reports', function(){
+            return view('reports.index', [
+                'months' => Month::all(),
+            ]);
+        })->name('reports');
+    
+        Route::post('/export-pregnancies-annual-report', PregnanciesAnnualReport::class);
+        Route::post('/export-childbirths-annual-report', ChildbirthAnnualReport::class);
+        Route::post('/export-kb-monthly-report', KbMonthlyReport::class);
+    });
+    
+    Route::post('/export-pregnancies-index', ExportPregnancyIndex::class);
     
     
     #DELETE MODELS
-    // menampilkan tabel posyandu yang terhapus
-    Route::get('/deleted/posyandu', [DeletePosyanduController::class, 'index'])->name('deleted.posyandu.index');
-    Route::patch('/deleted/posyandu/{posyandu}/restore', [DeletePosyanduController::class, 'restore']);
-    Route::delete('/deleted/posyandu/{posyandu}', [DeletePosyanduController::class, 'destroy']);
+    Route::middleware(['permission:restore objek'])->group(function () {
+        // menampilkan tabel posyandu yang terhapus
+        Route::get('/deleted/posyandu', [DeletePosyanduController::class, 'index'])->name('deleted.posyandu.index');
+        Route::patch('/deleted/posyandu/{posyandu}/restore', [DeletePosyanduController::class, 'restore']);
+        Route::delete('/deleted/posyandu/{posyandu}', [DeletePosyanduController::class, 'destroy']);
 
 
-    Route::get('/deleted/puerperals', [DeletePuerperalController::class, 'index'])->name('deleted.puerperals.index');
-    Route::patch('/deleted/puerperals/{puerperal}/restore', [DeletePuerperalController::class, 'restore']);
-    Route::delete('/deleted/puerperals/{puerperal}', [DeletePuerperalController::class, 'destroy']);
+        Route::get('/deleted/puerperals', [DeletePuerperalController::class, 'index'])->name('deleted.puerperals.index');
+        Route::patch('/deleted/puerperals/{puerperal}/restore', [DeletePuerperalController::class, 'restore']);
+        Route::delete('/deleted/puerperals/{puerperal}', [DeletePuerperalController::class, 'destroy']);
 
-    Route::get('/deleted/pregnancies', [DeletePregnancyController::class, 'index'])->name('deleted.pregnancies.index');
-    Route::patch('/deleted/pregnancies/{pregnancy}/restore', [DeletePregnancyController::class, 'restore']);
-    Route::delete('/deleted/pregnancies/{pregnancy}', [DeletePregnancyController::class, 'destroy']);
+        Route::get('/deleted/pregnancies', [DeletePregnancyController::class, 'index'])->name('deleted.pregnancies.index');
+        Route::patch('/deleted/pregnancies/{pregnancy}/restore', [DeletePregnancyController::class, 'restore']);
+        Route::delete('/deleted/pregnancies/{pregnancy}', [DeletePregnancyController::class, 'destroy']);
 
-
-    Route::get('/deleted/couples', [DeleteCoupleController::class, 'index'])->name('deleted.couples.index');
-    Route::patch('/deleted/couples/{couple}/restore', [DeleteCoupleController::class, 'restore']);
-    Route::delete('/deleted/couples/{couple}', [DeleteCoupleController::class, 'destroy']);
-
-
-    Route::get('/deleted/families', [DeleteFamilyController::class, 'index'])->name('deleted.families.index');
-    Route::patch('/deleted/families/{family}/restore', [DeleteFamilyController::class, 'restore']);
-    Route::delete('/deleted/families/{family}', [DeleteFamilyController::class, 'destroy']);
+        Route::get('/deleted/childbirths', [DeleteChildbirthController::class, 'index'])->name('deleted.childbirths.index');
+        Route::patch('/deleted/childbirths/{childbirth}/restore', [DeleteChildbirthController::class, 'restore']);
+        Route::delete('/deleted/childbirths/{childbirth}', [DeleteChildbirthController::class, 'destroy']);
 
 
-    Route::get('/deleted/people', [DeletePersonController::class, 'index'])->name('deleted.people.index');
-    Route::patch('/deleted/people/{person}/restore', [DeletePersonController::class, 'restore']);
-    Route::delete('/deleted/people/{person}', [DeletePersonController::class, 'destroy']);
+        Route::get('/deleted/couples', [DeleteCoupleController::class, 'index'])->name('deleted.couples.index');
+        Route::patch('/deleted/couples/{couple}/restore', [DeleteCoupleController::class, 'restore']);
+        Route::delete('/deleted/couples/{couple}', [DeleteCoupleController::class, 'destroy']);
+
+
+        Route::get('/deleted/families', [DeleteFamilyController::class, 'index'])->name('deleted.families.index');
+        Route::patch('/deleted/families/{family}/restore', [DeleteFamilyController::class, 'restore']);
+        Route::delete('/deleted/families/{family}', [DeleteFamilyController::class, 'destroy']);
+
+
+        Route::get('/deleted/people', [DeletePersonController::class, 'index'])->name('deleted.people.index');
+        Route::patch('/deleted/people/{person}/restore', [DeletePersonController::class, 'restore']);
+        Route::delete('/deleted/people/{person}', [DeletePersonController::class, 'destroy']);
+    });
+    
 
     // END REFACTORING
 });

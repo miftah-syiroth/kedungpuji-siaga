@@ -35,6 +35,8 @@
                 
             </div>
         </form>
+
+        @can('hapus posyandu')
         <form action="/posyandu/{{ $posyandu->id }}" method="post">
             @csrf
             @method('DELETE')
@@ -42,6 +44,8 @@
                 <button type="submit" class="bg-red-500 dark:bg-red-800 text-white dark:text-gray-200 py-2 px-3 rounded-md hover:bg-red-700 dark:hover:bg-red-900 mx-2 my-4">hapus</button>
             </div>
         </form>
+        @endcan
+        
     </div>
 
 </x-app-layout>

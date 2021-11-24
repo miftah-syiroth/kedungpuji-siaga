@@ -13,9 +13,9 @@ class BabyCondition extends Model
     protected $guarded = [];
 
     // many to many
-    public function pregnancies()
+    public function childbirths()
     {
-        return $this->belongsToMany(Pregnancy::class, 'pregnancy_has_baby_conditions', 'baby_condition_id', 'pregnancy_id');
+        return $this->belongsToMany(Childbirth::class, 'childbirth_has_baby_conditions', 'baby_condition_id', 'childbirth_id');
     }
 
     // many to many puerperal

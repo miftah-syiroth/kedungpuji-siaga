@@ -1,8 +1,10 @@
 <?php
 namespace App\Services;
 
+use App\Models\Childbirth;
 use App\Models\Person;
 use App\Models\Pregnancy;
+use App\Models\Puerperal;
 use Illuminate\Database\Eloquent\Builder;
 
 
@@ -10,7 +12,7 @@ class PregnancyService
 {
     public function getAllPregnancies($filters)
     {
-        return Pregnancy::whereHas('mother', function(Builder $query) {
+        return Pregnancy::whereHas('person', function(Builder $query) {
             $query->where('is_alive', true)
                 ->where('village_id', 1);
         })->filter($filters)
@@ -20,7 +22,7 @@ class PregnancyService
 
     public function getIbuHamil($filters)
     {
-        return Pregnancy::whereHas('mother', function(Builder $query) {
+        return Pregnancy::whereHas('person', function(Builder $query) {
             $query->where('is_alive', true)
                 ->where('village_id', 1);
         })->whereNull('childbirth_date')
@@ -31,7 +33,7 @@ class PregnancyService
 
     public function getIbuNifas($filters)
     {
-        return Pregnancy::whereHas('mother', function(Builder $query) {
+        return Pregnancy::whereHas('person', function(Builder $query) {
             $query->where('is_alive', true)
                 ->where('village_id', 1);
         })->whereHas('puerperal', function (Builder $query) {
@@ -42,8 +44,6 @@ class PregnancyService
             ->paginate(20);
     }
 
-    
-
     public function store($request)
     {
         // simpan kehamilan beru diperbolehkan bagi wanita yg
@@ -51,16 +51,16 @@ class PregnancyService
         // 2. kehamilan terakhir sudah bersalin dan udh lewat 42 hari nifas
         // tidak diperbolehkan jika kehamilan terakhir belum lahir atau sudah lahir tp belum 42 hari
 
-        $lastPregnancy = Person::find($request->mother_id)->latestPregnancy;
+        $lastPregnancy = Person::find($request->person_id)->latestPregnancy;
         $is_allowed = $this->finishPregnancyAndPuerperal($lastPregnancy);
 
         if ($is_allowed == true) {
             return Pregnancy::create([
-                'mother_id' => $request->mother_id,
+                'person_id' => $request->person_id,
                 'hpht' => $request->hpht,
-                'mother_weight' => $request->mother_weight,
-                'mother_height' => $request->mother_height,
-                'mother_bmi' => $this->bmi($request->mother_weight, $request->mother_height),
+                'weight' => $request->weight,
+                'height' => $request->height,
+                'bmi' => $this->bmi($request->weight, $request->height),
             ]);
         }
     }
@@ -86,57 +86,43 @@ class PregnancyService
 
     public function update($request, $pregnancy)
     {
-        // kehamilan adalah trimester ke tiga yaitu 28 - 42 minggu sejak hpht
-        // $is_allowed = $this->checkChildbirthDate($request->childbirth_date, $pregnancy);
-        $is_allowed = true;
+        $attributes = $request->all();
 
-        if ($is_allowed == true) {
-            $pregnancy->update([
-                'hpht' => $request->hpht,
-                'mother_weight' => $request->mother_weight,
-                'mother_height' => $request->mother_height,
-                'childbirth_date' => $request->childbirth_date,
-                'gestational_age' => $this->calculateGestationalAge($request->childbirth_date, $pregnancy),
-                'childbirth_attendant' => $request->childbirth_attendant,
-                'childbirth_method' => $request->childbirth_method,
-                'post_partum_condition' => $request->post_partum_condition,
-                'mother_condition_id' => $request->mother_condition_id,
-                'mother_additional_information' => $request->mother_additional_information,
-                'childbirth_order' => $request->childbirth_order,
-                'baby_weight' => $request->baby_weight,
-                'baby_lenght' => $request->baby_lenght,
-                'baby_head_circumference' => $request->baby_head_circumference,
-                'sex_id' => $request->sex_id,
-                'baby_additional_information' => $request->baby_additional_information,
-            ]);
-
-            if ($request->has('baby_condition_id')) {
-                $pregnancy->babyConditions()->sync($request->baby_condition_id);
-            }
-    
-            // pembuatan model ibu nifas jika ada input waktu persalinan
-            $this->createIbuNifas($request, $pregnancy);
-
-            return true;
-        } else {
-            return false;
+        if ($request->filled('childbirth_date')) {
+            $attributes['gestational_age'] = $this->calculateGestationalAge($request->childbirth_date, $pregnancy);
+            $attributes['parturition_id'] = $this->setPartusType($request->childbirth_date, $pregnancy);
         }
+
+        // cegah jangan sampai waktu kelahiran terisi sebelumnya, lalu diisi null. Jd jika sudah ada isinya, tp ga ada input dari form, timpan dgn value yg tersedia sebelumnya dari database
+        if ($pregnancy->childbirth_date !== null) {
+            if ($request->missing('childbirth_date')) {
+                $attributes['childbirth_date'] = $pregnancy->childbirth_date;
+            }
+        }
+
+        $attributes['bmi'] = $this->bmi($request->weight, $request->height);
+        $pregnancy->update($attributes);
+
+        // pembuatan model ibu nifas jika ada input waktu persalinan
+        $this->createIbuNifas($request, $pregnancy);
     }
     
     /**
-     * checkChildbirthDate harus pada trimester ke tiga yaitu 28 hingga 42 minggu sejak hpht
+     * setPartusType untukk mengkategorikan apakah abortus, prematurus, maturus, post partus
      *
      * @return void
      */
-    public function checkChildbirthDate($childbirth_date, $pregnancy)
+    public function setPartusType($childbirth_date, $pregnancy)
     {
-        $awal_waktu = $pregnancy->hpht->addWeeks(28); 
-        $akhir_waktu = $pregnancy->hpht->addWeeks(42); 
-
-        if ($childbirth_date >= $awal_waktu && $childbirth_date <= $akhir_waktu) {
-            return true;
-        } else {
-            return false;
+        $gestationalAgeInWeeks = $pregnancy->hpht->diffInWeeks($childbirth_date);
+        if ($gestationalAgeInWeeks < 28) {
+            return 1; //abortus_id
+        } elseif ($gestationalAgeInWeeks >= 28 && $gestationalAgeInWeeks <= 36) {
+            return 2; // prematur id
+        } elseif ($gestationalAgeInWeeks > 36 && $gestationalAgeInWeeks <= 42) {
+            return 3; // maturus id
+        } elseif ($gestationalAgeInWeeks > 42) {
+            return 4; // post partus id
         }
     }
     
@@ -150,7 +136,7 @@ class PregnancyService
      */
     public function createIbuNifas($request, $pregnancy)
     {
-        if ($request->has('childbirth_date')) {
+        if ($request->filled('childbirth_date')) {
             if ($pregnancy->puerperal == null) {
                 $pregnancy->puerperal()->create();
             }
@@ -160,7 +146,7 @@ class PregnancyService
     public function getDeletedPregnancies()
     {
         return Pregnancy::onlyTrashed()
-            ->with(['mother' => function($query) {
+            ->with(['person' => function($query) {
                 $query->withTrashed();
             }])->orderBy('deleted_at', 'desc')->get();
     }
@@ -182,6 +168,9 @@ class PregnancyService
         if ($pregnancy->prenatalClasses->isNotEmpty()) {
             $pregnancy->prenatalClasses()->delete();
         }
+        if ($pregnancy->childbirths->isNotEmpty()) {
+            $pregnancy->childbirths()->delete();
+        }
         $pregnancy->delete();
     }
 
@@ -193,6 +182,8 @@ class PregnancyService
             }, 'puerperal.puerperalClasses' => function($query) {
                 $query->withTrashed();
             }, 'prenatalClasses' => function($query) {
+                $query->withTrashed();
+            }, 'childbirths' => function($query) {
                 $query->withTrashed();
             }, ])->find($pregnancy);
         
@@ -208,12 +199,16 @@ class PregnancyService
             }
             // hapus berbagai kondisi ibu dan bayi pasca nifas pd tabel pivot
             $pregnancy->puerperal->babyConditions()->detach();
-            $pregnancy->puerperal->motherConditions()->detach();
             $pregnancy->puerperal->complications()->detach();
 
             $pregnancy->puerperal()->forceDelete();
         }
-        $pregnancy->babyConditions()->detach(); // tabel kondisi bayi pasca dilahirkan
+        if ($pregnancy->childbirths->isNotEmpty()) {
+            foreach ($pregnancy->childbirths as $key => $childbirth) {
+                $childbirth->babyConditions()->detach(); // tabel kondisi bayi pasca dilahirkan
+            }
+            $pregnancy->childbirths()->forceDelete();
+        }
         $pregnancy->forceDelete();
     }
 
@@ -226,10 +221,12 @@ class PregnancyService
                 $query->withTrashed();
             }, 'prenatalClasses' => function($query) {
                 $query->withTrashed();
+            }, 'childbirths' => function($query) {
+                $query->withTrashed();
             }, ])->find($pregnancy);
         
         // batalkan jika ibu sudah tidak ada/null, bisa jd ibu sudah dihapus
-        if ($pregnancy->mother == null) {
+        if ($pregnancy->person == null) {
             return false;
         } else {
 
@@ -243,6 +240,10 @@ class PregnancyService
                 }
                 
                 $pregnancy->puerperal()->restore();
+            }
+
+            if ($pregnancy->childbirths->isNotEmpty()) {
+                $pregnancy->childbirths()->restore();
             }
             $pregnancy->restore();
             return true;
@@ -269,5 +270,145 @@ class PregnancyService
         $pembilang = $weight;
         $penyebut = pow($height, 2) / 10000;
         return round(($pembilang/$penyebut), 2);
+    }
+
+    public function getPregnanciesToExport($request)
+    {
+        $filters = $request->toArray();
+
+        return Pregnancy::whereHas('person', function(Builder $query) {
+            $query->where('is_alive', true)
+                ->where('village_id', 1);
+        })->filter($filters)
+            ->latest()
+            ->get();
+    }
+
+
+    public function pregnancyAnnualReport($month, $year)
+    {
+        
+        return [
+            'ibu_hamil' =>  Pregnancy::whereYear('hpht', $year)
+                ->whereMonth('hpht', $month)
+                ->count(),
+            'ibu_bersalin' => [
+                'hidup' => Pregnancy::whereYear('hpht', $year)
+                            ->whereMonth('hpht', $month)
+                            ->whereIn('mother_condition_id', [1, 2])->count(),
+                'mati' => Pregnancy::whereYear('hpht', $year)
+                            ->whereMonth('hpht', $month)
+                            ->where('mother_condition_id', 3)->count(),
+            ],
+            'abortus' => Pregnancy::whereYear('hpht', $year)
+                        ->whereMonth('hpht', $month)
+                        ->where('parturition_id', 1)->count(),
+            'bayi_lahir_hidup' => [
+                'l' => Childbirth::where('sex_id', 1)
+                        ->whereHas('babyConditions', function(Builder $query) {
+                            $query->whereNotIn('id', [8]);
+                        })->whereHas('pregnancy', function(Builder $query) use ($year, $month) {
+                            $query->whereYear('hpht', $year)
+                                ->whereMonth('hpht', $month);
+                        })->count(),
+                'p' => Childbirth::where('sex_id', 2)
+                        ->whereHas('babyConditions', function(Builder $query) {
+                            $query->whereNotIn('id', [8]);
+                        })->whereHas('pregnancy', function(Builder $query) use ($year, $month) {
+                            $query->whereYear('hpht', $year)
+                                ->whereMonth('hpht', $month);
+                        })->count(),
+            ],
+            'bayi_lahir_mati' => [
+                'l' => Childbirth::where('sex_id', 1)
+                        ->whereHas('babyConditions', function(Builder $query) {
+                            $query->where('id', 8);
+                        })->whereHas('pregnancy', function(Builder $query) use ($year, $month) {
+                            $query->whereYear('hpht', $year)
+                                ->whereMonth('hpht', $month);
+                        })->count(),
+                'p' => Childbirth::where('sex_id', 2)
+                        ->whereHas('babyConditions', function(Builder $query) {
+                            $query->where('id', 8);
+                        })->whereHas('pregnancy', function(Builder $query) use ($year, $month) {
+                            $query->whereYear('hpht', $year)
+                                ->whereMonth('hpht', $month);
+                        })->count(),
+            ],
+            'level_1' => Childbirth::whereHas('pregnancy', function (Builder $query) use ($year, $month) {
+                            $query->whereYear('hpht', $year)
+                                ->whereMonth('hpht', $month);
+                        })->where('weight', '<', 2000)->count(),
+            'level_2' => Childbirth::whereHas('pregnancy', function (Builder $query) use ($year, $month) {
+                            $query->whereYear('hpht', $year)
+                                ->whereMonth('hpht', $month);
+                        })->where(function($query) {
+                            $query->where('weight', '>=', 2000)
+                                ->where('weight', '<', 2400);
+                        })->count(),
+            'level_3' => Childbirth::whereHas('pregnancy', function (Builder $query) use ($year, $month) {
+                            $query->whereYear('hpht', $year)
+                                ->whereMonth('hpht', $month);
+                        })->where(function($query) {
+                            $query->where('weight', '>=', 2400)
+                                ->where('weight', '<', 3700);
+                        })->count(),
+            'level_4' => Childbirth::whereHas('pregnancy', function (Builder $query) use ($year, $month) {
+                            $query->whereYear('hpht', $year)
+                                ->whereMonth('hpht', $month);
+                        })->where('weight', '>=', 3700)->count(),
+            'bayi_nifas_hidup' => [
+                'l' => Childbirth::where('sex_id', 1)
+                        ->whereHas('pregnancy', function (Builder $query) use ($year, $month) {
+                            $query->whereYear('hpht', $year)
+                                ->whereMonth('hpht', $month)
+                                ->whereHas('puerperal', function (Builder $query) {
+                                    $query->whereHas('babyConditions', function (Builder $query) {
+                                        $query->whereNotIn('id', [8]);
+                                    });
+                                });
+                        })->count(),
+                'p' => Childbirth::where('sex_id', 2)
+                        ->whereHas('pregnancy', function (Builder $query) use ($year, $month) {
+                            $query->whereYear('hpht', $year)
+                                ->whereMonth('hpht', $month)
+                                ->whereHas('puerperal', function (Builder $query) {
+                                    $query->whereHas('babyConditions', function (Builder $query) {
+                                        $query->whereNotIn('id', [8]);
+                                    });
+                                });
+                        })->count(),
+            ],
+            'bayi_nifas_mati' => [
+                'l' => Childbirth::where('sex_id', 1)
+                        ->whereHas('pregnancy', function (Builder $query) use ($year, $month) {
+                            $query->whereYear('hpht', $year)
+                                ->whereMonth('hpht', $month)
+                                ->whereHas('puerperal', function (Builder $query) {
+                                    $query->whereHas('babyConditions', function (Builder $query) {
+                                        $query->where('id', 8);
+                                    });
+                                });
+                        })->count(),
+                'p' => Childbirth::where('sex_id', 2)
+                        ->whereHas('pregnancy', function (Builder $query) use ($year, $month) {
+                            $query->whereYear('hpht', $year)
+                                ->whereMonth('hpht', $month)
+                                ->whereHas('puerperal', function (Builder $query) {
+                                    $query->whereHas('babyConditions', function (Builder $query) {
+                                        $query->where('id', 8);
+                                    });
+                                });
+                        })->count(),
+            ],
+            'ibu_nifas_hidup' => Puerperal::whereHas('pregnancy', function (Builder $query) use ($year, $month) {
+                                    $query->whereYear('hpht', $year)
+                                            ->whereMonth('hpht', $month);
+                                })->whereNotIn('mother_condition_id', [8])->count(),
+            'ibu_nifas_mati' => Puerperal::whereHas('pregnancy', function (Builder $query) use ($year, $month) {
+                                    $query->whereYear('hpht', $year)
+                                            ->whereMonth('hpht', $month);
+                                })->where('mother_condition_id', 8)->count(),
+        ];
     }
 }

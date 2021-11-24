@@ -68,16 +68,16 @@
                             </div>
                             <div>
                                 <a href="/pregnancies/{{ $pregnancy->id }}" class="font-normal text-blue-500 hover:text-blue-600 hover:shadow">
-                                    {{ $pregnancy->mother->name }}
+                                    {{ $pregnancy->person->name }}
                                 </a>
                             </div>
                         </div>
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
-                        {{ $pregnancy->mother->rt }}/{{ $pregnancy->mother->rw }}
+                        {{ $pregnancy->person->rt }}/{{ $pregnancy->person->rw }}
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
-                        {{ $pregnancy->mother->date_of_birth->age }}
+                        {{ $pregnancy->person->date_of_birth->age }}
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
                         {{ $pregnancy->hpht->isoFormat('D MMMM YYYY') }}

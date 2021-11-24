@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddMotherConditionIdToPuerperalsTable extends Migration
+class AddParturitionIdToPregnanciesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddMotherConditionIdToPuerperalsTable extends Migration
      */
     public function up()
     {
-        Schema::table('puerperals', function (Blueprint $table) {
-            $table->foreignId('mother_condition_id')->nullable()->constrained('mother_conditions');
+        Schema::table('pregnancies', function (Blueprint $table) {
+            $table->foreignId('parturition_id')->nullable()->constrained('parturitions');
         });
     }
 
@@ -25,7 +25,7 @@ class AddMotherConditionIdToPuerperalsTable extends Migration
      */
     public function down()
     {
-        Schema::table('puerperals', function (Blueprint $table) {
+        Schema::table('pregnancies', function (Blueprint $table) {
             //
         });
     }

@@ -18,6 +18,7 @@ class PuerperalController extends Controller
     public function __construct(PuerperalService $service)
     {
         $this->puerperalService = $service;
+        $this->middleware(['permission:hapus nifas'])->only('destroy');
     }
 
     /**

@@ -192,7 +192,7 @@ class Person extends Model
      */
     public function pregnancies()
     {
-        return $this->hasMany(Pregnancy::class, 'mother_id');
+        return $this->hasMany(Pregnancy::class, 'person_id');
     }
     
     /**
@@ -202,13 +202,13 @@ class Person extends Model
      */
     public function childbirth()
     {
-        return $this->hasOne(Pregnancy::class, 'baby_id');
+        return $this->hasOne(Childbirth::class, 'person_id');
     }
 
     // Get the mother's most recent pregnancy.
     public function latestPregnancy()
     {
-        return $this->hasOne(Pregnancy::class, 'mother_id')->latestOfMany();
+        return $this->hasOne(Pregnancy::class, 'person_id')->latestOfMany();
     }
     
     /**
@@ -237,22 +237,4 @@ class Person extends Model
     {
         return $this->hasOne(Posyandu::class, 'person_id');
     }
-
-    
-    /**
-     * puerperal, has one through antara person (ibu) one to one pergnancy one to one puerperal
-     *
-     * @return void
-     */
-    // public function puerperal()
-    // {
-    //     return $this->hasOneThrough(
-    //         Puerperal::class, 
-    //         Pregnancy::class,
-    //         'mother_id',
-    //         'pregnancy_id',
-    //         'id',
-    //         'id',
-    //     );
-    // }
 }

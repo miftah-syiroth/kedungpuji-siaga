@@ -23,11 +23,11 @@
                     </span>
                     <div class="mt-2">
                         <label x-on:click=" isOpen = true" class="mx-2 inline-flex items-center text-gray-600 dark:text-gray-400">
-                            <input type="radio" name="is_kb" value="1" class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"/>
+                            <input type="radio" name="is_kb" value="1" class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray border-gray-400"/>
                             <span class="ml-2">KB</span>
                         </label>
                         <label x-on:click=" isOpen = false" class="mx-2 inline-flex items-center text-gray-600 dark:text-gray-400">
-                            <input type="radio" name="is_kb" value="0" class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"/>
+                            <input type="radio" name="is_kb" value="0" class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray border-gray-400"/>
                             <span class="ml-2">Tidak KB</span>
                         </label>
                     </div>
@@ -40,7 +40,7 @@
                     <div class="mt-2">
                         @foreach ($kb_services as $service)
                         <label class="mx-2 inline-flex items-center text-gray-600 dark:text-gray-400">
-                            <input type="radio" name="kb_service_id" value="{{ $service->id }}" class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"/>
+                            <input type="radio" name="kb_service_id" value="{{ $service->id }}" class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray border-gray-400"/>
                             <span class="ml-2">{{ $service->service }}</span>
                         </label>
                         @endforeach

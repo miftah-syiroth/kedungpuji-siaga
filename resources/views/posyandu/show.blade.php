@@ -53,26 +53,6 @@
                     </div>
                     <div class="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">
-                            HPHT
-                        </dt>
-                        <dd class="mt-1 text-sm sm:mt-0 sm:col-span-2">
-                            : @isset($posyandu->person->childbirth)
-                                {{ $posyandu->person->childbirth->hpht->isoFormat('DD MMMM YYYY') }}
-                            @endisset
-                        </dd>
-                    </div>
-                    <div class="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            Umur Kehamilan
-                        </dt>
-                        <dd class="mt-1 text-sm sm:mt-0 sm:col-span-2">
-                            : @isset($posyandu->person->childbirth)
-                                {{ $posyandu->person->childbirth->gestational_age }}
-                            @endisset
-                        </dd>
-                    </div>
-                    <div class="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
                             Kesimpulan Neonatus
                         </dt>
                         <dd class="mt-1 text-sm sm:mt-0 sm:col-span-2">
@@ -91,11 +71,21 @@
                 <dl class="col-span-4">
                     <div class="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">
+                            Umur Kehamilan
+                        </dt>
+                        <dd class="mt-1 text-sm sm:mt-0 sm:col-span-2">
+                            : @isset($posyandu->person->childbirth)
+                                {{ $posyandu->person->childbirth->pregnancy->gestational_age }}
+                            @endisset
+                        </dd>
+                    </div>
+                    <div class="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">
                             Berat Badan
                         </dt>
                         <dd class="mt-1 text-sm sm:mt-0 sm:col-span-2">
-                            : @isset($posyandu->latestAnthropometry)
-                                {{ $posyandu->latestAnthropometry->weight }}
+                            : @isset($posyandu->person->childbirth)
+                                {{ $posyandu->person->childbirth->weight }} gram
                             @endisset
                         </dd>
                     </div>
@@ -105,19 +95,9 @@
                             Panjang Badan
                         </dt>
                         <dd class="mt-1 text-sm sm:mt-0 sm:col-span-2">
-                            : @isset($posyandu->latestAnthropometry)
-                                {{ $posyandu->latestAnthropometry->height }}
+                            : @isset($posyandu->person->childbirth)
+                                {{ $posyandu->person->childbirth->length }} cm
                             @endisset
-                        </dd>
-                    </div>
-                    <div class="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            BMI
-                        </dt>
-                        <dd class="mt-1 text-sm sm:mt-0 sm:col-span-2">
-                            : @isset($posyandu->latestAnthropometry)
-                                {{ $posyandu->latestAnthropometry->bmi }}
-                            @endisset{{ $posyandu->neonatus_conclusion }}
                         </dd>
                     </div>
     
@@ -126,48 +106,18 @@
                             Lingkar Kepala
                         </dt>
                         <dd class="mt-1 text-sm sm:mt-0 sm:col-span-2">
-                            : @isset($posyandu->latestAnthropometry)
-                                {{ $posyandu->latestAnthropometry->head_circumference }}
+                            : @isset($posyandu->person->childbirth)
+                            {{ $posyandu->person->childbirth->head_circumference }} cm
                             @endisset
                         </dd>
                     </div>
                     <div class="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">
-                            BB Menurut Umur
+                            Metode Persalinan
                         </dt>
                         <dd class="mt-1 text-sm sm:mt-0 sm:col-span-2">
-                            : @isset($posyandu->latestAnthropometry)
-                                {{ $posyandu->latestAnthropometry->weightForAgeCategory->category }}
-                            @endisset
-                        </dd>
-                    </div>
-                    <div class="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            TB Menurut Umur
-                        </dt>
-                        <dd class="mt-1 text-sm sm:mt-0 sm:col-span-2">
-                            : @isset($posyandu->latestAnthropometry)
-                                {{ $posyandu->latestAnthropometry->heightForAgeCategory->category }}
-                            @endisset
-                        </dd>
-                    </div>
-                    <div class="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            BMI Menurut Umur
-                        </dt>
-                        <dd class="mt-1 text-sm sm:mt-0 sm:col-span-2">
-                            : @isset($posyandu->latestAnthropometry)
-                                {{ $posyandu->latestAnthropometry->bmiForAgeCategory->category }}
-                            @endisset
-                        </dd>
-                    </div>
-                    <div class="px-4 py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            BB Menurut TB
-                        </dt>
-                        <dd class="mt-1 text-sm sm:mt-0 sm:col-span-2">
-                            : @isset($posyandu->latestAnthropometry)
-                                {{ $posyandu->latestAnthropometry->weightForHeightCategory->category }}
+                            : @isset($posyandu->person->childbirth)
+                            {{ $posyandu->person->childbirth->childbirth_method }}
                             @endisset
                         </dd>
                     </div>

@@ -4,7 +4,7 @@
     </dt>
     <dd x-show="open" class="flex justify-between mt-1 py-2 text-sm text-gray-900 border border-gray-200 rounded-md dark:text-gray-200 sm:mt-0 sm:col-span-3">
         <div class="order-last mr-4">
-            <a href="/people/{{ $person->id }}/edit" class="px-3 py-1 rounded-md bg-blue-500 dark:bg-gray-500 dark:hover:bg-gray-600 text-gray-200">edit</a>
+            <a href="/people/{{ $person->id }}/edit" class="px-3 py-1 rounded-md bg-blue-500 hover:bg-blue-600 dark:bg-gray-500 dark:hover:bg-gray-600 text-gray-200">edit</a>
         </div>
         <ul role="list">
             <li class="pl-3 pr-4 pb-1 text-sm grid grid-cols-3 gap-6 capitalize">

@@ -16,6 +16,7 @@ class CoupleController extends Controller
     public function __construct(CoupleService $service)
     {
         $this->coupleService = $service;
+        $this->middleware(['permission:hapus pasangan'])->only('destroy');
     }
 
     /**

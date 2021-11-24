@@ -9,14 +9,16 @@
                 <tr class="text-xs font-semibold tracking-wide text-center uppercase border-b dark:border-gray-700">
                     <th class="pl-4 py-3 text-left">Nama Ibu Bayi</th>
                     <th class="px-2 py-3">RT/RW</th>
+                    <th class="px-2 py-3">Anak Ke</th>
                     <th class="px-2 py-3">L/P</th>
+                    <th class="px-2 py-3">BB</th>
                     <th class="px-2 py-3">Waktu Kelahiran</th>
                     <th class="px-2 py-3">Umur Kelahiran</th>
                     <th class="px-2 py-3">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y ">
-                @foreach ($childbirths as $key => $pregnancy)
+                @foreach ($childbirths as $key => $childbirth)
                 <tr class="text-gray-700 dark:text-gray-300">
                     <td class="px-2 py-1">
                         <div class="flex items-center text-sm">
@@ -25,24 +27,30 @@
                                 {{ $key + 1 . '.' }}
                             </div>
                             <div>
-                                <a href="/pregnancies/{{ $pregnancy->id }}" class="font-normal capitalize text-blue-500 hover:text-blue-400 hover:underline">{{ $pregnancy->mother->name }}</a>
+                                <a href="/pregnancies/{{ $childbirth->pregnancy->id }}" class="font-normal capitalize text-blue-500 hover:text-blue-400 hover:underline">{{ $childbirth->pregnancy->person->name }}</a>
                             </div>
                         </div>
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
-                        {{ $pregnancy->mother->rt }} / {{ $pregnancy->mother->rw }}
+                        {{ $childbirth->pregnancy->person->rt }} / {{ $childbirth->pregnancy->person->rw }}
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
-                        {{ $pregnancy->sex->sex }}
+                        {{ $childbirth->childbirth_order }}
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
-                        {{ $pregnancy->childbirth_date->isoFormat('dddd, DD MMMM YYYY hh:mm') }}
+                        {{ $childbirth->sex->sex }}
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
-                        {{ $pregnancy->gestational_age }}
+                        {{ $childbirth->weight }} gr
                     </td>
                     <td class="px-2 py-1 text-sm text-center">
-                        <a href="/pregnancies/{{ $pregnancy->id }}/childbirths/create" class="text-blue-500 hover:text-blue-800 hover:underline">tambah penduduk</a>
+                        {{ $childbirth->pregnancy->childbirth_date->isoFormat('DD MMM YYYY HH:mm') }}
+                    </td>
+                    <td class="px-2 py-1 text-sm text-center">
+                        {{ $childbirth->pregnancy->gestational_age }}
+                    </td>
+                    <td class="px-2 py-1 text-sm text-center">
+                        <a href="/people/childbirths/{{ $childbirth->id }}/create" class="text-blue-500 hover:text-blue-800 hover:underline">tambah penduduk</a>
                     </td>
                 </tr>
                 @endforeach

@@ -65,7 +65,7 @@ class PosyanduController extends Controller
     {
         return view('posyandu.show', [
             'posyandu' => $posyandu,
-            'umur_bayi' => $posyandu->person->date_of_birth->diffInDays(now()),
+            // 'umur_bayi' => $posyandu->person->date_of_birth->diffInDays(now()),
         ]);
     }
 

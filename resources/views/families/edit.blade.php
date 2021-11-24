@@ -46,6 +46,7 @@
             </div>
         </form>
 
+        @can('hapus keluarga')
         <div class="my-4">
             <form action="/families/{{ $family->id }}" method="post">
                 @csrf
@@ -53,5 +54,7 @@
                 <button type="submit" class="bg-red-500 text-sm dark:bg-gray-400 text-white dark:text-gray-800 py-2 px-3 rounded-md hover:bg-red-700 dark:hover:bg-gray-300">Hapus Keluarga</button>
             </form>
         </div>
+        @endcan
+        
     </div>
 </x-app-layout>

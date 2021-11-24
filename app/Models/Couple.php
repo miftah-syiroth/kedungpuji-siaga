@@ -55,6 +55,7 @@ class Couple extends Model
         );
     }
 
+    // scope ini digunakan pada pencarian tabel kb
     public function scopeKeluargaBerencana(Builder $query, array $filters)
     {
         $query->when($filters['wife_name'] ?? false, function($query, $wife_name) {
@@ -90,17 +91,6 @@ class Couple extends Model
         // });
     }
     
-    // protected $with = ['kbService', 'wife', 'husband'];
-    
-    // public function monthlyReport($year, $month)
-    // {
-    //     return $this->keluargaBerencana()->where('year_periode', $year)->where('month_periode', $month)->first();
-    // }
-
-    // public function anualReport($year)
-    // {
-    //     return $this->keluargaBerencana()->where('year_periode', $year)->get();
-    // }
 
     // START RELASI
 
